@@ -1,0 +1,18 @@
+﻿@using Abp.AspNetCore.Mvc.UI.Theme.AdminLTE.Themes.AdminLTE.Components.Toolbar
+@model Abp.AspNetCore.Mvc.UI.Theme.AdminLTE.Themes.AdminLTE.Components.Toolbar.LanguageSwitch.LanguageSwitchViewComponentModel
+<li class="nav-item dropdown d-none d-sm-inline-block">
+    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <i class="@Model.CurrentLanguage.FlagIcon"></i> @Model.CurrentLanguage.DisplayName
+        <span class="caret"></span>
+    </a>
+    <div class="dropdown-menu" x-placement="bottom-start">
+        @foreach (var languageInfo in Model.OtherLanguages)
+        {
+            <a class="dropdown-item" href="/Abp/Languages/Switch?culture=@(languageInfo.CultureName)&uiCulture=@(languageInfo.UiCultureName)&returnUrl=@Context.Request.Path">
+                <span class="@(languageInfo.DisplayName == Model.CurrentLanguage.DisplayName ? "current-language-icon" : "")">
+                    <i class="@languageInfo.FlagIcon"></i> @languageInfo.DisplayName
+                </span>
+            </a>
+        }
+    </div>
+</li>

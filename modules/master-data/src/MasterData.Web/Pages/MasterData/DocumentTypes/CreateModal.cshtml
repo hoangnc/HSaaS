@@ -1,0 +1,21 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using MasterData.Localization
+@using MasterData.Web.Pages.MasterData.DocumentTypes
+@model CreateModalModel
+@inject IHtmlLocalizer<MasterDataResource> L
+@inject IStringLocalizerFactory StringLocalizerFactory
+@{ Layout = null; }
+<form method="post" asp-page="/MasterData/DocumentTypes/CreateModal">
+    <abp-modal>
+        <abp-modal-header title="@L["NewDocumentType"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-input asp-for="DocumentTypeInfo.Code" />
+            <abp-input asp-for="DocumentTypeInfo.Name" />
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>
+

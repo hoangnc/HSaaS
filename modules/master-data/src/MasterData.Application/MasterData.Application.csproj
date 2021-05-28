@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>MasterData</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="4.3.1" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="4.3.1" />
+    <ProjectReference Include="..\MasterData.Application.Contracts\MasterData.Application.Contracts.csproj" />
+    <ProjectReference Include="..\MasterData.Domain\MasterData.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

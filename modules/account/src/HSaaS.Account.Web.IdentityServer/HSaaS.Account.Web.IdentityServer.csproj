@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <Import Project="..\..\..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>HSaaS.Account.Web.IdentityServer</AssemblyName>
+    <PackageId>HSaaS.Account.Web.IdentityServer</PackageId>
+    <IsPackable>true</IsPackable>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RootNamespace>HSaaS.Account.Web</RootNamespace>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\**\*.cshtml" />
+    <EmbeddedResource Include="Pages\**\*.css" />
+    <EmbeddedResource Include="Pages\**\*.js" />
+    <Content Remove="Pages\**\*.cshtml" />
+    <Content Remove="Pages\**\*.css" />
+    <Content Remove="Pages\**\*.js" />
+    <Content Remove="Properties\launchSettings.json" />
+    <None Include="Properties\launchSettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.IdentityServer.Domain" Version="4.3.1" />
+    <PackageReference Include="Volo.Abp.VirtualFileSystem" Version="4.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HSaaS.Account.Web\HSaaS.Account.Web.csproj" />
+  </ItemGroup>
+
+</Project>

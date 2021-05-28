@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>DocumentManagement</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="4.2.2" />
+    <ProjectReference Include="..\..\..\..\src\TDG.STS.IdentityServer.Domain.Shared\TDG.STS.IdentityServer.Domain.Shared.csproj" />
+    <ProjectReference Include="..\DocumentManagement.Domain\DocumentManagement.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

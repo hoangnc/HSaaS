@@ -1,0 +1,62 @@
+﻿{
+  "culture": "vi",
+    "texts": {
+        "Menu:MasterData": "Master data",
+        "Permission:MasterData": "Master data",
+        "Permission:Company": "Quản lý công ty",
+        "Permission:Company:Create": "Tạo mới công ty",
+        "Permission:Company:Edit": "Cập nhật công ty",
+        "Permission:Company:Delete": "Xóa công ty",
+
+        "Permission:Department": "Quản lý phòng ban",
+        "Permission:Department:Create": "Tạo mới phòng ban",
+        "Permission:Department:Edit": "Cập nhật phòng ban",
+        "Permission:Department:Delete": "Xóa phòng ban",
+
+        "Permission:DocumentType": "Quản lý loại tài liệu",
+        "Permission:DocumentType:Create": "Tạo mới loại tài liệu",
+        "Permission:DocumentType:Edit": "Cập nhật loài tài liệu",
+        "Permission:DocumentType:Delete": "Xóa loại tài liệu",
+
+        "Permission:Module": "Phân hệ",
+        "Permission:Module:Create": "Tạo mới phân hệ",
+        "Permission:Module:Edit": "Cập nhật phân hệ",
+        "Permission:Module:Delete": "Xóa phân hệ",
+
+        "Companies": "Công ty",
+        "NewCompany": "Tạo mới công ty",
+        "Display:CompanyCode": "Mã công ty",
+        "Display:CompanyName": "Tên công ty",
+        "Display:CompanyEmailAddress": "Email liên hệ",
+        "CompanyInformations": "Thông tin công ty",
+
+        "CompanyDeletionConfirmationMessage": "Công ty '{0}' sẽ bị xóa. Bạn có xác nhận điều đó không?",
+
+        "DocumentTypes": "Loại tài liệu",
+        "NewDocumentType": "Tạo mới loại tài liệu",
+        "Display:DocumentTypeCode": "Mã loại tài liệu",
+        "Display:DocumentTypeName": "Tên loại tài liệu",
+        "DocumentTypeInformations": "Thông tin mã loại tài liệu",
+
+        "DocumentTypeDeletionConfirmationMessage": "Mã loại tài liệu '{0}' sẽ bị xóa. Bạn có xác nhận điều đó không?",
+        "Dt:010001": "Mã phải là duy nhất. '{Code}' đã được sử dụng!",
+
+        "Departments": "Phòng ban",
+        "NewDepartment": "Tạo mới phòng ban",
+        "Display:DepartmentCode": "Mã phòng ban",
+        "Display:DepartmentName": "Tên phòng ban",
+        "Display:DepartmentEmailAddress": "Email liên hệ",
+        "DepartmentInformations": "Thông tin phòng ban",
+
+        "DepartmentDeletionConfirmationMessage": "Phòng ban '{0}' sẽ bị xóa. Bạn có xác nhận điều đó không?",
+
+        "Modules": "Phân hệ",
+        "NewModule": "Tạo phân hệ mới",
+        "Display:ModuleCode": "Mã phân hệ",
+        "Display:ModuleName": "Tên phân hệ",
+        "ModuleInformations": "Thông tin phân hệ",
+
+        "ModuleDeletionConfirmationMessage": "Phân hệ '{0}' sẽ bị xóa. Bạn có xác nhận điều đó không?",
+        "Dt:020001": "Mã phải là duy nhất. '{Code}' đã được sử dụng!"
+    }
+}

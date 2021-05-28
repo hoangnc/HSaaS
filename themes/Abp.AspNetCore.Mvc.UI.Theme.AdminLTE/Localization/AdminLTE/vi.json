@@ -1,0 +1,8 @@
+{
+  "culture": "vi",
+    "texts": {
+        "Nav:Home": "Trang chủ",
+        "AreYouANewUser": "Bạn có phải là người dùng mới?",
+        "ForgotPassword": "Quên mật khẩu?"
+    }
+}

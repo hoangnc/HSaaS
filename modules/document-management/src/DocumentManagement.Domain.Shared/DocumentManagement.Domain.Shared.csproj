@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>DocumentManagement</RootNamespace>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.*" />
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="4.2.2" />
+    <PackageReference Include="Volo.Abp.Validation" Version="4.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\DocumentManagement\*.json" />
+    <Content Remove="Localization\DocumentManagement\*.json" />
+  </ItemGroup>
+
+</Project>

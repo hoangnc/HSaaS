@@ -1,0 +1,37 @@
+﻿@page
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Pages.Shared.Components.AbpPageToolbar
+@using MasterData.Permissions
+@using MasterData.Localization
+@using MasterData.Web.Menus
+@using MasterData.Web.Pages.MasterData.Departments
+@model IndexModel
+@inject IHtmlLocalizer<MasterDataResource> L
+@inject IAuthorizationService Authorization
+@inject IPageLayout PageLayout
+@{ PageLayout.Content.Title = L["Departments"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:MasterData"].Value);
+    PageLayout.Content.MenuItemName = MasterDataMenus.Department;
+}
+@section scripts {
+    <abp-script-bundle name="@typeof(IndexModel).FullName">
+        <abp-script src="/Pages/MasterData/Departments/Index.js" />
+    </abp-script-bundle>
+}
+<abp-card id="DepartmentsWrapper">
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Departments"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-right">
+                @await Component.InvokeAsync(typeof(AbpPageToolbarViewComponent), new { pageName = typeof(IndexModel).FullName })
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" class="nowrap"></abp-table>
+    </abp-card-body>
+</abp-card>

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>HSaaS.Account</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.*" />
+    <ProjectReference Include="..\..\src\HSaaS.Account.EntityFrameworkCore\HSaaS.Account.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\HSaaS.Account.TestBase\HSaaS.Account.TestBase.csproj" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="4.3.1" />
+  </ItemGroup>
+
+</Project>

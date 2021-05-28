@@ -1,0 +1,67 @@
+{
+  "culture": "en",
+    "texts": {
+        "Menu:MasterData": "Master data",
+        "Permission:MasterData": "Master data",
+
+        "Permission:Company": "Company",
+        "Permission:Company:Create": "New company",
+        "Permission:Company:Edit": "Edit company",
+        "Permission:Company:Delete": "Delete company",
+
+        "Permission:Department": "Department",
+        "Permission:Department:Create": "New department",
+        "Permission:Department:Edit": "Edit department",
+        "Permission:Department:Delete": "Delete department",
+
+        "Permission:DocumentType": "DocumentType",
+        "Permission:DocumentType:Create": "New document type",
+        "Permission:DocumentType:Edit": "Edit document type",
+        "Permission:DocumentType:Delete": "Delete document type",
+
+        "Permission:Module": "Module",
+        "Permission:Module:Create": "New module",
+        "Permission:Module:Edit": "Edit module",
+        "Permission:Module:Delete": "Delete module",
+
+        "Companies": "Companies",
+        "NewCompany": "New company",
+        "Display:CompanyCode": "Code",
+        "Display:CompanyName": "Name",
+        "Display:CompanyEmailAddress": "Email address",
+        "CompanyInformations": "Company informations",
+
+        "CompanyDeletionConfirmationMessage": "Company '{0}' will be deleted. Do you confirm that?",
+
+        "DocumentTypes": "Document Type",
+        "NewDocumentType": "New document type",
+        "Display:DocumentTypeCode": "Code",
+        "Display:DocumentTypeName": "Name",
+        "DocumentTypeInformations": "Document type informations",
+
+        "DocumentTypeDeletionConfirmationMessage": "Document type '{0}' will be deleted. Do you confirm that?",
+        "Dt:010001": "Code should be unique. '{Code}' is already taken!",
+
+
+        "Departments": "Departments",
+        "NewDepartment": "New department",
+        "Display:DepartmentCode": "Code",
+        "Display:DepartmentName": "Name",
+        "Display:DepartmentEmailAddress": "Email address",
+        "DepartmentInformations": "Department informations",
+
+        "DepartmentDeletionConfirmationMessage": "Department '{0}' will be deleted. Do you confirm that?",
+
+        "Modules": "Module",
+        "NewModule": "New module",
+        "Display:ModuleCode": "Code",
+        "Display:ModuleName": "Name",
+        "ModuleInformations": "Module informations",
+
+        "ModuleDeletionConfirmationMessage": "Document type '{0}' will be deleted. Do you confirm that?",
+        "Dt:020001": "Code should be unique. '{Code}' is already taken!",
+
+        "ManageYourProfile": "Manage your profile",
+        "SamplePageMessage": "A sample page for the MasterData module"
+    }
+}

@@ -1,0 +1,27 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using MasterData.Localization
+@using MasterData.Web.Pages.MasterData.Departments
+@model CreateModalModel
+@inject IHtmlLocalizer<MasterDataResource> L
+@inject IStringLocalizerFactory StringLocalizerFactory
+@{ Layout = null; }
+<form method="post" asp-page="/MasterData/Departments/CreateModal">
+    <abp-modal>
+        <abp-modal-header title="@L["NewDepartment"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-tabs name="create-company-modal-tabs">
+                <abp-tab title="@L["DepartmentInformations"].Value">
+                    <abp-input asp-for="DepartmentInfo.Code" />
+                    <abp-input asp-for="DepartmentInfo.Name" />
+                    <abp-input asp-for="DepartmentInfo.EmailAddress" />
+
+                </abp-tab>
+            </abp-tabs>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>
+

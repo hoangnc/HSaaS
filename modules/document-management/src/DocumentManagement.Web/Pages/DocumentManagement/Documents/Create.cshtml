@@ -1,0 +1,557 @@
+﻿@page
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Authorization
+@using DocumentManagement.Localization
+@using DocumentManagement.Web.Navigation
+@using DocumentManagement.Web.Pages.DocumentManagement.Documents
+@using DocumentManagement.Permissions
+@using DocumentManagement
+@{ 
+    ViewBag.CurrentPageName = "DocumentManagement.Documents";
+}
+@model CreateModel
+@inject IHtmlLocalizer<DocumentManagementResource> L
+@inject IAuthorizationService Authorization
+@section styles {
+    <abp-style-bundle>
+        <abp-style src="/libs/jquery-form-validator/theme-default.min.css"></abp-style>
+    </abp-style-bundle>
+}
+@section scripts {
+    <abp-script-bundle>
+        <abp-script src="/libs/jquery-form-validator/jquery.form-validator.min.js"></abp-script>
+        <abp-script src="/Pages/DocumentManagement/Documents/DocumentLookup.js" />
+        <abp-script src="/Pages/DocumentManagement/Documents/Create.js" />
+    </abp-script-bundle>
+}
+<form role="form" action="/" id="formDocument">
+    @Html.AntiForgeryToken()
+    <abp-card id="DocumentsWrapper">
+        <abp-card-header>
+            <abp-row>
+                <abp-column size-md="_6">
+                    <abp-card-title>@L[DocumentResourceNames.CreateDocument].Value</abp-card-title>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column size-md="_6">
+                    <div class="btn-group">
+                        <a href="/DocumentManagement/Documents" class="btn btn-success btn-sm">
+                            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> @L[DocumentResourceNames.List].Value
+                        </a>
+                        <button id="btnSubmit" type="submit" class="btn btn-primary btn-sm">
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i> @L[DocumentResourceNames.Save].Value
+                        </button>
+                        <button id="btnSaveAndRelease" type="submit" class="btn btn-primary btn-sm">
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i> @L[DocumentResourceNames.SaveAndRelease].Value
+                        </button>
+                    </div>
+                </abp-column>
+            </abp-row>
+
+        </abp-card-header>
+        <abp-card-body>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Code].Value <span style="color: red">(*)</span></label>
+                        <i id="code-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Mã tài liệu là bắt buộc không được bỏ trống"></i>
+                        <input type="text"
+                               class="form-control"
+                               name="Code"
+                               id="Code"
+                               readonly
+                               data-validation="length"
+                               data-validation-length="3-128"
+                               data-validation-allowing=" " />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Name].Value <span style="color: red">(*)</span></label>
+                        <i id="code-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Tên tài liệu là bắt buộc không được bỏ trống"></i>
+                        <input type="text"
+                               class="form-control"
+                               name="Name"
+                               id="Name"
+                               data-validation="length"
+                               data-validation-length="4-512"
+                               data-validation-allowing=" " />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.DocumentType].Value <span style="color: red">(*)</span></label>
+                        <i id="companycode-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Loại tài liệu là bắt buộc không được bỏ trống"></i>
+                        <select type="text"
+                               class="form-control"
+                               id="DocumentType"
+                               name="DocumentType"
+                               data-validation="required" ></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.CompanyCode].Value <span style="color: red">(*)</span></label>
+                        <i id="companycode-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Công ty là bắt buộc không được bỏ trống"></i>
+                        <select type="text"
+                               class="form-control"
+                               id="CompanyCode"
+                               name="CompanyCode"
+                               data-validation="required" ></select>
+                        <input type="hidden"
+                               id="CompanyName"
+                               name="CompanyName" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.DepartmentCode].Value <span style="color: red">(*)</span></label>
+                        <i id="clientid-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Phòng ban là bắt buộc không được bỏ trống"></i>
+                        <select type="text"
+                               class="form-control"
+                               id="DepartmentCode"
+                               name="DepartmentCode"
+                               data-validation="required" ></select>
+                        <input type="hidden"
+                               id="DepartmentName"
+                               name="DepartmentName" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Module].Value <span style="color: red">(*)</span></label>
+                        <i id="clientid-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Phân hệ là bắt buộc không được bỏ trống"></i>
+                        <select type="text"
+                               class="form-control"
+                               id="Module"
+                               name="Module"
+                               data-validation="required" ></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.DocumentNumber].Value <span style="color: red">(*)</span></label>
+                        <i id="companycode-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Số hiệu là bắt buộc không được bỏ trống"></i>
+                        <input type="text"
+                               class="form-control"
+                               autocomplete="off"
+                               id="DocumentNumber"
+                               name="DocumentNumber"
+                               data-validation="required" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.ReviewNumber].Value<span style="color: red">(*)</span></label>
+                        <i id="clientid-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Số soán xét là bắt buộc"></i>
+                        <input type="text"
+                               class="form-control"
+                               autocomplete="off"
+                               id="ReviewNumber"
+                               name="ReviewNumber"
+                               data-validation="required" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.EffectiveDate].Value <span style="color: red">(*)</span></label>
+                        <i id="companycode-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Ngày hiệu lực là bắt buộc không được bỏ trống"></i>
+                        <input type="text"
+                               class="form-control"
+                               autocomplete="off"
+                               id="EffectiveDate"
+                               name="EffectiveDate" />
+                    </div>
+                </div>
+               
+
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>
+                            @L[DocumentResourceNames.ReviewDate].Value
+                            <span style="color: red">(*)</span>
+
+                        </label>
+
+                        <i id="clientid-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Ngày soát xét là bắt buộc không được bỏ trống"></i>
+                        &nbsp;
+                        <div class="input-group">
+                            <input type="text"
+                                   class="form-control"
+                                   autocomplete="off"
+                                   id="ReviewDate"
+                                   name="ReviewDate" />
+                            <div class="btn-group">
+                                <button type="button"
+                                        class="btn btn-sm btn-success"
+                                        id="OneYear">
+                                    1 @L[DocumentResourceNames.Year].Value
+                                </button>
+                                <button type="button"
+                                        class="btn btn-sm btn-success"
+                                        id="TwoYear">
+                                    2 @L[DocumentResourceNames.Year].Value
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Status].Value <span style="color: red">(*)</span></label>
+                        <i id="companycode-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Tình trạng tài liệu"></i>
+                        <select type="text"
+                                class="form-control"
+                                autocomplete="off"
+                                id="StatusId"
+                                name="StatusId"
+                                disabled></select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.IssuedStatus].Value<span style="color: red">(*)</span></label>
+                        <i id="clientid-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Trạng thái ban hành tài liệu"></i>
+                        <select type="text"
+                                class="form-control"
+                                autocomplete="off"
+                                id="IssuedStatusId"
+                                name="IssuedStatusId"
+                                disabled></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Drafter].Value <span style="color: red">(*)</span></label>
+                        <i id="companycode-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Người soạn thảo là bắt buộc không được bỏ trống"></i>
+                        <select class="form-control"
+                                id="Drafter"
+                                name="Drafter"
+                                multiple
+                                data-validation="required"></select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>@L[DocumentResourceNames.Auditor].Value <span style="color: red">(*)</span></label>
+                    <i id="clientid-help"
+                       class="fa fa-info-circle red-text"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       title="Người kiểm tra là bắt buộc không được bỏ trống"></i>
+                    <select class="form-control"
+                            id="Auditor"
+                            name="Auditor"
+                            multiple
+                            data-validation="required"></select>
+                </div>
+                <div class="col-md-4">
+                    <label>@L[DocumentResourceNames.Approver].Value <span style="color: red">(*)</span></label>
+                    <i id="clientid-help"
+                       class="fa fa-info-circle red-text"
+                       data-toggle="tooltip"
+                       data-placement="top"
+                       title="Người phê duyệt là bắt buộc không được bỏ trống"></i>
+                    <select type="text"
+                            class="form-control"
+                            id="Approver"
+                            name="Approver"
+                            multiple
+                            data-validation="required"></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.DCCAudited].Value</label>
+                        <i id="replaceof-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Được thay thế cho tài liệu nào"></i>
+                        <br>
+                        <input type="checkbox"
+                               id="DCCAudited"
+                               name="DCCAudited" />
+                        <input type="hidden"
+                               name="DCCAudited" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Active].Value<span style="color: red">(*)</span></label>
+                        <i id="clientid-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Hiệu lực"></i>
+                        <br>
+                        <input type="checkbox"
+                               id="Active"
+                               name="Active" />
+                        <input type="hidden"
+                               name="Active" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>@L[DocumentResourceNames.Description].Value</label>
+                <i id="code-help"
+                   class="fa fa-info-circle red-text"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Diễn giải vắn tắt các thông tin về tài liệu"></i>
+                <textarea class="form-control"
+                          name="Description"
+                          id="Description"
+                          rows="5"></textarea>
+            </div>
+            @*<div class="form-group">
+                <label>@L[DocumentResourceNames.ContentChange].Value</label>
+                <i id="code-help"
+                   class="fa fa-info-circle red-text"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Nội dung thay đổi nếu có"></i>
+                <textarea class="form-control"
+                          name="ContentChange"
+                          id="ContentChange"
+                          rows="5"></textarea>
+            </div>*@
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.AppliedToEntire].Value <span style="color: red">(*)</span></label>
+                        <i id="companycode-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Phạm vi áp dụng"></i>
+                        <textarea type="text"
+                                  class="form-control"
+                                  id="AppliedToEntire"
+                                  rows="5"
+                                  name="AppliedToEntire"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.IssuedToEntire].Value <span style="color: red">(*)</span></label>
+                        <i id="clientid-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Phạm vi triển khai"></i>
+                        <select class="form-control"
+                                id="IssuedToEntire"
+                                name="IssuedToEntire"
+                                multiple
+                                data-validation="required"></select>
+                        <div class="btn-group">
+                            <button type="button"
+                                    id="btnSelectAll"
+                                    class="btn btn-primary btn-sm">
+                                @L[DocumentResourceNames.SelectAll].Value
+                            </button>
+                            <button type="button"
+                                    id="btnDeselectAll"
+                                    class="btn btn-primary btn-sm">
+                                @L[DocumentResourceNames.DeselectAll].Value
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.RelateToDocuments].Value</label>
+                        <i id="RelateToDocuments-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Các tài liệu liên quan"></i>
+                        <div class="btn-group">
+                            <button id="btnAddRelateToDocuments"
+                                    type="button"
+                                    class="btn btn-primary btn-sm">
+                                @L[DocumentResourceNames.Add].Value
+                            </button>
+                            <button id="btnRemoveRelateToDocuments"
+                                    type="button"
+                                    class="btn btn-primary btn-sm">
+                                <i class="fa fa-trash-o"></i>@L[DocumentResourceNames.Delete].Value
+                            </button>
+                        </div>
+
+                        <div id="grdRelateToDocuments"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Appendix].Value</label>
+                        <i id="AppendixDocuments-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Phụ lục tài liệu"></i>
+                        <div class="btn-group">
+                            <button id="btnAddAppendixDocuments"
+                                    type="button"
+                                    class="btn btn-primary btn-sm">
+                                @L[DocumentResourceNames.Add].Value
+                            </button>
+                            <button id="btnRemoveAppendixDocuments"
+                                    type="button"
+                                    class="btn btn-primary btn-sm">
+                                <i class="fa fa-trash-o"></i>@L[DocumentResourceNames.Delete].Value
+                            </button>
+                            <button type="button" 
+                                    id="appendix-history-undo" 
+                                    class="btn btn-primary btn-sm">
+                            @L[DocumentResourceNames.Undo].Value
+                            </button>
+                            <button type="button" 
+                                    id="appendix-history-redo" 
+                                    class="btn btn-primary btn-sm">
+                            @L[DocumentResourceNames.Redo].Value
+                            </button>
+                        </div>
+
+                        <div id="grdAppendixDocuments"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Link files:</label>
+                        <i id="LinkFiles-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Các tài liệu liên quan"></i>
+                        <br>
+                        <span class="btn btn-success fileinput-button">
+                            <i class="glyphicon glyphicon-plus"></i>
+                            <span>@L[DocumentResourceNames.SelectFiles].Value</span>
+                            <!-- The file input field used as target for the file upload widget -->
+                            <input id="fileupload" type="file" name="files[]">
+                        </span>
+                        <table role="presentation" class="table table-striped">
+                            <tbody class="files"></tbody>
+                        </table>
+                        <!-- The template to display files available for upload -->
+                        <script id="template-upload" type="text/x-tmpl">
+                            {% for (var i=0, file; file=o.files[i]; i++) { %}
+                            <tr>
+                                <td>
+                                    <span class="preview"></span>
+                                </td>
+                                <td class="align-middle">
+                                    {% if (window.innerWidth > 480 || !o.options.loadImageFileTypes.test(file.type)) { %}
+                                    <p class="name col-md-12 align-middle" data-file="{%=file.name%}" name="fileName">{%=file.name%}</p>
+                                    {% } %}
+                                    <strong class="error text-danger">{%=file.error%}</strong>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="size text-justify">{%=formatFileSize(file.size)%}</p>
+                                </td>
+                                <td class="align-middle">
+                                    <button type="button" name="deleteFile" class="btn btn-warning cancel">
+                                        <i class="glyphicon glyphicon-ban-circle"></i>
+                                        <span>Xóa</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% } %}
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+        </abp-card-body>
+
+        <abp-card-footer>
+            <div class="btn-group">
+                <a href="/DocumentManagement/Documents" class="btn btn-success btn-sm">
+                    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> @L[DocumentResourceNames.List].Value
+                </a>
+                <button id="btnSubmit" type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i> @L[DocumentResourceNames.Save].Value
+                </button>
+                <button id="btnSaveAndRelease" type="submit" class="btn btn-primary btn-sm">
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i> @L[DocumentResourceNames.SaveAndRelease].Value
+                </button>
+            </div>
+        </abp-card-footer>
+    </abp-card>
+
+</form>

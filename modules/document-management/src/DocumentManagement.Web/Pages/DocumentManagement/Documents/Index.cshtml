@@ -1,0 +1,53 @@
+﻿@page
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Authorization
+@using DocumentManagement.Localization
+@using DocumentManagement.Web.Navigation
+@using DocumentManagement.Web.Pages.DocumentManagement.Documents
+@using DocumentManagement.Permissions
+
+@model IndexModel
+@inject IHtmlLocalizer<DocumentManagementResource> L
+@inject IAuthorizationService Authorization
+
+@section scripts {
+    <abp-script-bundle>
+        <abp-script src="/libs/xlsx/xlsx.full.min.js"/>
+        <abp-script src="/Pages/DocumentManagement/Documents/Index.js" />
+    </abp-script-bundle>
+}
+
+<abp-card id="DocumentsWrapper">
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Documents"]</abp-card-title>
+            </abp-column>
+        </abp-row>
+        <abp-row>
+            <abp-column size-md="_6">
+                <input class="form-control col-sm-8" id="txtSearch" />
+            </abp-column>
+            <abp-column size-md="_6" class="text-right">
+                <button id="download-xlsx" class="btn btn-primary btn-sm"><i class="fa fa-download" aria-hidden="true"></i> Download XLSX</button>
+                @if (await Authorization.IsGrantedAsync(DocumentManagementPermissions.Documents.Create))
+                {
+                    <a href="/DocumentManagement/Documents/Create" class="btn btn-primary btn-sm">
+                        <i class="fa fa-plus" aria-hidden="true"></i> @L["NewDocument"].Value
+                    </a>
+                }
+                @if (await Authorization.IsGrantedAsync(DocumentManagementPermissions.Documents.Review))
+                {
+                    <a href="/DocumentManagement/Documents/Review" class="btn btn-primary btn-sm">
+                        <i class="fa fa-plus" aria-hidden="true"></i> @L["ReviewDocument"].Value
+                    </a>
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <div id="grdDocument"></div>
+    </abp-card-body>
+</abp-card>
+

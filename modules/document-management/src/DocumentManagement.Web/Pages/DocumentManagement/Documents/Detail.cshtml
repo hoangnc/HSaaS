@@ -1,0 +1,356 @@
+﻿@page
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using Volo.Abp.Users
+@using Volo.Abp.Localization
+@using Volo.Abp.Timing
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Authorization
+@using DocumentManagement.Localization
+@using DocumentManagement.Web.Navigation
+@using DocumentManagement.Web.Pages.DocumentManagement.Documents
+@using DocumentManagement.Permissions
+@using DocumentManagement
+@{
+    ViewBag.Title = $"{Model.DocumentInfo.Code} - {Model.DocumentInfo.Name}";
+}
+@model DetailModel
+@inject IHtmlLocalizer<DocumentManagementResource> L
+@inject IAuthorizationService Authorization
+@inject ICurrentUser CurrentUser
+
+@section styles {
+    <abp-style-bundle>
+        <abp-style src="/libs/jquery-form-validator/theme-default.min.css"></abp-style>
+    </abp-style-bundle>
+}
+@section scripts {
+    <abp-script-bundle>
+        <abp-script src="/libs/jquery-form-validator/jquery.form-validator.min.js"></abp-script>
+        <abp-script src="/Pages/DocumentManagement/Documents/Detail.js" />
+    </abp-script-bundle>
+}
+<form role="form" action="/" id="formDocument">
+    @Html.AntiForgeryToken()
+    <abp-card id="DocumentsWrapper">
+        <abp-card-header>
+            <abp-row>
+                <abp-column size-md="_6">
+                    <div class="btn-group">
+                        <a href="/DocumentManagement/Documents" class="btn btn-success btn-sm">
+                            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> @L[DocumentResourceNames.List].Value
+                        </a>
+                    </div>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column>
+                    <br />
+                    <div class="callout callout-info h5">
+                        <p id="WarningInfo"></p>
+                    </div>
+                </abp-column>
+            </abp-row>
+        </abp-card-header>
+        <abp-card-body>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Code].Value</label>
+                        <input type="text"
+                               class="form-control"
+                               name="Code"
+                               id="Code"
+                               value="@Model.DocumentInfo.Code"
+                               readonly />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Name].Value</label>
+                        <input type="text"
+                               class="form-control"
+                               name="Name"
+                               id="Name"
+                               value="@Model.DocumentInfo.Name"
+                               readonly />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.DocumentType].Value</label>
+                        <select type="text"
+                                class="form-control"
+                                id="DocumentType"
+                                name="DocumentType"
+                                disabled
+                                data-validation="required"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.CompanyCode].Value</label>
+                        <select type="text"
+                                class="form-control"
+                                id="CompanyCode"
+                                name="CompanyCode"
+                                disabled
+                                data-validation="required"></select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.DepartmentCode].Value</label>
+                        <select type="text"
+                                class="form-control"
+                                id="DepartmentCode"
+                                name="DepartmentCode"
+                                disabled
+                                data-validation="required"></select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Module].Value</label>
+                        <select type="text"
+                                class="form-control"
+                                id="Module"
+                                name="Module"
+                                disabled
+                                data-validation="required"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.DocumentNumber].Value</label>
+                        <input type="text"
+                               class="form-control"
+                               autocomplete="off"
+                               readonly
+                               id="DocumentNumber"
+                               name="DocumentNumber"
+                               value="@Model.DocumentInfo.DocumentNumber"
+                               data-validation="required" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.ReviewNumber].Value</label>
+                        <input type="text"
+                               class="form-control"
+                               autocomplete="off"
+                               readonly
+                               id="ReviewNumber"
+                               name="ReviewNumber"
+                               value="@Model.DocumentInfo.ReviewNumber"
+                               data-validation="required" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.EffectiveDate].Value</label>
+                        <input type="text"
+                               class="form-control"
+                               autocomplete="off"
+                               readonly
+                               id="EffectiveDate"
+                               name="EffectiveDate"
+                               value="@Model.DocumentInfo.EffectiveDate" />
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>
+                            @L[DocumentResourceNames.ReviewDate].Value
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               autocomplete="off"
+                               readonly
+                               id="ReviewDate"
+                               name="ReviewDate"
+                               value="@Model.DocumentInfo.ReviewDate.ToString()" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Status].Value</label>
+
+                        <select type="text"
+                                class="form-control"
+                                autocomplete="off"
+                                id="StatusId"
+                                name="StatusId"
+                                disabled></select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.IssuedStatus].Value</label>
+
+                        <select type="text"
+                                class="form-control"
+                                autocomplete="off"
+                                id="IssuedStatusId"
+                                name="IssuedStatusId"
+                                disabled></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Drafter].Value</label>
+                        <select class="form-control"
+                                id="Drafter"
+                                name="Drafter"
+                                multiple
+                                data-validation="required"
+                                disabled></select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>@L[DocumentResourceNames.Auditor].Value</label>
+                    <select class="form-control"
+                            id="Auditor"
+                            name="Auditor"
+                            multiple
+                            data-validation="required"
+                            disabled></select>
+                </div>
+                <div class="col-md-4">
+                    <label>@L[DocumentResourceNames.Approver].Value</label>
+                    <select type="text"
+                            class="form-control"
+                            id="Approver"
+                            name="Approver"
+                            multiple
+                            data-validation="required"
+                            disabled></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>@L[DocumentResourceNames.Description].Value</label>
+                <i id="code-help"
+                   class="fa fa-info-circle red-text"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Diễn giải vắn tắt các thông tin về tài liệu"></i>
+                <textarea class="form-control"
+                          name="Description"
+                          id="Description"
+                          rows="5"
+                          readonly>@Model.DocumentInfo.Description</textarea>
+            </div>
+            <div class="form-group">
+                <label>@L[DocumentResourceNames.ContentChange].Value</label>
+                <i id="code-help"
+                   class="fa fa-info-circle red-text"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Nội dung thay đổi nếu có"></i>
+                <textarea class="form-control"
+                          name="ContentChange"
+                          id="ContentChange"
+                          rows="5"
+                          readonly>@Model.DocumentInfo.ContentChange</textarea>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.AppliedToEntire].Value</label>
+                        <i id="companycode-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Phạm vi áp dụng"></i>
+                        <textarea type="text"
+                                  class="form-control"
+                                  id="AppliedToEntire"
+                                  rows="5"
+                                  name="AppliedToEntire"
+                                  readonly>@Model.DocumentInfo.AppliedToEntire</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.IssuedToEntire].Value</label>
+                        <i id="clientid-help"
+                           class="fa fa-info-circle red-text"
+                           data-toggle="tooltip"
+                           data-placement="top"
+                           title="Phạm vi triển khai"></i>
+                        <select class="form-control"
+                                id="IssuedToEntire"
+                                name="IssuedToEntire"
+                                multiple
+                                data-validation="required"
+                                disabled></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.RelateToDocuments].Value</label>
+                        <div id="grdRelateToDocuments"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>@L[DocumentResourceNames.Appendix].Value</label>
+                        <div id="grdAppendixDocuments"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Link files:</label>
+                        @if (!string.IsNullOrEmpty(Model.DocumentInfo.FileName))
+                        {
+                            <table role="presentation" class="table table-striped">
+                                @foreach (var file in Model.DocumentInfo.FileName.Split(';'))
+                                {
+                                    <tr>
+                                        <td class="name">
+                                            <a target="_blank" href="/api/document-management/filemanager/viewfile?sourceDoc=@Model.DocumentInfo.FolderName/@file"><i class="fa fa-paperclip"></i>&nbsp;@file</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </abp-card-body>
+
+        <abp-card-footer>
+            <div class="btn-group">
+                <a href="/DocumentManagement/Documents" class="btn btn-success btn-sm">
+                    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> @L[DocumentResourceNames.List].Value
+                </a>
+            </div>
+        </abp-card-footer>
+    </abp-card>
+
+</form>
+
+<script>
+    const documentModel = JSON.parse("@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(System.Text.Json.JsonSerializer.Serialize(Model.DocumentInfo, new System.Text.Json.JsonSerializerOptions(System.Text.Json.JsonSerializerDefaults.Web))))");
+</script>

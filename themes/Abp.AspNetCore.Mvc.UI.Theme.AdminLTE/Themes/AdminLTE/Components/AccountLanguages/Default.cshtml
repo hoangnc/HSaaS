@@ -1,0 +1,15 @@
+﻿@using Abp.AspNetCore.Mvc.UI.Theme.AdminLTE.Themes.AdminLTE.Components.AccountLanguages
+@model LanguageSelectionViewModel
+@if (Model.Languages.Count > 1)
+{
+    <div class="text-center">
+        @foreach (var languageInfo in Model.Languages)
+        {
+            <a href="/Abp/Languages/Switch?culture=@(languageInfo.CultureName)&uiCulture=@(languageInfo.UiCultureName)&returnUrl=@Model.CurrentUrl">
+                <span class="@(languageInfo.DisplayName == Model.CurrentLanguage.DisplayName ? "current-language-icon" : "")" title="@languageInfo.DisplayName">
+                    <i class="@languageInfo.FlagIcon"></i>
+                </span>
+            </a>
+        }
+    </div>
+}
