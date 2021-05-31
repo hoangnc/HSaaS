@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MasterData.Permissions;
+using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +9,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace MasterData.DocumentTypes
 {
+    [Authorize(MasterDataPermissions.DocumentTypes.Default)]
     public class DocumentTypeAppService : MasterDataAppService, IDocumentTypeAppService
     {
         protected IDocumentTypeRepository DocumentTypeRepository { get; }
@@ -17,6 +20,8 @@ namespace MasterData.DocumentTypes
         {
             DocumentTypeRepository = documentTypeRepository;
         }
+
+        [Authorize(MasterDataPermissions.DocumentTypes.Create)]
         public virtual async Task<DocumentTypeDto> CreateAsync(DocumentTypeCreateDto input)
         {
             var documentType = ObjectMapper.Map<DocumentTypeCreateDto, DocumentType>(input);
@@ -34,6 +39,7 @@ namespace MasterData.DocumentTypes
             return ObjectMapper.Map<DocumentType, DocumentTypeDto>(documentType);
         }
 
+        [Authorize(MasterDataPermissions.DocumentTypes.Delete)]
         public virtual async Task DeleteAsync(long id)
         {
             var documentType = await DocumentTypeRepository.GetByIdAsync(id);
@@ -73,6 +79,7 @@ namespace MasterData.DocumentTypes
             );
         }
 
+        [Authorize(MasterDataPermissions.DocumentTypes.Update)]
         public async Task<DocumentTypeDto> UpdateAsync(long id, DocumentTypeUpdateDto input)
         {
             var documentType = await DocumentTypeRepository.GetByIdAsync(id);

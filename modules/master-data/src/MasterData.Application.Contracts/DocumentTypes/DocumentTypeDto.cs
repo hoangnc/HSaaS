@@ -1,9 +1,10 @@
 ﻿
+using Volo.Abp.Application.Dtos;
+
 namespace MasterData.DocumentTypes
 {
-    public class DocumentTypeDto
+    public class DocumentTypeDto : FullAuditedEntityDto<long>
     {
-        public long Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
     }

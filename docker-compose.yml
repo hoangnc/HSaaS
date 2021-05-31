@@ -1,25 +1,125 @@
-version: '3.4'
+version: '3.7'
 
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server
-    volumes:
-      - dbdata:/var/opt/mssql
   
-  identity-server:
+  internal-gateway:
+    image: 'hsaas/internal-gateway:${TAG:-latest}'
     build:
-      context: ../../
-      dockerfile: templates/service/host/IdentityServerHost/Dockerfile
+      context: .
+      dockerfile: gateways/InternalGateway.Host/Dockerfile
     depends_on:
-      - sqlserver      
-  
-  h-saa-s:
-    build:
-      context: ../../
-      dockerfile: templates/service/host/HSaaS.Host/Dockerfile
-    depends_on:
+      - elasticsearch
+      - redis
       - sqlserver
-      - identity-server
+      - identity-service
+      - master-data-service
+      - document-management-service
+      - blogging-service
+  
+  backend-admin-app-gateway:
+    image: 'hsaas/backend-admin-app-gateway:${TAG:-latest}'
+    build:
+      context: .
+      dockerfile: gateways/BackendAdminAppGateway.Host/Dockerfile
+    depends_on:
+      - elasticsearch
+      - redis
+      - sqlserver
+      - identity-service
+      - master-data-service
+      - document-management-service
+  
+  public-website-gateway:
+    image: 'hsaas/public-website-gateway:${TAG:-latest}'
+    build:
+      context: .
+      dockerfile: gateways/PublicWebSiteGateway.Host/Dockerfile
+    depends_on:
+      - elasticsearch
+      - redis
+      - master-data-service
+      - document-management-service
+  
+  blogging-service:
+    image: 'hsaas/blogging-service:${TAG:-latest}'
+    build:
+      context: .
+      dockerfile: microservices/BloggingService.Host/Dockerfile
+    depends_on:
+      - elasticsearch
+      - mongodb
+      - redis
+  
+  identity-service:
+    image: 'hsaas/identity-service:${TAG:-latest}'
+    build:
+      context: .
+      dockerfile: microservices/IdentityService.Host/Dockerfile
+    depends_on:
+      - elasticsearch
+      - rabbitmq
+      - redis
+      - sqlserver
+  
+  master-data-service:
+    image: 'hsaas/master-data-service:${TAG:-latest}'
+    build:
+      context: .
+      dockerfile: microservices/master-data/MasterData.HttpApi.Host/Dockerfile
+    depends_on:
+      - elasticsearch
+      - sqlserver
+      - redis
+
+  document-management-service:
+    image: 'hsaas/document-management-service:${TAG:-latest}'
+    build:
+      context: .
+      dockerfile: microservices/document-management/DocumentManagement.HttpApi.Host/Dockerfile
+    depends_on:
+      - elasticsearch
+      - sqlserver
+      - redis
+  
+  tenant-management-service:
+    image: 'hsaas/tenant-management-service:${TAG:-latest}'
+    build:
+      context: .
+      dockerfile: microservices/tenant-management/TenantManagementService.Host/Dockerfile
+    depends_on:
+      - elasticsearch
+      - sqlserver
+      - redis
+  
+  auth-server:
+    image: 'hsaas/microservice-demo-auth-server:${TAG:-latest}'
+    build:
+      context: .
+      dockerfile: applications/HSaaS.IdentityServer/Dockerfile
+    depends_on:
+      - elasticsearch
+      - redis
+      - rabbitmq
+      - identity-service
+  
+  backend-admin-app:
+    image: 'hsaas/backend-admin-app:${TAG:-latest}'
+    build:
+      context: .
+      dockerfile: applications/BackendAdminApp.Host/Dockerfile
+    depends_on:
+      - elasticsearch
+      - backend-admin-app-gateway
+  
+  public-website:
+    image: 'hsaas/public-website:${TAG:-latest}'
+    build:
+      context: .
+      dockerfile: applications/PublicWebSite.Host/Dockerfile
+    depends_on:
+      - elasticsearch
+      - public-website-gateway
 
 volumes:
   dbdata:
+  esdata:

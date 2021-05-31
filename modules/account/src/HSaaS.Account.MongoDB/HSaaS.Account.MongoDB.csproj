@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.MongoDB" Version="4.3.1" />
+    <PackageReference Include="Volo.Abp.MongoDB" Version="4.3.2" />
     <ProjectReference Include="..\HSaaS.Account.Domain\HSaaS.Account.Domain.csproj" />
   </ItemGroup>
 

@@ -1,12 +1,14 @@
-﻿using System;
+﻿using MasterData.Permissions;
+using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.Application.Services;
 
 namespace MasterData.Companies
 {
+    [Authorize(MasterDataPermissions.Companies.Default)]
     public class CompanyAppService : MasterDataAppService, ICompanyAppService
     {
         protected ICompanyRepository CompanyRepository { get; }
@@ -17,6 +19,8 @@ namespace MasterData.Companies
         {
             CompanyRepository = companyRepository;
         }
+
+        [Authorize(MasterDataPermissions.Companies.Create)]
         public virtual async Task<CompanyDto> CreateAsync(CompanyCreateDto input)
         {
             var company = ObjectMapper.Map<CompanyCreateDto, Company>(input);
@@ -26,6 +30,7 @@ namespace MasterData.Companies
             return ObjectMapper.Map<Company, CompanyDto>(company);
         }
 
+        [Authorize(MasterDataPermissions.Companies.Delete)]
         public virtual async Task DeleteAsync(long id)
         {
             var company = await CompanyRepository.GetByIdAsync(id);
@@ -65,6 +70,7 @@ namespace MasterData.Companies
             ); ;
         }
 
+        [Authorize(MasterDataPermissions.Companies.Update)]
         public async Task<CompanyDto> UpdateAsync(long id, CompanyUpdateDto input)
         {
             var company = await CompanyRepository.GetByIdAsync(id);

@@ -18,7 +18,6 @@ namespace DocumentManagement.Document
     [RemoteService(Name = DocumentManagementRemoteServiceConsts.RemoteServiceName)]
     [Area("documentManagement")]
     [Route("api/document-management/documents")]
-    [Authorize]
     public class DocumentController : DocumentManagementController, IDocumentAppService
     {
         private readonly IDocumentAppService _documentAppService;

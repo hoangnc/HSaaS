@@ -6,6 +6,6 @@
 
         public static string DbSchema { get; set; } = null;
 
-        public const string ConnectionStringName = "DocumentManagement";
+        public const string ConnectionStringName = "HSaaS_DocumentManagement";
     }
 }

@@ -1,13 +1,24 @@
-version: '3.4'
+version: '3.7'
 
 services:
+  sqlserver:
+
   migrations:
-    build:
-      context: ../../
-      dockerfile: templates/service/database/Dockerfile
-    depends_on:
-      - sqlserver
-    environment:
-      - IdentityServer_DB=HSaaS_Identity
-      - HSaaS_DB=HSaaS_ModuleDb
-      - SA_PASSWORD=yourStrong(!)Password
+     image: 'hsaas/migrations:${TAG:-latest}'
+     build:
+       context: .
+       dockerfile: databases/Dockerfile
+     depends_on:
+       - sqlserver
+
+#  restore-database:
+#    image: 'volosoft/microservice-demo-restore-database:${TAG:-latest}'
+#    build:
+#      context: .
+#      dockerfile: databases/restore/Dockerfile
+#    volumes:
+#      - dbdata:/var/opt/mssql
+#    environment:
+#      - SA_PASSWORD=yourStrong(!)Password
+#    depends_on:
+#      - sqlserver

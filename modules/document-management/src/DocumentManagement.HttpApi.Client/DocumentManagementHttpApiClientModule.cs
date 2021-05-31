@@ -9,7 +9,7 @@ namespace DocumentManagement
         typeof(AbpHttpClientModule))]
     public class DocumentManagementHttpApiClientModule : AbpModule
     {
-        public const string RemoteServiceName = "DocumentManagement";
+        public const string RemoteServiceName = "HSaaS_DocumentManagement";
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {

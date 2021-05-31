@@ -14,7 +14,6 @@ namespace MasterData.DocumentTypes
     [RemoteService(Name = MasterDataRemoteServiceConsts.RemoteServiceName)]
     [Area("masterData")]
     [Route("api/master-data/documenttypes")]
-    [Authorize]
     public class DocumentTypeController : MasterDataController, IDocumentTypeAppService
     {
         protected IDocumentTypeAppService DocumentTypeAppService { get; }
@@ -25,14 +24,12 @@ namespace MasterData.DocumentTypes
         }
 
         [HttpPost]
-        [Authorize(MasterDataPermissions.DocumentTypes.Create)]
         public async Task<DocumentTypeDto> CreateAsync(DocumentTypeCreateDto input)
         {
             return await DocumentTypeAppService.CreateAsync(input);
         }
 
         [HttpDelete]
-        [Authorize(MasterDataPermissions.DocumentTypes.Delete)]
         public async Task DeleteAsync(long id)
         {
             await DocumentTypeAppService.DeleteAsync(id);
@@ -40,21 +37,18 @@ namespace MasterData.DocumentTypes
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(MasterDataPermissions.DocumentTypes.Default)]
         public async Task<DocumentTypeDto> GetAsync(long id)
         {
             return await DocumentTypeAppService.GetAsync(id);
         }
 
         [HttpGet]
-        [Authorize(MasterDataPermissions.DocumentTypes.Default)]
         public async Task<PagedResultDto<DocumentTypeDto>> GetListAsync(GetDocumentTypesInput input)
         {
             return await DocumentTypeAppService.GetListAsync(input);
         }
 
         [HttpPut]
-        [Authorize(MasterDataPermissions.DocumentTypes.Update)]
         public Task<DocumentTypeDto> UpdateAsync(long id, DocumentTypeUpdateDto input)
         {
             throw new NotImplementedException();

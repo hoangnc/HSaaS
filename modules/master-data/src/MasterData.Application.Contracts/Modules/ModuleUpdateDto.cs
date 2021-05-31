@@ -1,8 +1,9 @@
-﻿namespace MasterData.Modules
+﻿using Volo.Abp.Application.Dtos;
+
+namespace MasterData.Modules
 {
-    public class ModuleUpdateDto
+    public class ModuleUpdateDto : FullAuditedEntityDto<long>
     {
-        public long Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
     }

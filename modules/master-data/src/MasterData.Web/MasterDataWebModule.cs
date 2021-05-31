@@ -18,7 +18,6 @@ namespace MasterData.Web
 {
     [DependsOn(
         typeof(MasterDataHttpApiModule),
-        typeof(MasterDataApplicationModule),
         typeof(AbpAspNetCoreMvcUiThemeSharedModule),
         typeof(AbpAutoMapperModule)
         )]

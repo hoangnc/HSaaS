@@ -4,11 +4,12 @@ using System.Text;
 using JetBrains.Annotations;
 using Volo.Abp.Auditing;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Entities.Auditing;
 
 namespace MasterData.Companies
 {
     [Audited]
-    public class Company : Entity<long>
+    public class Company : FullAuditedEntity<long>
     {
         [NotNull]
         public virtual string Code { get; set; }

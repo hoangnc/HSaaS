@@ -8,8 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="4.2.2" />
-    <ProjectReference Include="..\..\..\..\src\TDG.STS.IdentityServer.Domain.Shared\TDG.STS.IdentityServer.Domain.Shared.csproj" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="4.3.2" />
     <ProjectReference Include="..\DocumentManagement.Domain\DocumentManagement.Domain.csproj" />
   </ItemGroup>
 

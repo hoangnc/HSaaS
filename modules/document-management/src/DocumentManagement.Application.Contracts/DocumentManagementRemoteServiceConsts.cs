@@ -6,6 +6,6 @@ namespace DocumentManagement
 {
     public class DocumentManagementRemoteServiceConsts
     {
-        public const string RemoteServiceName = "DocumentManagement";
+        public const string RemoteServiceName = "HSaaS_DocumentManagement";
     }
 }

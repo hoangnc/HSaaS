@@ -6,7 +6,6 @@ using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using DocumentManagement.Documents;
-using DocumentManagement.Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
@@ -22,6 +21,7 @@ namespace DocumentManagement.Document
     [Authorize]
     public class FileManagerController : DocumentManagementController
     {
+        private const string UploadFolderPath = "DocumentManagement.UploadFilePath";
         private ISettingProvider SettingProvider { get { return LazyServiceProvider.LazyGetService<ISettingProvider>(); } }
         private readonly IMineMappingService _mineMappingService;
         public FileManagerController(IMineMappingService mineMappingService)
@@ -33,7 +33,7 @@ namespace DocumentManagement.Document
         [Route("view-file")]
         public async Task<FileResult> ViewFile([FromQuery] string sourceDoc)
         {
-            string uploadFolderPath = await SettingProvider.GetOrNullAsync(DocumentManagementSettings.UploadFilePath);
+            string uploadFolderPath = await SettingProvider.GetOrNullAsync(UploadFolderPath);
             string filePath = $"{uploadFolderPath}\\{sourceDoc.Replace("/", "\\")}";
             byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
             string mime = _mineMappingService.GetContentType(sourceDoc);

@@ -40,10 +40,10 @@ namespace HSaaS.Account.Web
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            Configure<AbpNavigationOptions>(options =>
+            /*Configure<AbpNavigationOptions>(options =>
             {
                 options.MenuContributors.Add(new AccountMenuContributor());
-            });
+            });*/
 
             Configure<AbpVirtualFileSystemOptions>(options =>
             {

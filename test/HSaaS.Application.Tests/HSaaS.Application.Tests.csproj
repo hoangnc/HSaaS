@@ -10,7 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\HSaaS.Application\HSaaS.Application.csproj" />
     <ProjectReference Include="..\HSaaS.Domain.Tests\HSaaS.Domain.Tests.csproj" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
   </ItemGroup>
 
 </Project>
