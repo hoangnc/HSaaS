@@ -30,8 +30,24 @@ namespace MasterData.Web
 
         protected virtual void CompanyMappings()
         {
-            CreateMap<CreateCompanyModalModel.CompanyInfoViewModel, CompanyCreateDto>();
-            CreateMap<EditCompanyModalModel.CompanyInfoViewModel, CompanyUpdateDto>();
+            CreateMap<CreateCompanyModalModel.CompanyInfoViewModel, CompanyCreateDto>()
+                 .ForMember(c => c.Id, options => options.Ignore())
+                .ForMember(c => c.IsDeleted, options => options.Ignore())
+                .ForMember(c => c.DeleterId, options => options.Ignore())
+                .ForMember(c => c.DeletionTime, options => options.Ignore())
+                .ForMember(c => c.LastModificationTime, options => options.Ignore())
+                .ForMember(c => c.LastModifierId, options => options.Ignore())
+                .ForMember(c => c.CreationTime, options => options.Ignore())
+                .ForMember(c => c.CreatorId, options => options.Ignore());
+
+            CreateMap<EditCompanyModalModel.CompanyInfoViewModel, CompanyUpdateDto>()
+                .ForMember(c => c.IsDeleted, options => options.Ignore())
+                .ForMember(c => c.DeleterId, options => options.Ignore())
+                .ForMember(c => c.DeletionTime, options => options.Ignore())
+                .ForMember(c => c.LastModificationTime, options => options.Ignore())
+                .ForMember(c => c.LastModifierId, options => options.Ignore())
+                .ForMember(c => c.CreationTime, options => options.Ignore())
+                .ForMember(c => c.CreatorId, options => options.Ignore());
 
             CreateMap<CompanyDto, EditCompanyModalModel.CompanyInfoViewModel>()
                 .ForMember(c => c.ExtraProperties, options => options.Ignore())
@@ -40,8 +56,24 @@ namespace MasterData.Web
 
         protected virtual void DepartmentMappings()
         {
-            CreateMap<CreateDepartmentModalModel.DepartmentInfoViewModel, DepartmentCreateDto>();
-            CreateMap<EditDepartmentModalModel.DepartmentInfoViewModel, DepartmentUpdateDto>();
+            CreateMap<CreateDepartmentModalModel.DepartmentInfoViewModel, DepartmentCreateDto>()
+                .ForMember(c => c.Id, options => options.Ignore())
+                .ForMember(c => c.IsDeleted, options => options.Ignore())
+                .ForMember(c => c.DeleterId, options => options.Ignore())
+                .ForMember(c => c.DeletionTime, options => options.Ignore())
+                .ForMember(c => c.LastModificationTime, options => options.Ignore())
+                .ForMember(c => c.LastModifierId, options => options.Ignore())
+                .ForMember(c => c.CreationTime, options => options.Ignore())
+                .ForMember(c => c.CreatorId, options => options.Ignore());
+
+            CreateMap<EditDepartmentModalModel.DepartmentInfoViewModel, DepartmentUpdateDto>()
+                .ForMember(c => c.IsDeleted, options => options.Ignore())
+                .ForMember(c => c.DeleterId, options => options.Ignore())
+                .ForMember(c => c.DeletionTime, options => options.Ignore())
+                .ForMember(c => c.LastModificationTime, options => options.Ignore())
+                .ForMember(c => c.LastModifierId, options => options.Ignore())
+                .ForMember(c => c.CreationTime, options => options.Ignore())
+                .ForMember(c => c.CreatorId, options => options.Ignore());
 
             CreateMap<DepartmentDto, EditDepartmentModalModel.DepartmentInfoViewModel>()
                 .ForMember(c => c.ExtraProperties, options => options.Ignore())
@@ -50,8 +82,24 @@ namespace MasterData.Web
 
         protected virtual void DocumentTypeMappings()
         {
-            CreateMap<CreateDocumentTypeModalModel.DocumentTypeInfoViewModel, DocumentTypeCreateDto>();
-            CreateMap<EditDocumentTypeModalModel.DocumentTypeInfoViewModel, DocumentTypeUpdateDto>();
+            CreateMap<CreateDocumentTypeModalModel.DocumentTypeInfoViewModel, DocumentTypeCreateDto>()
+                .ForMember(c => c.Id, options => options.Ignore())
+                .ForMember(c => c.IsDeleted, options => options.Ignore())
+                .ForMember(c => c.DeleterId, options => options.Ignore())
+                .ForMember(c => c.DeletionTime, options => options.Ignore())
+                .ForMember(c => c.LastModificationTime, options => options.Ignore())
+                .ForMember(c => c.LastModifierId, options => options.Ignore())
+                .ForMember(c => c.CreationTime, options => options.Ignore())
+                .ForMember(c => c.CreatorId, options => options.Ignore());
+
+            CreateMap<EditDocumentTypeModalModel.DocumentTypeInfoViewModel, DocumentTypeUpdateDto>()
+                .ForMember(c => c.IsDeleted, options => options.Ignore())
+                .ForMember(c => c.DeleterId, options => options.Ignore())
+                .ForMember(c => c.DeletionTime, options => options.Ignore())
+                .ForMember(c => c.LastModificationTime, options => options.Ignore())
+                .ForMember(c => c.LastModifierId, options => options.Ignore())
+                .ForMember(c => c.CreationTime, options => options.Ignore())
+                .ForMember(c => c.CreatorId, options => options.Ignore());
 
             CreateMap<DocumentTypeDto, EditDocumentTypeModalModel.DocumentTypeInfoViewModel>()
                 .ForMember(c => c.ExtraProperties, options => options.Ignore())
@@ -60,8 +108,24 @@ namespace MasterData.Web
 
         protected virtual void ModuleMappings()
         {
-            CreateMap<CreateModuleModalModel.ModuleInfoViewModel, ModuleCreateDto>();
-            CreateMap<EditModuleModalModel.ModuleInfoViewModel, ModuleUpdateDto>();
+            CreateMap<CreateModuleModalModel.ModuleInfoViewModel, ModuleCreateDto>()
+                .ForMember(c => c.Id, options => options.Ignore())
+                .ForMember(c => c.IsDeleted, options => options.Ignore())
+                .ForMember(c => c.DeleterId, options => options.Ignore())
+                .ForMember(c => c.DeletionTime, options => options.Ignore())
+                .ForMember(c => c.LastModificationTime, options => options.Ignore())
+                .ForMember(c => c.LastModifierId, options => options.Ignore())
+                .ForMember(c => c.CreationTime, options => options.Ignore())
+                .ForMember(c => c.CreatorId, options => options.Ignore());
+
+            CreateMap<EditModuleModalModel.ModuleInfoViewModel, ModuleUpdateDto>()
+                .ForMember(c => c.IsDeleted, options => options.Ignore())
+                .ForMember(c => c.DeleterId, options => options.Ignore())
+                .ForMember(c => c.DeletionTime, options => options.Ignore())
+                .ForMember(c => c.LastModificationTime, options => options.Ignore())
+                .ForMember(c => c.LastModifierId, options => options.Ignore())
+                .ForMember(c => c.CreationTime, options => options.Ignore())
+                .ForMember(c => c.CreatorId, options => options.Ignore());
 
             CreateMap<ModuleDto, EditModuleModalModel.ModuleInfoViewModel>()
                 .ForMember(c => c.ExtraProperties, options => options.Ignore())

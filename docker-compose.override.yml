@@ -1,6 +1,50 @@
 version: '3.7'
 
 services:
+
+  sqlserver:
+    environment:
+      - SA_PASSWORD=yourStrong(!)Password
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+
+  mongodb:
+    ports:
+      - "27017:27017"
+
+  rabbitmq:
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  elasticsearch:
+    volumes:
+     - ./elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+
+  logstash:
+    volumes:
+      - ./elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./elk/logstash/pipeline:/usr/share/logstash/pipeline:ro
+    environment:
+      - "LS_JAVA_OPTS=-Xmx256m -Xms256m"
+    ports:
+      - "9600"
+      - "5000"
+
+  kibana:
+    volumes:
+      - ./elk/kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - 51510:5601
   
   internal-gateway:
     environment:
@@ -8,16 +52,18 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=localhost,1433;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
       - Redis__Configuration=redis
-      - ReRoutes__0__DownstreamHostAndPorts__0__Host=identity-service
-      - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
-      - ReRoutes__1__DownstreamHostAndPorts__0__Host=product-service
-      - ReRoutes__1__DownstreamHostAndPorts__0__Port=80
-      - ReRoutes__2__DownstreamHostAndPorts__0__Host=blogging-service
-      - ReRoutes__2__DownstreamHostAndPorts__0__Port=80
-      - ReRoutes__3__DownstreamHostAndPorts__0__Host=tenant-management-service
-      - ReRoutes__3__DownstreamHostAndPorts__0__Port=80
+      - Routes__0__DownstreamHostAndPorts__0__Host=identity-service
+      - Routes__0__DownstreamHostAndPorts__0__Port=80
+      - Routes__1__DownstreamHostAndPorts__0__Host=master-data-service
+      - Routes__1__DownstreamHostAndPorts__0__Port=80
+      - Routes__2__DownstreamHostAndPorts__0__Host=document-management-service
+      - Routes__2__DownstreamHostAndPorts__0__Port=80
+      - Routes__3__DownstreamHostAndPorts__0__Host=blogging-service
+      - Routes__3__DownstreamHostAndPorts__0__Port=80
+      - Routes__4__DownstreamHostAndPorts__0__Host=tenant-management-service
+      - Routes__4__DownstreamHostAndPorts__0__Port=80
       - GlobalConfiguration__BaseUrl=http://internal-gateway
     ports:
       - "80"
@@ -29,12 +75,18 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - RemoteServices__Default__BaseUrl=http://backend-admin-app-gateway/
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=localhost,1433;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
       - Redis__Configuration=redis
-      - ReRoutes__0__DownstreamHostAndPorts__0__Host=identity-service
-      - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
-      - ReRoutes__1__DownstreamHostAndPorts__0__Host=product-service
-      - ReRoutes__1__DownstreamHostAndPorts__0__Port=80
+      - Routes__0__DownstreamHostAndPorts__0__Host=identity-service
+      - Routes__0__DownstreamHostAndPorts__0__Port=80
+      - Routes__1__DownstreamHostAndPorts__0__Host=master-data-service
+      - Routes__1__DownstreamHostAndPorts__0__Port=80
+      - Routes__2__DownstreamHostAndPorts__0__Host=document-management-service
+      - Routes__2__DownstreamHostAndPorts__0__Port=80
+      - Routes__3__DownstreamHostAndPorts__0__Host=blogging-service
+      - Routes__3__DownstreamHostAndPorts__0__Port=80
+      - Routes__4__DownstreamHostAndPorts__0__Host=tenant-management-service
+      - Routes__4__DownstreamHostAndPorts__0__Port=80
       - GlobalConfiguration__BaseUrl=http://backend-admin-app-gateway
     ports:
       - 51531:80
@@ -45,12 +97,14 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=localhost,1433;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
       - Redis__Configuration=redis
-      - ReRoutes__0__DownstreamHostAndPorts__0__Host=product-service
-      - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
-      - ReRoutes__1__DownstreamHostAndPorts__0__Host=blogging-service
-      - ReRoutes__1__DownstreamHostAndPorts__0__Port=80
+      - Routes__0__DownstreamHostAndPorts__0__Host=master-data-service
+      - Routes__0__DownstreamHostAndPorts__0__Port=80
+      - Routes__1__DownstreamHostAndPorts__0__Host=document-management-service
+      - Routes__1__DownstreamHostAndPorts__0__Port=80
+      - Routes__2__DownstreamHostAndPorts__0__Host=blogging-service
+      - Routes__2__DownstreamHostAndPorts__0__Port=80
       - GlobalConfiguration__BaseUrl=http://public-website-gateway
     ports:
       - 51532:80
@@ -61,8 +115,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
-      - ConnectionStrings__Blogging=mongodb://mongodb/MsDemo_Blogging
+      - ConnectionStrings__Default=Server=localhost,1433;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Blogging=mongodb://mongodb/HSaaS_Blogging
       - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
       - RemoteServices__Default__BaseUrl=http://internal-gateway/
@@ -75,24 +129,37 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=localhost,1433;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
       - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:
       - 51522:80
 
-  product-service:
+  master-data-service:
     environment:
       - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
-      - ConnectionStrings__ProductManagement=Server=sqlserver;Database=MsDemo_ProductManagement;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=localhost,1433;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__HSaaS_MasterData=Server=localhost,1433;Database=HSaaS_MasterData;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
       - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:
       - 51523:80
+
+  document-management-service:
+    environment:
+      - ElasticSearch__Url=http://elasticsearch:9200
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - AuthServer__Authority=http://auth-server:51511
+      - ConnectionStrings__Default=Server=localhost,1433;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__HSaaS_DocumentManagement=Server=localhost,1433;Database=HSaaS_DocumentManagement;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - Redis__Configuration=redis
+      - RabbitMQ__Connections__Default__HostName=rabbitmq
+    ports:
+      - 51524:80
 
   tenant-management-service:
     environment:
@@ -100,18 +167,18 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false      
+      - ConnectionStrings__Default=Server=localhost,1433;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false      
       - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:
-      - 51524:80
+      - 51525:80
   
   auth-server:
     environment:
       - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=localhost,1433;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
       - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:

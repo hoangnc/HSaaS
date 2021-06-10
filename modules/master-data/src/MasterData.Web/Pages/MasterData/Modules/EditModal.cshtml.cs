@@ -27,7 +27,7 @@ namespace MasterData.Web.Pages.MasterData.Modules
             ModuleAppService = moduleAppService;
         }
 
-        public virtual async Task<IActionResult> OnGetAsync(long id)
+        public virtual async Task<IActionResult> OnGetAsync(Guid id)
         {
             ModuleInfo = ObjectMapper.Map<ModuleDto, ModuleInfoViewModel>(await ModuleAppService.GetAsync(id));
 
@@ -48,7 +48,7 @@ namespace MasterData.Web.Pages.MasterData.Modules
         public class ModuleInfoViewModel : ExtensibleObject, IHasConcurrencyStamp
         {
             [HiddenInput]
-            public long Id { get; set; }
+            public Guid Id { get; set; }
 
             [HiddenInput]
             public string ConcurrencyStamp { get; set; }

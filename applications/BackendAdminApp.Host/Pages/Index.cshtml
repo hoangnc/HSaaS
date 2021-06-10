@@ -1,0 +1,60 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Localization
+@using BackendAdminApp.Host.Localization
+@using Volo.Abp.Users
+@model BackendAdminApp.Host.Pages.IndexModel
+@inject IHtmlLocalizer<BackendAdminAppResource> L
+@inject ICurrentUser CurrentUser
+@inject ILanguageProvider LanguageProvider
+@section styles {
+    <abp-style-bundle>
+        <abp-style src="/Pages/Index.css" />
+    </abp-style-bundle>
+}
+@section scripts {
+    <abp-script-bundle>
+        <abp-script src="/Pages/Index.js" />
+    </abp-script-bundle>
+}
+<selection class="content">
+    <div class="container-fluid">
+        <div class="text-center">
+            <div class="badge badge-success h5 rounded mb-4 " role="alert">
+                <h5 class="m-1"> <i class="fas fa-rocket"></i> @L["LongWelcomeMessage"]</h5>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h5 class="mb-3">Document Management</h5>
+
+                        <p>Document management and issuance application.</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <a href="~/DocumentManagement/Documents" class="small-box-footer">See Documents <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h5 class="mb-3">Master Data</h5>
+                        <p>Master Data (Companies, Departments....).</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <a href="~/MasterData/Companies" class="small-box-footer">See Master Data <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+    </div>
+</selection>

@@ -1,6 +1,35 @@
 version: '3.7'
 
 services:
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    volumes:
+      - dbdata:/var/opt/mssql
+
+  mongodb:
+    image: mongo
+
+  rabbitmq:
+    image: 'rabbitmq:3-management-alpine'
+
+  redis:
+    image: redis:alpine
+
+  elasticsearch:
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.8.0'
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
+  logstash:
+    image: 'docker.elastic.co/logstash/logstash:7.8.0'
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: 'docker.elastic.co/kibana/kibana:7.8.0'
+    depends_on:
+      - elasticsearch
   
   internal-gateway:
     image: 'hsaas/internal-gateway:${TAG:-latest}'
@@ -65,7 +94,7 @@ services:
     image: 'hsaas/master-data-service:${TAG:-latest}'
     build:
       context: .
-      dockerfile: microservices/master-data/MasterData.HttpApi.Host/Dockerfile
+      dockerfile: microservices/MasterData.HttpApi.Host/Dockerfile
     depends_on:
       - elasticsearch
       - sqlserver
@@ -75,7 +104,7 @@ services:
     image: 'hsaas/document-management-service:${TAG:-latest}'
     build:
       context: .
-      dockerfile: microservices/document-management/DocumentManagement.HttpApi.Host/Dockerfile
+      dockerfile: microservices/DocumentManagement.HttpApi.Host/Dockerfile
     depends_on:
       - elasticsearch
       - sqlserver
@@ -85,14 +114,14 @@ services:
     image: 'hsaas/tenant-management-service:${TAG:-latest}'
     build:
       context: .
-      dockerfile: microservices/tenant-management/TenantManagementService.Host/Dockerfile
+      dockerfile: microservices/TenantManagementService.Host/Dockerfile
     depends_on:
       - elasticsearch
       - sqlserver
       - redis
   
   auth-server:
-    image: 'hsaas/microservice-demo-auth-server:${TAG:-latest}'
+    image: 'hsaas/auth-server:${TAG:-latest}'
     build:
       context: .
       dockerfile: applications/HSaaS.IdentityServer/Dockerfile

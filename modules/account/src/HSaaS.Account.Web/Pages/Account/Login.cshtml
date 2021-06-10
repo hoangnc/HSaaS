@@ -26,62 +26,62 @@
         </p>
     }
 
-<form method="post">
-    <input asp-for="ReturnUrl" />
-    <input asp-for="ReturnUrlHash" />
-    <div>
-        <span asp-validation-for="LoginInput.UserNameOrEmailAddress" class="text-danger"></span>
-    </div>
-    <div class="input-group mb-3">
-        <input asp-for="LoginInput.UserNameOrEmailAddress" class="form-control" placeholder="@L["UserNameOrEmailAddress"]">
-        <div class="input-group-append">
-            <div class="input-group-text">
-                <span class="fas fa-envelope"></span>
+    <form method="post">
+        <input asp-for="ReturnUrl" />
+        <input asp-for="ReturnUrlHash" />
+        <div>
+            <span asp-validation-for="LoginInput.UserNameOrEmailAddress" class="text-danger"></span>
+        </div>
+        <div class="input-group mb-3">
+            <input asp-for="LoginInput.UserNameOrEmailAddress" class="form-control" placeholder="@L["UserNameOrEmailAddress"]">
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                </div>
             </div>
         </div>
-    </div>
-    <div>
-        <span asp-validation-for="LoginInput.Password" class="text-danger"></span>
-    </div>
-    <div class="input-group mb-3">
-        <input asp-for="LoginInput.Password" class="form-control" placeholder="@L["Password"]">
-        <div class="input-group-append">
-            <div class="input-group-text">
-                <span class="fas fa-lock"></span>
+        <div>
+            <span asp-validation-for="LoginInput.Password" class="text-danger"></span>
+        </div>
+        <div class="input-group mb-3">
+            <input asp-for="LoginInput.Password" class="form-control" placeholder="@L["Password"]">
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                </div>
             </div>
+
         </div>
 
-    </div>
-
-    <div class="row">
-        <div class="col-8">
-            <div class="icheck-primary">
-                <input type="checkbox" id="remember">
-                <label for="remember">
-                    @L["RememberMe"]
-                </label>
+        <div class="row">
+            <div class="col-8">
+                <div class="icheck-primary">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">
+                        @L["RememberMe"]
+                    </label>
+                </div>
             </div>
+            <!-- /.col -->
+            <div class="col-4">
+                <abp-button type="submit" button-type="Primary" name="Action" value="Login" class="btn btn-primary btn-block">@L["Login"]</abp-button>
+            </div>
+            <!-- /.col -->
         </div>
-        <!-- /.col -->
-        <div class="col-4">
-            <abp-button type="submit" button-type="Primary" name="Action" value="Login" class="btn btn-primary btn-block">@L["Login"]</abp-button>
+
+    </form>
+
+    @*<div class="social-auth-links text-center mb-3">
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-primary">
+                <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+            </a>
+            <a href="#" class="btn btn-block btn-danger">
+                <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+            </a>
         </div>
-        <!-- /.col -->
-    </div>
-
-</form>
-
-    <div class="social-auth-links text-center mb-3">
-        <p>- OR -</p>
-        <a href="#" class="btn btn-block btn-primary">
-            <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-        </a>
-        <a href="#" class="btn btn-block btn-danger">
-            <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
-    </div>
-    <!-- /.social-auth-links -->
-
+        <!-- /.social-auth-links -->
+    *@
     <p class="mb-1">
         <a href="@Url.Page("./ForgotPassword", new {returnUrl = Model.ReturnUrl, returnUrlHash = Model.ReturnUrlHash})">@LA["ForgotPassword"]</a>
     </p>

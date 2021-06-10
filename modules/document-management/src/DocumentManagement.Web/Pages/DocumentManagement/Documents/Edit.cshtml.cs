@@ -25,7 +25,7 @@ namespace DocumentManagement.Web.Pages.DocumentManagement.Documents
             DocumentAppService = documentAppService;
         }
 
-        public virtual async Task<IActionResult> OnGetAsync(long id)
+        public virtual async Task<IActionResult> OnGetAsync(Guid id)
         {
             DocumentInfo = ObjectMapper.Map<DocumentDto, DocumentInfoViewModel>(await DocumentAppService.GetAsync(id));
 
@@ -36,7 +36,7 @@ namespace DocumentManagement.Web.Pages.DocumentManagement.Documents
         public class DocumentInfoViewModel : ExtensibleObject, IHasConcurrencyStamp
         {
             [HiddenInput]
-            public long Id { get; set; }
+            public Guid Id { get; set; }
             public string Code { get; set; }
             public string CompanyCode { get; set; }
             public string CompanyName { get; set; }

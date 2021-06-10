@@ -25,7 +25,6 @@ using MasterData.DocumentTypes;
 
 namespace DocumentManagement.Web
 {
-    [DependsOn(typeof(DocumentManagementApplicationModule))]
     [DependsOn(typeof(DocumentManagementHttpApiModule))]   
     [DependsOn(typeof(AbpAspNetCoreMvcUiBootstrapModule))]
     [DependsOn(typeof(AbpFeatureManagementWebModule))]
@@ -77,33 +76,11 @@ namespace DocumentManagement.Web
                 options.Conventions.AuthorizePage("/DocumentManagement/Documents/Edit", DocumentManagementPermissions.Documents.Update);
                 options.Conventions.AuthorizePage("/DocumentManagement/Documents/Review", DocumentManagementPermissions.Documents.Review);
             });
-
-            Configure<AbpPageToolbarOptions>(options =>
-            {
-                options.Configure<IndexModel>(
-                    toolbar =>
-                    {
-                        toolbar.AddButton(
-                            LocalizableString.Create<DocumentManagementResource>("ManageHostFeatures"),
-                            icon: "cog",
-                            name: "ManageHostFeatures",
-                            requiredPolicyName: FeatureManagementPermissions.ManageHostFeatures
-                        );
-
-                        toolbar.AddButton(
-                            LocalizableString.Create<DocumentManagementResource>("NewTenant"),
-                            icon: "plus",
-                            name: "CreateTenant",
-                            requiredPolicyName: DocumentManagementPermissions.Documents.Create
-                        );
-                    }
-                );
-            });
         }
 
         public override void PostConfigureServices(ServiceConfigurationContext context)
         {
-            OneTimeRunner.Run(() =>
+            /*OneTimeRunner.Run(() =>
             {
                 ModuleExtensionConfigurationHelper
                     .ApplyEntityConfigurationToUi(
@@ -112,7 +89,7 @@ namespace DocumentManagement.Web
                         createFormTypes: new[] { typeof(IndexModel) },
                         editFormTypes: new[] { typeof(IndexModel) }
                     );
-            });
+            });*/
         }
     }
 }

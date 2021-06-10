@@ -5,7 +5,7 @@ using Volo.Abp.Application.Services;
 
 namespace MasterData.DocumentTypes
 {
-    public interface IDocumentTypeAppService : ICrudAppService<DocumentTypeDto, long, GetDocumentTypesInput, DocumentTypeCreateDto, DocumentTypeUpdateDto>
+    public interface IDocumentTypeAppService : ICrudAppService<DocumentTypeDto, Guid, GetDocumentTypesInput, DocumentTypeCreateDto, DocumentTypeUpdateDto>
     {
     }
 }

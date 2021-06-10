@@ -34,16 +34,14 @@
     <EmbeddedResource Include="Pages\**\*.js" />
     <EmbeddedResource Include="Components\**\*.js" />
     <EmbeddedResource Include="Components\**\*.css" />
-    <EmbeddedResource Include="wwwroot\**\*.*" />
+    <Compile Remove="wwwroot\**" />
     <Content Remove="Pages\**\*.css" />
     <Content Remove="Pages\**\*.js" />
     <Content Remove="Components\**\*.js" />
     <Content Remove="Components\**\*.css" />
-    <Content Remove="wwwroot\**\*.*" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
 </Project>

@@ -45,7 +45,7 @@ namespace DocumentManagement.Documents
               );
         }
 
-        public virtual async Task<DocumentDto> GetAsync(long id)
+        public virtual async Task<DocumentDto> GetAsync(Guid id)
         {
             return ObjectMapper.Map<Document, DocumentDto>(
                    await DocumentRepository.GetAsync(id)
@@ -75,9 +75,9 @@ namespace DocumentManagement.Documents
         {
             var document = ObjectMapper.Map<CreateDocumentDto, Document>(input);
 
-            var existingDocument = await DocumentRepository.CheckExistDocumentForCreateAsync(document);
+            var existingDocument = await DocumentRepository.CheckExistingDocumentForCreateAsync(document);
 
-            if (existingDocument?.Id > 0)
+            if (existingDocument.Id == Guid.Empty)
             {
                 throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeExists)
                                 .WithData("Code", input.Code);
@@ -89,13 +89,13 @@ namespace DocumentManagement.Documents
 
             document = await DocumentRepository.InsertAsync(document, true);
 
-            if (document.Id > 0)
+            if (document.Id != Guid.Empty)
             {
                 if (input != null
                     && input.Appendixes != null
                     && input.Appendixes.Any())
                 {
-                    var appendixes = input.Appendixes.Select(a => new Appendix(0)
+                    var appendixes = input.Appendixes.Select(a => new Appendix(Guid.Empty)
                     {
                         Active = document.Active,
                         DDCAudited = document.DDCAudited,
@@ -135,11 +135,11 @@ namespace DocumentManagement.Documents
         }
 
         [UnitOfWork]
-        public async Task<DocumentDto> UpdateAsync(long id, UpdateDocumentDto input)
+        public async Task<DocumentDto> UpdateAsync(Guid id, UpdateDocumentDto input)
         {
             var existingDocument = await DocumentRepository.GetAsync(id);
 
-            if (existingDocument?.Id < 0)
+            if (existingDocument?.Id == Guid.Empty)
             {
                 throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeNotExists)
                                 .WithData("Code", input.Code);
@@ -200,13 +200,13 @@ namespace DocumentManagement.Documents
                 existingDocument.FolderName = input.FolderName;
             }
 
-            if (existingDocument.Id > 0)
+            if (existingDocument.Id != Guid.Empty)
             {
                 if (input != null
                     && input.Appendixes != null
                     && input.Appendixes.Any())
                 {
-                    var appendixesInsert = input.Appendixes.Where(a => a.Id <= 0).Select(a => new Appendix(0)
+                    var appendixesInsert = input.Appendixes.Where(a => a.Id == Guid.Empty).Select(a => new Appendix(Guid.Empty)
                     {
                         Active = document.Active,
                         DDCAudited = document.DDCAudited,
@@ -240,23 +240,23 @@ namespace DocumentManagement.Documents
 
                     await AppendixRepository.InsertManyAsync(appendixesInsert);
 
-                    existingDocument.Appendixes.Where(a => a.Id > 0)
+                    existingDocument.Appendixes.Where(a => a.Id != Guid.Empty)
                         .ToList()
                         .ForEach(
                                 appendix =>
                                {
-                                   if (appendix?.Id > 0)
+                                   if (appendix?.Id != Guid.Empty)
                                    {
-                                       var appendixExists = input.Appendixes.FirstOrDefault(a => a.Id == appendix.Id);
+                                       var appendixExisting = input.Appendixes.FirstOrDefault(a => a.Id == appendix.Id);
 
-                                       if (appendixExists?.Id > 0)
+                                       if (appendixExisting?.Id != Guid.Empty)
                                        {
-                                           appendix.Name = appendixExists.Name;
-                                           appendix.FileName = appendixExists.FileName;
-                                           appendix.Description = appendixExists.Description;
+                                           appendix.Name = appendixExisting.Name;
+                                           appendix.FileName = appendixExisting.FileName;
+                                           appendix.Description = appendixExisting.Description;
                                            appendix.FolderName = existingDocument.FolderName;
-                                           appendix.LinkFile = appendixExists.LinkFile;
-                                           appendix.ReviewNumber = appendixExists.ReviewNumber;
+                                           appendix.LinkFile = appendixExisting.LinkFile;
+                                           appendix.ReviewNumber = appendixExisting.ReviewNumber;
                                        }
                                        appendix.Active = document.Active;
                                        appendix.DDCAudited = document.DDCAudited;
@@ -282,7 +282,7 @@ namespace DocumentManagement.Documents
                                    }
                                });
 
-                    foreach (var appendix in existingDocument.Appendixes.Where(a => a.Id > 0))
+                    foreach (var appendix in existingDocument.Appendixes.Where(a => a.Id != Guid.Empty))
                     {
                         if (!input.Appendixes.Any(a => a.Id == appendix.Id))
                         {
@@ -295,7 +295,7 @@ namespace DocumentManagement.Documents
             return ObjectMapper.Map<Document, DocumentDto>(existingDocument);
         }
 
-        public Task DeleteAsync(long id)
+        public Task DeleteAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -321,7 +321,7 @@ namespace DocumentManagement.Documents
         {
             var document = await DocumentRepository.GetAsync(input.Id);
 
-            if (document?.Id < 0)
+            if (document?.Id == Guid.Empty)
             {
                 throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeNotExists)
                                 .WithData("Code", "Not Found");
@@ -375,9 +375,9 @@ namespace DocumentManagement.Documents
         {
             var document = ObjectMapper.Map<ReviewDocumentDto, Document>(input);
 
-            var existingDocument = await DocumentRepository.CheckExistDocumentForReviewAsync(document);
+            var existingDocument = await DocumentRepository.CheckExistingDocumentForReviewAsync(document);
 
-            if (existingDocument?.Id > 0)
+            if (existingDocument?.Id != Guid.Empty)
             {
                 throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeExists)
                                 .WithData("Code", input.Code);
@@ -389,13 +389,13 @@ namespace DocumentManagement.Documents
 
             document = await DocumentRepository.InsertAsync(document, true);
 
-            if (document.Id > 0)
+            if (document.Id != Guid.Empty)
             {
                 if (input != null
                     && input.Appendixes != null
                     && input.Appendixes.Any())
                 {
-                    var appendixes = input.Appendixes.Select(a => new Appendix(0)
+                    var appendixes = input.Appendixes.Select(a => new Appendix(Guid.Empty)
                     {
                         Active = document.Active,
                         DDCAudited = document.DDCAudited,

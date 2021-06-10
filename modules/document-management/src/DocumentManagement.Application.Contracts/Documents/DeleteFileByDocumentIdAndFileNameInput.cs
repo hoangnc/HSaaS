@@ -6,7 +6,7 @@ namespace DocumentManagement.Documents
 {
     public class DeleteFileByDocumentIdAndFileNameInput
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string FileName { get; set; }
     }
 }

@@ -11,14 +11,14 @@ services:
      depends_on:
        - sqlserver
 
-#  restore-database:
-#    image: 'volosoft/microservice-demo-restore-database:${TAG:-latest}'
-#    build:
-#      context: .
-#      dockerfile: databases/restore/Dockerfile
-#    volumes:
-#      - dbdata:/var/opt/mssql
-#    environment:
-#      - SA_PASSWORD=yourStrong(!)Password
-#    depends_on:
-#      - sqlserver
+restore-database:
+image: 'hsaas/hsaas-restore-database:${TAG:-latest}'
+  build:
+      context: .
+      dockerfile: databases/restore/Dockerfile
+    volumes:
+      - dbdata:/var/opt/mssql
+    environment:
+      - SA_PASSWORD=yourStrong(!)Password
+    depends_on:
+      - sqlserver

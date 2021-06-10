@@ -9,7 +9,7 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace MasterData.EntityFrameworkCore
 {
-    public class EfCoreModuleRepository : EfCoreRepository<IMasterDataDbContext, Module, long>,
+    public class EfCoreModuleRepository : EfCoreRepository<IMasterDataDbContext, Module, Guid>,
         IModuleRepository
     {
         public EfCoreModuleRepository(IDbContextProvider<IMasterDataDbContext> dbContextProvider)
@@ -17,7 +17,7 @@ namespace MasterData.EntityFrameworkCore
         {
         }
 
-        public async Task<Module> GetByIdAsync(long id)
+        public async Task<Module> GetByIdAsync(Guid id)
         {
             return await (await GetDbSetAsync())
                .FirstOrDefaultAsync(c => c.Id == id);

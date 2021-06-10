@@ -37,7 +37,7 @@ namespace DocumentManagement.Web.Pages.DocumentManagement.Documents
         public class DocumentInfoViewModel : ExtensibleObject, IHasConcurrencyStamp
         {
             [HiddenInput]
-            public long Id { get; set; }
+            public Guid Id { get; set; }
             public string Code { get; set; }
             public string CompanyCode { get; set; }
             public string CompanyName { get; set; }

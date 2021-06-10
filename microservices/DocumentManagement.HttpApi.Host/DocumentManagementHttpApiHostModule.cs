@@ -32,13 +32,15 @@ using Volo.Abp.Security.Claims;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.VirtualFileSystem;
+using Volo.Abp.MailKit;
+using MailKit.Security;
+using Volo.Abp.Identity;
+using MasterData;
 
 namespace DocumentManagement
 {
     [DependsOn(
-        typeof(DocumentManagementApplicationModule),
-        typeof(DocumentManagementEntityFrameworkCoreModule),
-        typeof(DocumentManagementHttpApiModule),
+        typeof(AbpMailKitModule),
         typeof(AbpAspNetCoreMvcUiMultiTenancyModule),
         typeof(AbpAutofacModule),
         typeof(AbpCachingStackExchangeRedisModule),
@@ -46,6 +48,11 @@ namespace DocumentManagement
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpSettingManagementEntityFrameworkCoreModule),
+        typeof(AbpIdentityHttpApiClientModule),
+        typeof(MasterDataHttpApiClientModule),
+        typeof(DocumentManagementApplicationModule),
+        typeof(DocumentManagementHttpApiModule),
+        typeof(DocumentManagementEntityFrameworkCoreModule),
         typeof(AbpAspNetCoreSerilogModule),
         typeof(AbpSwashbuckleModule)
         )]
@@ -111,7 +118,7 @@ namespace DocumentManagement
                 {
                     options.Authority = configuration["AuthServer:Authority"];
                     options.ApiName = configuration["AuthServer:ApiName"];
-                    options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]); ;
+                    options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]);
                 });
 
             Configure<AbpDistributedCacheOptions>(options =>
@@ -144,6 +151,16 @@ namespace DocumentManagement
                         .AllowAnyMethod()
                         .AllowCredentials();
                 });
+            });
+
+            ConfigureEmailSender();
+        }
+
+        private void ConfigureEmailSender()
+        {
+            Configure<AbpMailKitOptions>(options =>
+            {
+                options.SecureSocketOption = SecureSocketOptions.StartTls;
             });
         }
 

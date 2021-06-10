@@ -35,6 +35,9 @@ using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.Threading;
 using Volo.Abp.Data;
 using Volo.Abp.Auditing;
+using Volo.Abp.Http.Client.IdentityModel.Web;
+using Volo.Abp.Identity;
+using Volo.Abp.AspNetCore.MultiTenancy;
 
 namespace MasterData
 {
@@ -49,6 +52,7 @@ namespace MasterData
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpSettingManagementEntityFrameworkCoreModule),
+        typeof(AbpAspNetCoreMultiTenancyModule),
         typeof(AbpAspNetCoreSerilogModule),
         typeof(AbpSwashbuckleModule)
         )]
@@ -126,7 +130,7 @@ namespace MasterData
             Configure<AbpAuditingOptions>(options =>
             {
                 options.IsEnabledForGetRequests = true;
-                options.ApplicationName = "ProductService";
+                options.ApplicationName = "MasterDataService";
             });
 
             if (!hostingEnvironment.IsDevelopment())

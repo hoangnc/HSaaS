@@ -4,7 +4,7 @@ using Volo.Abp.Ui.Branding;
 namespace HSaaS
 {
     [Dependency(ReplaceServices = true)]
-    public class HSaaSBrandingIdentityServerProvider : DefaultBrandingProvider, ISingletonDependency
+    public class HSaaSBrandingIdentityServerProvider : DefaultBrandingProvider
     {
         public override string AppName => "HSaaS Authentication";
     }

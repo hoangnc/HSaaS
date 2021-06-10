@@ -1,138 +1,140 @@
-﻿const datePattern = abp.localization.currentCulture.dateTimeFormat.shortDatePattern;
-toastr.options.positionClass = 'toast-top-right';
+﻿(function () {
+    const datePattern = abp.localization.currentCulture.dateTimeFormat.shortDatePattern;
+    toastr.options.positionClass = 'toast-top-right';
 
-toastr.options.onHidden = function () {
-    window.location.href = `/DocumentManagement/documents`;
-}
+    toastr.options.onHidden = function () {
+        window.location.href = `/DocumentManagement/documents`;
+    }
 
-let $Code = $('#Code');
-let $Approver = $('#Approver');
-let $Drafter = $('#Drafter');
-let $Auditor = $('#Auditor');
-let $CompanyCode = $('#CompanyCode');
-let $DepartmentCode = $('#DepartmentCode');
-let $CompanyName = $('#CompanyName');
-let $DepartmentName = $('#DepartmentName');
-let $DocumentType = $('#DocumentType');
-let $AppliedToEntire = $('#AppliedToEntire');
-let $IssuedToEntire = $('#IssuedToEntire');
-let $Module = $('#Module');
-let $IssuedStatusId = $('#IssuedStatusId');
-let $StatusId = $('#StatusId');
-let $OneYear = $('#OneYear');
-let $TwoYear = $('#TwoYear');
-let $btnSelectAll = $('#btnSelectAll');
-let $btnDeselectAll = $('#btnDeselectAll');
-let $fileupload = $('#fileupload');
+    let $Code = $('#Code');
+    let $Approver = $('#Approver');
+    let $Drafter = $('#Drafter');
+    let $Auditor = $('#Auditor');
+    let $CompanyCode = $('#CompanyCode');
+    let $DepartmentCode = $('#DepartmentCode');
+    let $CompanyName = $('#CompanyName');
+    let $DepartmentName = $('#DepartmentName');
+    let $DocumentType = $('#DocumentType');
+    let $AppliedToEntire = $('#AppliedToEntire');
+    let $IssuedToEntire = $('#IssuedToEntire');
+    let $Module = $('#Module');
+    let $IssuedStatusId = $('#IssuedStatusId');
+    let $StatusId = $('#StatusId');
+    let $OneYear = $('#OneYear');
+    let $TwoYear = $('#TwoYear');
+    let $btnSelectAll = $('#btnSelectAll');
+    let $btnDeselectAll = $('#btnDeselectAll');
+    let $fileupload = $('#fileupload');
+    let $EffectiveDate = $('#EffectiveDate');
+    let $ReviewDate = $('#ReviewDate');
 
-let departments = [
-];
+    let departments = [
+    ];
 
-let userDepartments = [
-];
+    let userDepartments = [
+    ];
 
-let documentTypes = [
-];
+    let documentTypes = [
+    ];
 
-let users = [   
-];
+    let users = [
+    ];
 
-let companies = [
-];
+    let companies = [
+    ];
 
-let groups = [   
-];
+    let groups = [
+    ];
 
-let modules = [
-];
+    let modules = [
+    ];
 
-let statuses = [
-    { text: 'Input', id: 1 },
-    { text: 'Submit', id: 2 },
-    { text: 'Confirm', id: 3 },
-    { text: 'Approve', id: 4 }
-];
+    let statuses = [
+        { text: 'Input', id: 1 },
+        { text: 'Submit', id: 2 },
+        { text: 'Confirm', id: 3 },
+        { text: 'Approve', id: 4 }
+    ];
 
-let issuedStatuses = [
-    { text: 'Đã ban hành', id: 1 },
-    { text: 'Đang chờ phê duyệt', id: 2 }
-];
+    let issuedStatuses = [
+        { text: 'Đã ban hành', id: 1 },
+        { text: 'Đang chờ phê duyệt', id: 2 }
+    ];
 
-let appendixDocuments = [{
-    id: 1,
-    name: '',
-    code: '',
-    documentNumber: '',
-    reviewNumber: '',
-    fileName: '',
-}];
+    let appendixDocuments = [{
+        id: 1,
+        name: '',
+        code: '',
+        documentNumber: '',
+        reviewNumber: '',
+        fileName: '',
+    }];
 
-let appendixFiles = [];
-let storedFiles = [];
+    let appendixFiles = [];
+    let storedFiles = [];
 
-let grdAppendixDocuments;
-let grdRelateToDocuments;
+    let grdAppendixDocuments;
+    let grdRelateToDocuments;
 
-function genDocumentCode() {
-    return 'DM' + moment().format('Ymdhmmss');;
-}
+    const genDocumentCode = () => {
+        return 'DM' + moment().format('Ymdhmmss');;
+    }
 
-function getFileExtension(filename) {
-    var ext = /^.+\.([^.]+)$/.exec(filename);
-    return ext == null ? "" : ext[1];
-}
+    const getFileExtension = (filename) => {
+        const ext = /^.+\.([^.]+)$/.exec(filename);
+        return ext == null ? "" : ext[1];
+    }
 
-function objectToFormData(obj, formData, rootName, ignoreList) {
+    const objectToFormData = (obj, formData, rootName, ignoreList) => {
 
-    function appendFormData(data, root) {
-        if (!ignore(root)) {
-            root = root || '';
-            if (data instanceof File) {
-                formData.append(root, data);
-            } else if (Array.isArray(data)) {
-                for (let i = 0; i < data.length; i++) {
-                    appendFormData(data[i], root + '[' + i + ']');
-                }
-            } else if (typeof data === 'object' && data) {
-                for (let key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        if (root === '') {
-                            appendFormData(data[key], key);
-                        } else {
-                            appendFormData(data[key], root + '.' + key);
+        const appendFormData = (data, root) => {
+            if (!ignore(root)) {
+                root = root || '';
+                if (data instanceof File) {
+                    formData.append(root, data);
+                } else if (Array.isArray(data)) {
+                    for (let i = 0; i < data.length; i++) {
+                        appendFormData(data[i], root + '[' + i + ']');
+                    }
+                } else if (typeof data === 'object' && data) {
+                    for (let key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            if (root === '') {
+                                appendFormData(data[key], key);
+                            } else {
+                                appendFormData(data[key], root + '.' + key);
+                            }
                         }
                     }
-                }
-            } else {
-                if (data !== null && typeof data !== 'undefined') {
-                    formData.append(root, data);
+                } else {
+                    if (data !== null && typeof data !== 'undefined') {
+                        formData.append(root, data);
+                    }
                 }
             }
         }
+
+        const ignore = (root) => {
+            return Array.isArray(ignoreList)
+                && ignoreList.some(function (x) { return x === root; });
+        }
+
+        appendFormData(obj, rootName);
     }
 
-    function ignore(root) {
-        return Array.isArray(ignoreList)
-            && ignoreList.some(function (x) { return x === root; });
+    const formatFileSize = (bytes) => {
+        if (typeof bytes !== 'number') {
+            return '';
+        }
+        if (bytes >= 1000000000) {
+            return (bytes / 1000000000).toFixed(2) + ' GB';
+        }
+        if (bytes >= 1000000) {
+            return (bytes / 1000000).toFixed(2) + ' MB';
+        }
+        return (bytes / 1000).toFixed(2) + ' KB';
     }
 
-    appendFormData(obj, rootName);
-}
-
-function formatFileSize(bytes) {
-    if (typeof bytes !== 'number') {
-        return '';
-    }
-    if (bytes >= 1000000000) {
-        return (bytes / 1000000000).toFixed(2) + ' GB';
-    }
-    if (bytes >= 1000000) {
-        return (bytes / 1000000).toFixed(2) + ' MB';
-    }
-    return (bytes / 1000).toFixed(2) + ' KB';
-}
-
-(function () {
     const l = abp.localization.getResource('DocumentManagement');
     const createAndReleaseDocumentApiPath = '/api/document-management/documents/create-and-release';
     const createDocumentApiPath = '/api/document-management/documents/create';
@@ -153,7 +155,7 @@ function formatFileSize(bytes) {
     
     const uploadTemplate = tmpl('template-upload');
 
-    function renderTemplate(func, files) {
+    const renderTemplate = (func, files) => {
         if (!func) {
             return $();
         }
@@ -172,14 +174,14 @@ function formatFileSize(bytes) {
         return $('.files').html(result).children();
     }
 
-    function renderUpload(files) {
+    const renderUpload = (files) => {
         return renderTemplate(
             uploadTemplate,
             files
         );
     }
 
-    function deleteHandler(e) {
+    const deleteHandler = (e) => {
         e.preventDefault();
         const tr = $(this).closest('tr');
         let fileName = tr.find('p[name=fileName]').data("file");
@@ -193,16 +195,17 @@ function formatFileSize(bytes) {
         }
     }  
 
-    function updateAppendixFile(fileName, appendixName) {
+    const updateAppendixFile = (fileName, appendixName) => {
         const index = appendixFiles.findIndex(f => {
             return f.file.name === fileName;
         });
+
         if (index >= 0) {
             appendixFiles[index].appendixName = appendixName;
         }
     }
 
-    function addFileToAppendixFiles(file, appendixName) {
+    const addFileToAppendixFiles = (file, appendixName) => {
         const index = appendixFiles.findIndex(f => {
             return f.appendixName === appendixName;
         });
@@ -220,7 +223,7 @@ function formatFileSize(bytes) {
         }
     }
 
-    function isExistAppendix(appendixName, currentRowIndex) {
+    const isExistingAppendix = (appendixName, currentRowIndex) => {
         let index = -1;
         let rows = grdAppendixDocuments.getRows();
 
@@ -235,7 +238,7 @@ function formatFileSize(bytes) {
         return index >= 0;
     }
 
-    function getFileAppendix(appendixName) {
+    const getFileAppendix = (appendixName) => {
 
         const index = appendixFiles.findIndex(f => {
             return f.appendixName === appendixName;
@@ -244,7 +247,7 @@ function formatFileSize(bytes) {
         return appendixFiles[index];
     }
 
-    function getAppendixes() {
+    const getAppendixes = () => {
 
         const appendixes = grdAppendixDocuments.getData().filter(function (d) {
             if (d.name) {
@@ -256,7 +259,7 @@ function formatFileSize(bytes) {
         return appendixes;
     }
 
-    function getRelateToDocuments() {
+    const getRelateToDocuments = () => {
         const documents = grdRelateToDocuments.getData().filter(function (d) {
             if (d.name) {
                 return true;
@@ -267,37 +270,45 @@ function formatFileSize(bytes) {
         return documents;
     }
 
-    function formatUserResult(user) {
+    const formatUserResult = (user) => {
         if (!user.id)
             return user.text;
+
         const text = user.text;
         const fullName = text;
         const department = user.departmentName;
+
         return $(`<span>${fullName}</span><div><small style="color: #a5a0a0">${l('DepartmentName')}: ${department}</small></div>`);
     }
 
-    function formatUserSelection(user) {
+    const formatUserSelection = (user) => {
         if (!user.id)
             return user.text;
+
         const text = user.text;
+
         return $(`<span>${text}</span>`);
     }
 
-    function formatGroupSelection(group) {
+    const formatGroupSelection = (group) => {
         if (!group.id)
             return group.text;
+
         const text = group.text;
+
         return $(`<span>${text}</span>`);
     }
 
-    function formatGroupResult(group) {
+    const formatGroupResult = (group) => {
         if (!group.id)
             return group.text;
+
         const text = group.text;
+
         return $(`<span>${text}</span><div><small style="color: #a5a0a0">Email: ${group.email}</small></div>`);
     }
 
-    function getCompanies() {
+    const getCompanies = () => {
         return _companyAppService.getList({filter: '', skipCount: 0, maxResultCount: 100})
             .then((data => {
                 companies = data.items.map((company) => {
@@ -306,7 +317,7 @@ function formatFileSize(bytes) {
             }));
     }
 
-    function getDepartments() {
+    const getDepartments  = () => {
         return _departmentAppService.getList({ filter: '', skipCount: 0, maxResultCount: 100 })
             .then((data => {
                 departments = data.items.map((department) => {
@@ -315,7 +326,7 @@ function formatFileSize(bytes) {
             }));
     }
 
-    function getUserDepartments() {
+    const getUserDepartments = () => {
         return _userDepartmentAppService.getList({ filter: '', skipCount: 0, maxResultCount: 100 })
             .then((data => {
                 userDepartments = data.items.map((department) => {
@@ -324,8 +335,7 @@ function formatFileSize(bytes) {
             }));
     }
 
-
-    function getDocumentTypes() {
+    const getDocumentTypes = () => {
         return _documentTypeAppService.getList({ filter: '', skipCount: 0, maxResultCount: 100 })
             .then((data => {
                 documentTypes = data.items.map((documentType) => {
@@ -334,7 +344,7 @@ function formatFileSize(bytes) {
             }));
     }
 
-    function getModules() {
+    const getModules = () => {
         return _moduleAppService.getList({ filter: '', skipCount: 0, maxResultCount: 100 })
             .then((data => {
                 modules = data.items.map((module) => {
@@ -343,8 +353,7 @@ function formatFileSize(bytes) {
             }));
     }
 
-    function getUsers() {
-      
+    const getUsers = () => {     
             _identityUserAppService.getList({ filter: '', skipCount: 0, maxResultCount: 1000 })
                 .then((data => {
                     users = data
@@ -356,7 +365,7 @@ function formatFileSize(bytes) {
                 }));
     }
 
-    async function getDocuments() {
+    const getDocuments = async () => {
         await _documentAppService.getList({ filter: '', page: 1, size: 10000 })
             .then((data => {
                 documents = data.items.map((document) => {
@@ -497,18 +506,19 @@ function formatFileSize(bytes) {
         }
 
         //Add row on "Add Row" button click
-        document.getElementById("btnAddRelateToDocuments").addEventListener("click", function () {
+        document.getElementById("btnAddRelateToDocuments").addEventListener("click", () => {
+            //TODO: define the localization of field name
             grdRelateToDocuments.addRow({ name: 'Please choose document..'});
         });
 
         //Delete row on "Delete Row" button click
-        document.getElementById("btnRemoveRelateToDocuments").addEventListener("click", function () {
+        document.getElementById("btnRemoveRelateToDocuments").addEventListener("click", () => {
             const selectedRows = grdRelateToDocuments.getSelectedRows();
             if (selectedRows && selectedRows.length > 0)
                 grdRelateToDocuments.deleteRow(selectedRows[0]);
         });
 
-        _documentLookupModal.onResult(function (selectedDocuments) {
+        _documentLookupModal.onResult((selectedDocuments) => {
             if (selectedRelateToDocumentRow) {
                 if (selectedDocuments && selectedDocuments instanceof Array) {
                     if (selectedDocuments.length > 0) {
@@ -575,7 +585,7 @@ function formatFileSize(bytes) {
             return input;
         };
 
-        const initGrdAppendixDocuments = function () {
+        const initGrdAppendixDocuments = () => {
 
             grdAppendixDocuments = new Tabulator("#grdAppendixDocuments", {
                 height: "311px",
@@ -617,22 +627,22 @@ function formatFileSize(bytes) {
             });
 
             //undo button
-            document.getElementById("appendix-history-undo").addEventListener("click", function () {
+            document.getElementById("appendix-history-undo").addEventListener("click", () => {
                 grdAppendixDocuments.undo();
             });
 
             //redo button
-            document.getElementById("appendix-history-redo").addEventListener("click", function () {
+            document.getElementById("appendix-history-redo").addEventListener("click", () => {
                 grdAppendixDocuments.redo();
             });
 
             //Add row on "Add Row" button click
-            document.getElementById("btnAddAppendixDocuments").addEventListener("click", function () {
+            document.getElementById("btnAddAppendixDocuments").addEventListener("click", () => {
                 grdAppendixDocuments.addRow({});
             });
 
             //Delete row on "Delete Row" button click
-            document.getElementById("btnRemoveAppendixDocuments").addEventListener("click", function () {
+            document.getElementById("btnRemoveAppendixDocuments").addEventListener("click", () => {
                 const selectedRows = grdAppendixDocuments.getSelectedRows();
                 if (selectedRows && selectedRows.length > 0)
                     grdAppendixDocuments.deleteRow(selectedRows[0]);
@@ -644,7 +654,7 @@ function formatFileSize(bytes) {
 
     $(function () {
 
-        function create() {
+        const create = ()  => {
             // Create an FormData object
             let formData = $("#formDocument").submit(function (e) {
                 e.preventDefault();
@@ -670,10 +680,13 @@ function formatFileSize(bytes) {
 
             if ($Approver.val())
                 formData.set('Approver', $Approver.val().join(';'));
+
             if ($Auditor.val())
                 formData.set('Auditor', $Auditor.val().join(';'));
+
             if ($Drafter.val())
                 formData.set('Drafter', $Drafter.val().join(';'));
+
             if ($IssuedToEntire.val())
                 formData.set('IssuedToEntire', $IssuedToEntire.val().join(';'));
 
@@ -696,7 +709,7 @@ function formatFileSize(bytes) {
             });
         }
 
-        function createAndRelease() {
+        const createAndRelease = () => {
             // Create an FormData object
             let formData = $("#formDocument").submit(function (e) {
                 e.preventDefault();
@@ -722,10 +735,13 @@ function formatFileSize(bytes) {
 
             if ($Approver.val())
                 formData.set('Approver', $Approver.val().join(';'));
+
             if ($Auditor.val())
                 formData.set('Auditor', $Auditor.val().join(';'));
+
             if ($Drafter.val())
                 formData.set('Drafter', $Drafter.val().join(';'));
+
             if ($IssuedToEntire.val())
                 formData.set('IssuedToEntire', $IssuedToEntire.val().join(';'));
 
@@ -847,19 +863,6 @@ function formatFileSize(bytes) {
                 templateResult: formatGroupResult,
                 templateSelection: formatGroupSelection
             });
-            /*$ScopeOfDeloyment.select2({
-                data: groups,
-                templateResult: formatGroupResult,
-                templateSelection: formatGroupSelection
-            });
-           
-            $StatusId.select2({
-                data: statuses
-            });
-
-            $PromulgateStatusId.select2({
-                data: promulgateStatuses
-            });*/
 
             initGrdRelateToDocuments();
 
@@ -870,24 +873,24 @@ function formatFileSize(bytes) {
         })
 
         $OneYear.click(function () {
-            let date = moment($('#EffectiveDate').val(), datePattern, false).add(1, 'year');
-            $('#ReviewDate').datepicker('setDate', date.toDate());
+            let date = moment($EffectiveDate.val(), datePattern, false).add(1, 'year');
+            $ReviewDate.datepicker('setDate', date.toDate());
         });
 
         $TwoYear.click(function () {
-            let date = moment($('#EffectiveDate').val(), datePattern, false).add(2, 'year');
-            $('#ReviewDate').datepicker('setDate', date.toDate());
+            let date = moment($EffectiveDate.val(), datePattern, false).add(2, 'year');
+            $ReviewDate.datepicker('setDate', date.toDate());
         });
 
         // Effective date
-        $('#EffectiveDate').datepicker({
+        $EffectiveDate.datepicker({
             language: abp.localization.currentCulture.cultureName,
             showOn: 'focus',
             autoclose: true
         });
 
         // Review date
-        $('#ReviewDate').datepicker({
+        $ReviewDate.datepicker({
             language: abp.localization.currentCulture.cultureName,
             showOn: 'focus',
             autoclose: true
@@ -919,7 +922,7 @@ function formatFileSize(bytes) {
             addValidClassOnAll: true
         });
 
-        $("#formDocument").submit(function (e) {
+        $("#formDocument").submit((e) => {
             e.preventDefault();
             let btn = $(this).find("button[type=submit]:focus");
             if (btn.length > 0) {

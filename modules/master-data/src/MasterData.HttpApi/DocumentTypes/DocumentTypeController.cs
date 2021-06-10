@@ -30,14 +30,14 @@ namespace MasterData.DocumentTypes
         }
 
         [HttpDelete]
-        public async Task DeleteAsync(long id)
+        public async Task DeleteAsync(Guid id)
         {
             await DocumentTypeAppService.DeleteAsync(id);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<DocumentTypeDto> GetAsync(long id)
+        public async Task<DocumentTypeDto> GetAsync(Guid id)
         {
             return await DocumentTypeAppService.GetAsync(id);
         }
@@ -49,7 +49,7 @@ namespace MasterData.DocumentTypes
         }
 
         [HttpPut]
-        public Task<DocumentTypeDto> UpdateAsync(long id, DocumentTypeUpdateDto input)
+        public Task<DocumentTypeDto> UpdateAsync(Guid id, DocumentTypeUpdateDto input)
         {
             throw new NotImplementedException();
         }

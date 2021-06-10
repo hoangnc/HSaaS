@@ -6,7 +6,7 @@ using Volo.Abp.Application.Services;
 
 namespace MasterData.UserDepartments
 {
-    public interface IUserDepartmentAppService : ICrudAppService<UserDepartmentDto, long, GetUserDepartmentsInput, UserDepartmentCreateDto, UserDepartmentUpdateDto>
+    public interface IUserDepartmentAppService : ICrudAppService<UserDepartmentDto, Guid, GetUserDepartmentsInput, UserDepartmentCreateDto, UserDepartmentUpdateDto>
     {
         Task<UserDepartmentDto> GetByUserNameAsync(string userName);
     }

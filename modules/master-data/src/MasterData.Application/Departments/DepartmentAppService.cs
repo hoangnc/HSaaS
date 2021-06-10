@@ -25,7 +25,7 @@ namespace MasterData.Departments
             return ObjectMapper.Map<Department, DepartmentDto>(department);
         }
 
-        public virtual async Task DeleteAsync(long id)
+        public virtual async Task DeleteAsync(Guid id)
         {
             var department = await DepartmentRepository.GetByIdAsync(id);
             if (department == null)
@@ -36,7 +36,7 @@ namespace MasterData.Departments
             await DepartmentRepository.DeleteAsync(department);
         }
 
-        public async Task<DepartmentDto> GetAsync(long id)
+        public async Task<DepartmentDto> GetAsync(Guid id)
         {
             return ObjectMapper.Map<Department, DepartmentDto>(
                 await DepartmentRepository.GetByIdAsync(id)
@@ -64,7 +64,7 @@ namespace MasterData.Departments
             ); ;
         }
 
-        public async Task<DepartmentDto> UpdateAsync(long id, DepartmentUpdateDto input)
+        public async Task<DepartmentDto> UpdateAsync(Guid id, DepartmentUpdateDto input)
         {
             var department = await DepartmentRepository.GetByIdAsync(id);
             department.Name = input.Name;

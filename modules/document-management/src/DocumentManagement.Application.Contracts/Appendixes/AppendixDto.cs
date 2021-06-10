@@ -5,7 +5,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace DocumentManagement.Appendixes
 {
-    public class AppendixDto : FullAuditedEntityDto<long>
+    public class AppendixDto : FullAuditedEntityDto<Guid>
     {
         public virtual string Code { get; set; }
         public virtual string CompanyCode { get; set; }
@@ -37,7 +37,7 @@ namespace DocumentManagement.Appendixes
         public virtual int FormType { get; set; }
         public virtual bool Active { get; set; }
         public virtual int IssuedStatusId { get; set; }
-        public virtual long DocumentId { get; set; }
+        public virtual Guid DocumentId { get; set; }
         public string ExtraProperties { get; set; }
         public string ConcurrencyStamp { get; set; }
     }

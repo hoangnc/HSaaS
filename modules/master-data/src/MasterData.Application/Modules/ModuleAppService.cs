@@ -21,11 +21,11 @@ namespace MasterData.Modules
         {
             var module = ObjectMapper.Map<ModuleCreateDto, Module>(input);
 
-            var moduleExist = await ModuleRepository.GetByCodeAsync(input.Code);
+            var moduleExisting = await ModuleRepository.GetByCodeAsync(input.Code);
 
-            if (moduleExist?.Id > 0)
+            if (moduleExisting?.Id != Guid.Empty)
             {
-                throw new BusinessException(code: MasterDataErrorCodes.Module.CodeExists)
+                throw new BusinessException(code: MasterDataErrorCodes.Module.CodeHasExisted)
                                 .WithData("Code", input.Code);
             }
 
@@ -34,7 +34,7 @@ namespace MasterData.Modules
             return ObjectMapper.Map<Module, ModuleDto>(module);
         }
 
-        public virtual async Task DeleteAsync(long id)
+        public virtual async Task DeleteAsync(Guid id)
         {
             var module = await ModuleRepository.GetByIdAsync(id);
 
@@ -46,7 +46,7 @@ namespace MasterData.Modules
             await ModuleRepository.DeleteAsync(module);
         }
 
-        public async Task<ModuleDto> GetAsync(long id)
+        public async Task<ModuleDto> GetAsync(Guid id)
         {
             return ObjectMapper.Map<Module, ModuleDto>(
                 await ModuleRepository.GetByIdAsync(id)
@@ -74,7 +74,7 @@ namespace MasterData.Modules
             );
         }
 
-        public async Task<ModuleDto> UpdateAsync(long id, ModuleUpdateDto input)
+        public async Task<ModuleDto> UpdateAsync(Guid id, ModuleUpdateDto input)
         {
             var module = await ModuleRepository.GetByIdAsync(id);
             module.Name = input.Name;

@@ -7,7 +7,7 @@ using Volo.Abp.Application.Services;
 
 namespace DocumentManagement.Documents
 {
-    public interface IDocumentAppService : ICrudAppService<DocumentDto, long, GetDocumentsInput, CreateDocumentDto, UpdateDocumentDto>
+    public interface IDocumentAppService : ICrudAppService<DocumentDto, Guid, GetDocumentsInput, CreateDocumentDto, UpdateDocumentDto>
     {
         Task<PagedResultDto<DocumentDto>> FilteredPagedListByDocumentTypeAsync(GetDocumentsByDocumentTypeInput input);
         Task<PagedResultDto<DocumentDto>> FilteredPagedListByDepartmentCodeAsync(GetDocumentsByDepartmentCodeInput input);

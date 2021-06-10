@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MasterData.DocumentTypes;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
@@ -6,7 +7,7 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace MasterData.EntityFrameworkCore
 {
-    public class EfCoreDocumentTypeRepository : EfCoreRepository<IMasterDataDbContext, DocumentType, long>,
+    public class EfCoreDocumentTypeRepository : EfCoreRepository<IMasterDataDbContext, DocumentType, Guid>,
         IDocumentTypeRepository
     {
         public EfCoreDocumentTypeRepository(IDbContextProvider<IMasterDataDbContext> dbContextProvider)
@@ -14,7 +15,7 @@ namespace MasterData.EntityFrameworkCore
         {
         }
 
-        public async Task<DocumentType> GetByIdAsync(long id)
+        public async Task<DocumentType> GetByIdAsync(Guid id)
         {
             return await (await GetDbSetAsync())
                .FirstOrDefaultAsync(c => c.Id == id);

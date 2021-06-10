@@ -5,7 +5,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace MasterData.Departments
 {
-    public class DepartmentCreateDto : FullAuditedEntityDto<long>
+    public class DepartmentCreateDto : FullAuditedEntityDto<Guid>
     {
         public string Code { get; set; }
         public string Name { get; set; }

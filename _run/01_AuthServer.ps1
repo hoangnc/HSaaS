@@ -1,2 +1,2 @@
-cd ../applications/AuthServer.Host
+cd ../applications/HSaaS.IdentityServer
 dotnet run

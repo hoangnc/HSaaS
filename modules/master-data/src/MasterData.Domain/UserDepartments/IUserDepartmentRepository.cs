@@ -6,7 +6,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace MasterData.UserDepartments
 {
-    public interface IUserDepartmentRepository : IBasicRepository<UserDepartment, long>
+    public interface IUserDepartmentRepository : IBasicRepository<UserDepartment, Guid>
     {
         Task<UserDepartment> GetByUserNameAsync(string userName);
     }

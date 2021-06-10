@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
+using MasterData.Permissions;
 using Microsoft.Extensions.Configuration;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Data;
@@ -188,18 +189,51 @@ namespace HSaaS.IdentityServer
                commonScopes.Union(new[] { "BackendAdminAppGateway", "IdentityService", "InternalGateway", "MasterDataService", "DocumentManagementService", "TenantManagementService" }),
                new[] { "hybrid" },
                commonSecret,
-               permissions: new[] { IdentityPermissions.Users.Default, "DocumentManagement.Document" },
+               permissions: new[] { IdentityPermissions.Users.Default, "DocumentManagement.Documents" },
                redirectUri: "https://localhost:44354/signin-oidc",
                postLogoutRedirectUri: "https://localhost:44354/signout-callback-oidc"
            );
 
             await CreateClientAsync(
                 "hsaas-public-website-client",
-                commonScopes.Union(new[] { "PublicWebSiteGateway", "MasterDataService", "DocumentManagementService" }),
+                commonScopes.Union(new[] { "PublicWebSiteGateway", "InternalGateWay", "MasterDataService", "DocumentManagementService" }),
                 new[] { "hybrid" },
                 commonSecret,
+                permissions: new[] { "DocumentManagement.Documents", 
+                    MasterDataPermissions.Companies.Default,
+                    MasterDataPermissions.Departments.Default,
+                    MasterDataPermissions.DocumentTypes.Default,
+                    MasterDataPermissions.Modules.Default },
                 redirectUri: "https://localhost:44335/signin-oidc",
                 postLogoutRedirectUri: "https://localhost:44335/signout-callback-oidc"
+            );
+
+            await CreateClientAsync(
+                "blogging-service-client",
+                new[] { "InternalGateway", "IdentityService" },
+                new[] { "client_credentials" },
+                commonSecret,
+                permissions: new[] { IdentityPermissions.UserLookup.Default }
+            );
+
+            await CreateClientAsync(
+                "master-data-service-client",
+                new[] { "InternalGateway", "IdentityService" },
+                new[] { "client_credentials" },
+                commonSecret
+            );
+
+            await CreateClientAsync(
+                "document-management-service-client",
+                new[] { "InternalGateway", "IdentityService" },
+                new[] { "client_credentials" },
+                commonSecret,
+                permissions: new[] { 
+                    MasterDataPermissions.Companies.Default,
+                    MasterDataPermissions.Departments.Default,
+                    MasterDataPermissions.DocumentTypes.Default,
+                    MasterDataPermissions.Modules.Default
+                }
             );
 
             if (!webClientId.IsNullOrWhiteSpace())

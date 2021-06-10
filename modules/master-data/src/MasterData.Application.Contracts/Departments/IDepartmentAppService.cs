@@ -5,7 +5,7 @@ using Volo.Abp.Application.Services;
 
 namespace MasterData.Departments
 {
-    public interface IDepartmentAppService : ICrudAppService<DepartmentDto, long, GetDepartmentsInput, DepartmentCreateDto, DepartmentUpdateDto>
+    public interface IDepartmentAppService : ICrudAppService<DepartmentDto, Guid, GetDepartmentsInput, DepartmentCreateDto, DepartmentUpdateDto>
     {
     }
 }

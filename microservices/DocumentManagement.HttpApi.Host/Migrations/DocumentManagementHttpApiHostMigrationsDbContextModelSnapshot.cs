@@ -23,10 +23,9 @@ namespace DocumentManagement.Migrations
 
             modelBuilder.Entity("DocumentManagement.Appendixes.Appendix", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -96,8 +95,8 @@ namespace DocumentManagement.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("DocumentId")
-                        .HasColumnType("bigint")
+                    b.Property<Guid>("DocumentId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("DocumentId");
 
                     b.Property<string>("DocumentType")
@@ -187,10 +186,9 @@ namespace DocumentManagement.Migrations
 
             modelBuilder.Entity("DocumentManagement.Documents.Document", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");

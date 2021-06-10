@@ -10,7 +10,7 @@ namespace BackendAdminApp.Host.Controllers
     {
         public IActionResult Index()
         {
-            return Redirect("/Identity/Users");
+            return Redirect("/");
         }
     }
 }

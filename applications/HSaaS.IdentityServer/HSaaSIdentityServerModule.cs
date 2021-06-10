@@ -64,8 +64,8 @@ namespace HSaaS
         typeof(AbpAccountApplicationModule),
         typeof(AbpIdentityServerEntityFrameworkCoreModule),
         typeof(AbpEntityFrameworkCoreSqlServerModule),
-        typeof(HSaaSAccountWebIdentityServerModule),
         typeof(AbpAspNetCoreMvcUiAdminLTEThemeModule),
+        typeof(HSaaSAccountWebIdentityServerModule),
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
         typeof(AbpTenantManagementApplicationContractsModule)
         )]
@@ -99,13 +99,6 @@ namespace HSaaS
                     options.DocInclusionPredicate((docName, description) => true);
                     options.CustomSchemaIds(type => type.FullName);
                 });
-
-            Configure<AbpLocalizationOptions>(options =>
-            {
-                options.Languages.Add(new LanguageInfo("vi", "vi", "Tiếng Việt", "famfamfam-flag-vn"));
-                options.Languages.Add(new LanguageInfo("en", "en", "English", "famfamfam-flag-england"));
-                options.Languages.Add(new LanguageInfo("zh-Hans", "zh-Hans", "简体中文", "famfamfam-flag-zh"));
-            });
 
             Configure<AbpAuditingOptions>(options =>
             {
@@ -158,6 +151,13 @@ namespace HSaaS
             });
 
             ConfigureVirtualFileSystem(hostingEnvironment);
+
+            Configure<AbpLocalizationOptions>(options =>
+            {
+                options.Languages.Add(new LanguageInfo("vi", "vi", "Tiếng Việt", "famfamfam-flag-vn"));
+                options.Languages.Add(new LanguageInfo("en", "en", "English", "famfamfam-flag-england"));
+                options.Languages.Add(new LanguageInfo("zh-Hans", "zh-Hans", "简体中文", "famfamfam-flag-zh"));
+            });
         }
 
         private void ConfigureVirtualFileSystem(IWebHostEnvironment hostingEnvironment)

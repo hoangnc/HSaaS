@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MasterData.UserDepartments;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace MasterData.EntityFrameworkCore
 {
-    public class EfCoreUserDepartmentRepository : EfCoreRepository<IMasterDataDbContext, UserDepartment, long>,
+    public class EfCoreUserDepartmentRepository : EfCoreRepository<IMasterDataDbContext, UserDepartment, Guid>,
         IUserDepartmentRepository
     {
         public EfCoreUserDepartmentRepository(IDbContextProvider<IMasterDataDbContext> dbContextProvider)

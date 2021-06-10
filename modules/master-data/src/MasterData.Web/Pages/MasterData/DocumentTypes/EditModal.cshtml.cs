@@ -26,7 +26,7 @@ namespace MasterData.Web.Pages.MasterData.DocumentTypes
             DocumentTypeAppService = documentTypeAppService;
         }
 
-        public virtual async Task<IActionResult> OnGetAsync(long id)
+        public virtual async Task<IActionResult> OnGetAsync(Guid id)
         {
             DocumentTypeInfo = ObjectMapper.Map<DocumentTypeDto, DocumentTypeInfoViewModel>(await DocumentTypeAppService.GetAsync(id));
 
@@ -47,7 +47,7 @@ namespace MasterData.Web.Pages.MasterData.DocumentTypes
         public class DocumentTypeInfoViewModel : ExtensibleObject, IHasConcurrencyStamp
         {
             [HiddenInput]
-            public long Id { get; set; }
+            public Guid Id { get; set; }
 
             [HiddenInput]
             public string ConcurrencyStamp { get; set; }

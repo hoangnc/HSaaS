@@ -28,7 +28,6 @@ using HSaaS.MultiTenancy;
 using Abp.AspNetCore.Mvc.UI.Theme.AdminLTE;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.AspNetCore.Mvc.Localization;
-using HSaaS.Account.Web;
 using Volo.Abp.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Hosting;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
@@ -40,6 +39,10 @@ using Volo.Abp.Caching;
 using Volo.Abp.AutoMapper;
 using DocumentManagement;
 using DocumentManagement.Web;
+using System.Linq;
+using System.Threading.Tasks;
+using BackendAdminApp.Host.Localization;
+using BackendAdminApp.Shared;
 
 namespace BackendAdminApp.Host
 {
@@ -58,6 +61,7 @@ namespace BackendAdminApp.Host
         typeof(AbpPermissionManagementHttpApiClientModule),
         typeof(MasterDataHttpApiClientModule),
         typeof(MasterDataWebModule),
+        typeof(BackendAdminAppSharedModule),
         typeof(DocumentManagementHttpApiClientModule),
         typeof(DocumentManagementWebModule),
         typeof(AbpFeatureManagementHttpApiClientModule)
@@ -66,13 +70,13 @@ namespace BackendAdminApp.Host
     {
         public override void PreConfigureServices(ServiceConfigurationContext context)
         {
-            PreConfigure<AbpMvcDataAnnotationsLocalizationOptions>(options =>
+            /*PreConfigure<AbpMvcDataAnnotationsLocalizationOptions>(options =>
             {
                 options.AddAssemblyResource(
-                    typeof(BackendAdminAppHostModule),
+                    typeof(BackendAdminAppResource),
                     typeof(BackendAdminAppHostModule).Assembly
                 );
-            });
+            });*/
 
             PreConfigure<IMvcBuilder>(mvcBuilder =>
             {
@@ -85,15 +89,15 @@ namespace BackendAdminApp.Host
             var configuration = context.Services.GetConfiguration();
 
             ConfigureMenu(configuration);
+            ConfigureVirtualFileSystem(hostingEnvironment);
             ConfigureCache(configuration);
             ConfigureUrls(configuration);
             ConfigureAuthentication(context, configuration);
             ConfigureAutoMapper();
-            ConfigureVirtualFileSystem(hostingEnvironment);
-            ConfigureLocalizationServices();  
             ConfigureSwaggerServices(context.Services);
             ConfigureMultiTenancy();
-            ConfigureRedis(context, configuration, hostingEnvironment);
+            ConfigureRedis(context, configuration, hostingEnvironment);     
+            ConfigureLocalizationServices();
         }
         private void ConfigureMenu(IConfiguration configuration)
         {
@@ -139,10 +143,16 @@ namespace BackendAdminApp.Host
 
         private void ConfigureVirtualFileSystem(IWebHostEnvironment hostingEnvironment)
         {
+            Configure<AbpVirtualFileSystemOptions>(options =>
+            {
+                options.FileSets.AddEmbedded<BackendAdminAppHostModule>();
+            });
+
             if (hostingEnvironment.IsDevelopment())
             {
                 Configure<AbpVirtualFileSystemOptions>(options =>
-                {                 
+                {
+                    options.FileSets.ReplaceEmbeddedByPhysical<DocumentManagementWebModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}modules{Path.DirectorySeparatorChar}document-management{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}DocumentManagement.Web"));
                     options.FileSets.ReplaceEmbeddedByPhysical<AbpAspNetCoreMvcUiAdminLTEThemeModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}themes{Path.DirectorySeparatorChar}Abp.AspNetCore.Mvc.UI.Theme.AdminLTE"));
                 });
             }
@@ -170,6 +180,7 @@ namespace BackendAdminApp.Host
                     options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
+                
                     options.Scope.Add("role");
                     options.Scope.Add("email");
                     options.Scope.Add("phone");
@@ -179,6 +190,17 @@ namespace BackendAdminApp.Host
                     options.Scope.Add("DocumentManagementService");
                     options.Scope.Add("TenantManagementService");
                     options.ClaimActions.MapAbpClaimTypes();
+
+                    options.Events.OnTokenValidated = (async context =>
+                    {
+                        var claimsFromOidcProvider = context.Principal.Claims.ToList();
+                        await Task.CompletedTask;
+                    });
+
+                    options.Events.OnRedirectToIdentityProviderForSignOut = (async context => {
+                        string redirectUri = context.Properties.RedirectUri;
+                        await Task.CompletedTask;
+                    });
                 });
         }
 
@@ -220,6 +242,7 @@ namespace BackendAdminApp.Host
             var app = context.GetApplicationBuilder();
             var env = context.GetEnvironment();
 
+            app.UseAbpRequestLocalization();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -242,13 +265,22 @@ namespace BackendAdminApp.Host
                 app.UseMultiTenancy();
             }
 
-            app.UseAbpRequestLocalization();
             app.UseAuthorization();
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend Admin Application API");
             });
+
+            /*app.MapWhen(
+                ctx => 
+                       ctx.Request.Path.ToString().StartsWith("/Abp/ApplicationConfigurationScript"),
+                app2 =>
+                {
+                    app2.UseRouting();
+                    app2.UseConfiguredEndpoints();
+                }
+            );*/
             app.UseConfiguredEndpoints();
         }
     }

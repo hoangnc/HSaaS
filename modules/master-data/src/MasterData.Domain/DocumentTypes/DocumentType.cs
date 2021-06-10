@@ -9,7 +9,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 namespace MasterData.DocumentTypes
 {
     [Audited]
-    public class DocumentType : FullAuditedEntity<long>
+    public class DocumentType : FullAuditedEntity<Guid>
     {
         [NotNull]
         public string Code { get; set; }

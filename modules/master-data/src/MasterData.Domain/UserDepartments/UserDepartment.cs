@@ -7,7 +7,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace MasterData.UserDepartments
 {
-    public class UserDepartment : FullAuditedEntity<long>
+    public class UserDepartment : FullAuditedEntity<Guid>
     {
         [NotNull]
         public string UserName { get; set; }

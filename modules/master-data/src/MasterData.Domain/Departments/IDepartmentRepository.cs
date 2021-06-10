@@ -8,6 +8,6 @@ namespace MasterData.Departments
 {
     public interface IDepartmentRepository : IBasicRepository<Department>
     {
-        Task<Department> GetByIdAsync(long id);
+        Task<Department> GetByIdAsync(Guid id);
     }
 }

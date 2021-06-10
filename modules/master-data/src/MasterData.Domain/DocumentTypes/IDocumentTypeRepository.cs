@@ -8,7 +8,7 @@ namespace MasterData.DocumentTypes
 {
     public interface IDocumentTypeRepository : IBasicRepository<DocumentType>
     {
-        Task<DocumentType> GetByIdAsync(long id);
+        Task<DocumentType> GetByIdAsync(Guid id);
         Task<DocumentType> GetByCodeAsync(string code);
     }
 }

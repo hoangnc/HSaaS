@@ -7,7 +7,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace DocumentManagement.Documents
 {
-    public class DocumentDto : FullAuditedEntityDto<long>
+    public class DocumentDto : FullAuditedEntityDto<Guid>
     {
         public string Code { get; set; }
         public string CompanyCode { get; set; }

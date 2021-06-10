@@ -7,7 +7,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace DocumentManagement.Appendixes
 {
-    public class Appendix : FullAuditedAggregateRoot<long>
+    public class Appendix : FullAuditedAggregateRoot<Guid>
     {
         [NotNull]
         public virtual string Code { get; set; }
@@ -92,7 +92,7 @@ namespace DocumentManagement.Appendixes
         public virtual bool Active { get; set; }
         public virtual int IssuedStatusId { get; set; }
 
-        public virtual long DocumentId { get; set; }
+        public virtual Guid DocumentId { get; set; }
 
         protected Appendix()
         {
@@ -100,7 +100,7 @@ namespace DocumentManagement.Appendixes
         }
 
         public Appendix(
-                        long id)
+                        Guid id)
         {
             Id = id;
         }

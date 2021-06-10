@@ -5,7 +5,7 @@ using Volo.Abp.Application.Services;
 
 namespace MasterData.Modules
 {
-    public interface IModuleAppService : ICrudAppService<ModuleDto, long, GetModulesInput, ModuleCreateDto, ModuleUpdateDto>
+    public interface IModuleAppService : ICrudAppService<ModuleDto, Guid, GetModulesInput, ModuleCreateDto, ModuleUpdateDto>
     {
     }
 }

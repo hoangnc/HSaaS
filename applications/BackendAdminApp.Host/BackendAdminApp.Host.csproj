@@ -23,6 +23,7 @@
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="5.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="5.0.6" />
         <PackageReference Include="Volo.Abp.AspNetCore.Authentication.OpenIdConnect" Version="4.3.2" />
+        <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="4.3.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -48,22 +49,23 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Remove="wwwroot\libs\busy-load\busy-load.min.css" />
-      <Content Remove="wwwroot\libs\busy-load\busy-load.min.js" />
-    </ItemGroup>
-
-    <ItemGroup>
       <EmbeddedResource Include="wwwroot\libs\busy-load\busy-load.min.css" />
       <EmbeddedResource Include="wwwroot\libs\busy-load\busy-load.min.js" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\modules\account\src\HSaaS.Account.Web.IdentityServer\HSaaS.Account.Web.IdentityServer.csproj" />
-      <ProjectReference Include="..\..\modules\account\src\HSaaS.Account.Web\HSaaS.Account.Web.csproj" />
+      <None Include="wwwroot\libs\jquery-form-validator\jquery.form-validator.culture.vi-VN.js" />
+      <None Include="wwwroot\libs\jquery-form-validator\jquery.form-validator.min.js" />
+      <None Include="wwwroot\libs\tmpl\tmpl.min.js" />
+      <None Include="wwwroot\libs\xlsx\xlsx.full.min.js" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\..\modules\document-management\src\DocumentManagement.HttpApi.Client\DocumentManagement.HttpApi.Client.csproj" />
       <ProjectReference Include="..\..\modules\document-management\src\DocumentManagement.Web\DocumentManagement.Web.csproj" />
       <ProjectReference Include="..\..\modules\master-data\src\MasterData.HttpApi.Client\MasterData.HttpApi.Client.csproj" />
       <ProjectReference Include="..\..\modules\master-data\src\MasterData.Web\MasterData.Web.csproj" />
+      <ProjectReference Include="..\..\shared\BackendAdminApp.Shared\BackendAdminApp.Shared.csproj" />
       <ProjectReference Include="..\..\shared\HSaaS.Host.Shared\HSaaS.Host.Shared.csproj" />
       <ProjectReference Include="..\..\themes\Abp.AspNetCore.Mvc.UI.Theme.AdminLTE\Abp.AspNetCore.Mvc.UI.Theme.AdminLTE.csproj" />
     </ItemGroup>

@@ -9,7 +9,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 namespace MasterData.Companies
 {
     [Audited]
-    public class Company : FullAuditedEntity<long>
+    public class Company : FullAuditedEntity<Guid>
     {
         [NotNull]
         public virtual string Code { get; set; }
@@ -26,7 +26,7 @@ namespace MasterData.Companies
         }
 
         public Company(
-            long id
+            Guid id
             )
         {
             Id = id;

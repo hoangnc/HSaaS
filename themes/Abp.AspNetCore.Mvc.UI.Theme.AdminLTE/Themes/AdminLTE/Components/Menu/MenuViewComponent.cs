@@ -33,15 +33,17 @@ namespace Abp.AspNetCore.Mvc.UI.Theme.AdminLTE.Themes.AdminLTE.Components.Menu
 
             withItems.ForEach(m =>
             {
-                //TODO: Menu Url ~/ replace with / clear ~ character
-                m.Url = m.Url != null ? m.Url.Replace("~/", "/") : m.Url;
+                 m.Url = m.Url != null ? m.Url.Replace("~/", "/") : m.Url;
 
-                if (m.Url != null && (pageUrl.ToLowerInvariant().Equals(m.Url.ToLowerInvariant()) || string.Compare(pageUrl.ToLowerInvariant(), $"{m.Url.ToLowerInvariant()}/index", StringComparison.InvariantCultureIgnoreCase) == 0))
+                if (m.Url != null && (pageUrl.ToLowerInvariant().Equals(m.Url.ToLowerInvariant()) 
+                // || string.Compare(pageUrl.ToLowerInvariant(), $"{m.Url.ToLowerInvariant()}/index", StringComparison.InvariantCultureIgnoreCase) == 0
+                || pageUrl.ToLowerInvariant().Contains(m.Url.ToLowerInvariant())))
                 {
                     m.CssClass = "active";
 
                     if (menuItem != null) menuItem.CssClass = "active menu-open";
                 }
+
                 SetMenuItemActivateCssClass(pageUrl, m, parentMenu);
             });
         }

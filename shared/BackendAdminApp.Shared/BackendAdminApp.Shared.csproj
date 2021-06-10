@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>BackendAdminApp</RootNamespace>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.6" />
+    <PackageReference Include="Volo.Abp.Localization" Version="4.3.2" />
+    <PackageReference Include="Volo.Abp.Validation" Version="4.3.2" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\BackendAdmin\*.json" />
+    <Content Remove="Localization\BackendAdmin\*.json" />
+  </ItemGroup>
+
+</Project>

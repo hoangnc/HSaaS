@@ -5,7 +5,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace MasterData.Companies
 {
-    public class CompanyUpdateDto : FullAuditedEntityDto<long>
+    public class CompanyUpdateDto : FullAuditedEntityDto<Guid>
     {
         public string Code { get; set; }
         public string Name { get; set; }

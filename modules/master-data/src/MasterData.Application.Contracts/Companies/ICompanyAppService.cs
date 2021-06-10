@@ -1,8 +1,9 @@
-﻿using Volo.Abp.Application.Services;
+﻿using System;
+using Volo.Abp.Application.Services;
 
 namespace MasterData.Companies
 {
-    public interface ICompanyAppService : ICrudAppService<CompanyDto, long, GetCompaniesInput, CompanyCreateDto, CompanyUpdateDto>
+    public interface ICompanyAppService : ICrudAppService<CompanyDto, Guid, GetCompaniesInput, CompanyCreateDto, CompanyUpdateDto>
     {
     }
 }

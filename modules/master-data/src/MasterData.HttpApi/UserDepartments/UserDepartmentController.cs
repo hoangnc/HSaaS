@@ -14,7 +14,6 @@ namespace MasterData.UserDepartments
     [RemoteService(Name = MasterDataRemoteServiceConsts.RemoteServiceName)]
     [Area("masterData")]
     [Route("api/master-data/userdepartments")]
-    [Authorize]
     public class UserDepartmentController : MasterDataController, IUserDepartmentAppService
     {
         protected IUserDepartmentAppService UserDepartmentAppService { get; }
@@ -34,7 +33,7 @@ namespace MasterData.UserDepartments
 
         [HttpGet]
         [Route("{id}")]
-        public Task<UserDepartmentDto> GetAsync(long id)
+        public Task<UserDepartmentDto> GetAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -53,13 +52,13 @@ namespace MasterData.UserDepartments
         }
 
         [HttpPut]
-        public Task<UserDepartmentDto> UpdateAsync(long id, UserDepartmentUpdateDto input)
+        public Task<UserDepartmentDto> UpdateAsync(Guid id, UserDepartmentUpdateDto input)
         {
             throw new NotImplementedException();
         }
 
         [HttpDelete]
-        public Task DeleteAsync(long id)
+        public Task DeleteAsync(Guid id)
         {
             throw new NotImplementedException();
         }

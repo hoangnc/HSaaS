@@ -8,7 +8,7 @@ namespace MasterData.Modules
 {
     public interface IModuleRepository : IBasicRepository<Module>
     {
-        Task<Module> GetByIdAsync(long id);
+        Task<Module> GetByIdAsync(Guid id);
         Task<Module> GetByCodeAsync(string code);
     }
 }

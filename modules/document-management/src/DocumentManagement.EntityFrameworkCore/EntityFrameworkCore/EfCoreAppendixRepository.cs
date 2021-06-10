@@ -9,7 +9,7 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace DocumentManagement.EntityFrameworkCore
 {
-    public class EfCoreAppendixRepository : EfCoreRepository<IDocumentManagementDbContext, Appendix, long>,
+    public class EfCoreAppendixRepository : EfCoreRepository<IDocumentManagementDbContext, Appendix, Guid>,
         IAppendixRepository
     {
         public EfCoreAppendixRepository(IDbContextProvider<IDocumentManagementDbContext> dbContextProvider)

@@ -26,11 +26,11 @@ namespace MasterData.DocumentTypes
         {
             var documentType = ObjectMapper.Map<DocumentTypeCreateDto, DocumentType>(input);
 
-            var documentTypeExist = await DocumentTypeRepository.GetByCodeAsync(input.Code);
+            var documentTypeExisting = await DocumentTypeRepository.GetByCodeAsync(input.Code);
 
-            if (documentTypeExist?.Id > 0)
+            if (documentTypeExisting?.Id != null)
             {
-                throw new BusinessException(code: MasterDataErrorCodes.DocumentType.CodeExists)
+                throw new BusinessException(code: MasterDataErrorCodes.DocumentType.CodeHasExisted)
                                 .WithData("Code", input.Code);
             }
 
@@ -40,7 +40,7 @@ namespace MasterData.DocumentTypes
         }
 
         [Authorize(MasterDataPermissions.DocumentTypes.Delete)]
-        public virtual async Task DeleteAsync(long id)
+        public virtual async Task DeleteAsync(Guid id)
         {
             var documentType = await DocumentTypeRepository.GetByIdAsync(id);
             if (documentType == null)
@@ -51,7 +51,7 @@ namespace MasterData.DocumentTypes
             await DocumentTypeRepository.DeleteAsync(documentType);
         }
 
-        public async Task<DocumentTypeDto> GetAsync(long id)
+        public async Task<DocumentTypeDto> GetAsync(Guid id)
         {
             return ObjectMapper.Map<DocumentType, DocumentTypeDto>(
                 await DocumentTypeRepository.GetByIdAsync(id)
@@ -80,7 +80,7 @@ namespace MasterData.DocumentTypes
         }
 
         [Authorize(MasterDataPermissions.DocumentTypes.Update)]
-        public async Task<DocumentTypeDto> UpdateAsync(long id, DocumentTypeUpdateDto input)
+        public async Task<DocumentTypeDto> UpdateAsync(Guid id, DocumentTypeUpdateDto input)
         {
             var documentType = await DocumentTypeRepository.GetByIdAsync(id);
 

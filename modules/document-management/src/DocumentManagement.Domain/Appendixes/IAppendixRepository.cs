@@ -5,7 +5,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace DocumentManagement.Appendixes
 {
-    public interface IAppendixRepository : IBasicRepository<Appendix, long>
+    public interface IAppendixRepository : IBasicRepository<Appendix, Guid>
     {
     }
 }

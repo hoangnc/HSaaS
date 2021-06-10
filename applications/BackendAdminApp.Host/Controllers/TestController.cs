@@ -31,7 +31,9 @@ namespace BackendAdminApp.Host.Controllers
                 "CurrentUser: " + _jsonSerializer.Serialize(CurrentUser) + newLine +
                 "access_token: " + await HttpContext.GetTokenAsync("access_token") + newLine +
                 "isGranted: AbpIdentity.Users: " + await _permissionChecker.IsGrantedAsync("AbpIdentity.Users") +newLine +
-                "isGranted: AbpTenantManagement.Tenants: " + await _permissionChecker.IsGrantedAsync("AbpTenantManagement.Tenants")
+                "isGranted: AbpTenantManagement.Tenants: " + await _permissionChecker.IsGrantedAsync("AbpTenantManagement.Tenants") + newLine +
+                "isGranted: DocumentManagement.Documents: " + await _permissionChecker.IsGrantedAsync("DocumentManagement.Documents")
+
             );
         }
     }

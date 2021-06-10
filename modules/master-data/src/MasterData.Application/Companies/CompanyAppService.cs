@@ -31,7 +31,7 @@ namespace MasterData.Companies
         }
 
         [Authorize(MasterDataPermissions.Companies.Delete)]
-        public virtual async Task DeleteAsync(long id)
+        public virtual async Task DeleteAsync(Guid id)
         {
             var company = await CompanyRepository.GetByIdAsync(id);
             if (company == null)
@@ -42,7 +42,7 @@ namespace MasterData.Companies
             await CompanyRepository.DeleteAsync(company);
         }
 
-        public async Task<CompanyDto> GetAsync(long id)
+        public async Task<CompanyDto> GetAsync(Guid id)
         {
             return ObjectMapper.Map<Company, CompanyDto>(
                 await CompanyRepository.GetByIdAsync(id)
@@ -71,7 +71,7 @@ namespace MasterData.Companies
         }
 
         [Authorize(MasterDataPermissions.Companies.Update)]
-        public async Task<CompanyDto> UpdateAsync(long id, CompanyUpdateDto input)
+        public async Task<CompanyDto> UpdateAsync(Guid id, CompanyUpdateDto input)
         {
             var company = await CompanyRepository.GetByIdAsync(id);
 

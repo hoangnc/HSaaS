@@ -26,7 +26,7 @@ namespace MasterData.Web.Pages.MasterData.Companies
             CompanyAppService = companyAppService;
         }
 
-        public virtual async Task<IActionResult> OnGetAsync(long id)
+        public virtual async Task<IActionResult> OnGetAsync(Guid id)
         {
             CompanyInfo = ObjectMapper.Map<CompanyDto, CompanyInfoViewModel>(await CompanyAppService.GetAsync(id));
 
@@ -47,7 +47,7 @@ namespace MasterData.Web.Pages.MasterData.Companies
         public class CompanyInfoViewModel : ExtensibleObject, IHasConcurrencyStamp
         {
             [HiddenInput]
-            public long Id { get; set; }
+            public Guid Id { get; set; }
 
             [HiddenInput]
             public string ConcurrencyStamp { get; set; }

@@ -13,7 +13,7 @@
 
 @section scripts {
     <abp-script-bundle>
-        <abp-script src="/libs/xlsx/xlsx.full.min.js"/>
+        <abp-script src="/libs/xlsx/xlsx.full.min.js" />
         <abp-script src="/Pages/DocumentManagement/Documents/Index.js" />
     </abp-script-bundle>
 }
@@ -27,10 +27,21 @@
         </abp-row>
         <abp-row>
             <abp-column size-md="_6">
-                <input class="form-control col-sm-8" id="txtSearch" />
+                <div class="input-group input-group-sm m-0">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text"><i class="fa fa-search"></i></label>
+                    </div>
+                    <input class="form-control form-control-navbar"
+                           type="search"
+                           placeholder="Search Documents"
+                           aria-label="Search Documents">
+                </div>
             </abp-column>
             <abp-column size-md="_6" class="text-right">
-                <button id="download-xlsx" class="btn btn-primary btn-sm"><i class="fa fa-download" aria-hidden="true"></i> Download XLSX</button>
+                <button id="download-xlsx"
+                        class="btn btn-primary btn-sm">
+                    <i class="fa fa-download" aria-hidden="true"></i> Download XLSX
+                </button>
                 @if (await Authorization.IsGrantedAsync(DocumentManagementPermissions.Documents.Create))
                 {
                     <a href="/DocumentManagement/Documents/Create" class="btn btn-primary btn-sm">

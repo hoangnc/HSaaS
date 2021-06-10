@@ -7,16 +7,16 @@ namespace DocumentManagement.Documents
 {
     public class DocumentAppendix : CreationAuditedEntity
     {
-        public virtual long DocumentId { get; protected set; }
+        public virtual Guid DocumentId { get; protected set; }
 
-        public virtual long AppendixId { get; protected set; }
+        public virtual Guid AppendixId { get; protected set; }
 
         protected DocumentAppendix()
         {
 
         }
 
-        public DocumentAppendix(long documentId, long appendixId)
+        public DocumentAppendix(Guid documentId, Guid appendixId)
         {
             DocumentId = documentId;
             AppendixId = appendixId;

@@ -14,7 +14,6 @@ namespace MasterData.Modules
     [RemoteService(Name = MasterDataRemoteServiceConsts.RemoteServiceName)]
     [Area("masterData")]
     [Route("api/master-data/modules")]
-    [Authorize]
     public class ModuleController : MasterDataController, IModuleAppService
     {
         protected IModuleAppService ModuleAppService { get; }
@@ -25,37 +24,32 @@ namespace MasterData.Modules
         }
 
         [HttpPost]
-        [Authorize(MasterDataPermissions.Modules.Create)]
         public async Task<ModuleDto> CreateAsync(ModuleCreateDto input)
         {
             return await ModuleAppService.CreateAsync(input);
         }
 
         [HttpDelete]
-        [Authorize(MasterDataPermissions.Modules.Delete)]
-        public async Task DeleteAsync(long id)
+        public async Task DeleteAsync(Guid id)
         {
             await ModuleAppService.DeleteAsync(id);
         }
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(MasterDataPermissions.Modules.Default)]
-        public async Task<ModuleDto> GetAsync(long id)
+        public async Task<ModuleDto> GetAsync(Guid id)
         {
             return await ModuleAppService.GetAsync(id);
         }
 
         [HttpGet]
-        [Authorize(MasterDataPermissions.Modules.Default)]
         public async Task<PagedResultDto<ModuleDto>> GetListAsync(GetModulesInput input)
         {
             return await ModuleAppService.GetListAsync(input);
         }
 
         [HttpPut]
-        [Authorize(MasterDataPermissions.Modules.Update)]
-        public Task<ModuleDto> UpdateAsync(long id, ModuleUpdateDto input)
+        public Task<ModuleDto> UpdateAsync(Guid id, ModuleUpdateDto input)
         {
             throw new NotImplementedException();
         }

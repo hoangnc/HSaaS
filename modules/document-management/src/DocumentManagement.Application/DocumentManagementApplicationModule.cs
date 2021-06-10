@@ -3,6 +3,7 @@ using Volo.Abp.AutoMapper;
 using Volo.Abp.Modularity;
 using Volo.Abp.Application;
 using DocumentManagement.Documents;
+using Volo.Abp;
 
 namespace DocumentManagement
 {

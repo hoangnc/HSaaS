@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MasterData.Localization;
+using MasterData.Permissions;
 using Volo.Abp.UI.Navigation;
 
 namespace MasterData.Web.Menus
@@ -14,7 +15,7 @@ namespace MasterData.Web.Menus
             }
         }
 
-        private Task ConfigureMainMenuAsync(MenuConfigurationContext context)
+        private async Task ConfigureMainMenuAsync(MenuConfigurationContext context)
         {
             //Add main menu items.
             var l = context.GetLocalizer<MasterDataResource>();
@@ -22,12 +23,13 @@ namespace MasterData.Web.Menus
             var masterDataMenuItem = new ApplicationMenuItem(MasterDataMenus.Prefix, displayName: l["Menu:MasterData"], "~/MasterData", icon: "fa fa-database");
             context.Menu.AddItem(masterDataMenuItem);
 
-            masterDataMenuItem.AddItem(new ApplicationMenuItem(MasterDataMenus.Company, l["Companies"], url: "~/MasterData/Companies"));
+            if (await context.IsGrantedAsync(MasterDataPermissions.Companies.Default))
+            {
+                masterDataMenuItem.AddItem(new ApplicationMenuItem(MasterDataMenus.Company, l["Companies"], url: "~/MasterData/Companies"));
+            }
             masterDataMenuItem.AddItem(new ApplicationMenuItem(MasterDataMenus.Department, l["Departments"], url: "~/MasterData/Departments"));
             masterDataMenuItem.AddItem(new ApplicationMenuItem(MasterDataMenus.DocumentType, l["DocumentTypes"], url: "~/MasterData/DocumentTypes"));
             masterDataMenuItem.AddItem(new ApplicationMenuItem(MasterDataMenus.Module, l["Modules"], url: "~/MasterData/Modules"));
-
-            return Task.CompletedTask;
         }
     }
 }

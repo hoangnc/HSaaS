@@ -6,7 +6,7 @@ using Volo.Abp.Domain.Entities;
 
 namespace DocumentManagement.DocumentType
 {
-    public class DocumentType : Entity<long>
+    public class DocumentType : Entity<Guid>
     {
         [NotNull]
         public string Code { get; set; }

@@ -24,7 +24,7 @@ namespace DocumentManagement.Document
         private readonly IDocumentEmailSenderService _documentEmailSenderService;
 
         public DocumentController(IDocumentAppService documentAppService,
-            IDocumentEmailSenderService documentEmailSenderService)
+            IDocumentEmailSenderService documentEmailSenderService = null)
         {
             _documentAppService = documentAppService;
             _documentEmailSenderService = documentEmailSenderService;
@@ -46,7 +46,7 @@ namespace DocumentManagement.Document
 
         [HttpGet]
         [Route("by-id/{id}")]
-        public async Task<DocumentDto> GetAsync(long id)
+        public async Task<DocumentDto> GetAsync(Guid id)
         {
             return await _documentAppService.GetAsync(id);
         }
@@ -99,7 +99,7 @@ namespace DocumentManagement.Document
 
         [HttpPut]
         [Route("update")]
-        public async Task<DocumentDto> UpdateAsync(long id, [FromForm] UpdateDocumentDto input)
+        public async Task<DocumentDto> UpdateAsync(Guid id, [FromForm] UpdateDocumentDto input)
         {
             var result = await _documentAppService.UpdateAsync(id, input);
             return result;
@@ -107,7 +107,7 @@ namespace DocumentManagement.Document
 
         [HttpPut]
         [Route("update-and-release")]
-        public async Task<DocumentDto> UpdateAndReleaseAsync(long id, [FromForm] UpdateDocumentDto input)
+        public async Task<DocumentDto> UpdateAndReleaseAsync(Guid id, [FromForm] UpdateDocumentDto input)
         {
             var result = await _documentAppService.UpdateAsync(id, input);
             await _documentEmailSenderService.SendMailReleaseDocumentAsync(result);
@@ -115,7 +115,7 @@ namespace DocumentManagement.Document
         }
 
         [HttpDelete]
-        public Task DeleteAsync(long id)
+        public Task DeleteAsync(Guid id)
         {
             throw new NotImplementedException();
         }

@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace DocumentManagement.EntityFrameworkCore
 {
-    public class EfCoreDocumentRepository : EfCoreRepository<IDocumentManagementDbContext, Document, long>,
+    public class EfCoreDocumentRepository : EfCoreRepository<IDocumentManagementDbContext, Document, Guid>,
         IDocumentRepository
     {
         public EfCoreDocumentRepository(IDbContextProvider<IDocumentManagementDbContext> dbContextProvider)
@@ -86,7 +86,7 @@ namespace DocumentManagement.EntityFrameworkCore
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Document> CheckExistDocumentForCreateAsync(Document document)
+        public async Task<Document> CheckExistingDocumentForCreateAsync(Document document)
         {
             var dbSet = await GetDbSetAsync();
 
@@ -108,7 +108,7 @@ namespace DocumentManagement.EntityFrameworkCore
             .FirstOrDefaultAsync();
         }
 
-        public async Task<Document> CheckExistDocumentForReviewAsync(Document document)
+        public async Task<Document> CheckExistingDocumentForReviewAsync(Document document)
         {
             var dbSet = await GetDbSetAsync();
 

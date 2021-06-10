@@ -21,8 +21,7 @@ namespace DocumentManagement.EntityFrameworkCore
                 /* Add custom repositories here. Example:
                  * options.AddRepository<Question, EfCoreQuestionRepository>();
                  */
-
-                options.AddDefaultRepositories<IDocumentManagementDbContext>();
+                //options.AddDefaultRepositories<IDocumentManagementDbContext>();
                 options.AddRepository<Document, EfCoreDocumentRepository>();
                 options.AddRepository<Appendix, EfCoreAppendixRepository>();
             });

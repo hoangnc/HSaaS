@@ -18,7 +18,7 @@ namespace MasterData.UserDepartments
             UserDepartmentRepository = userDepartmentRepository;
         }
 
-        public Task<UserDepartmentDto> GetAsync(long id)
+        public Task<UserDepartmentDto> GetAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -50,9 +50,9 @@ namespace MasterData.UserDepartments
 
             var userDepartmentExist = await UserDepartmentRepository.GetByUserNameAsync(input.UserName);
 
-            if (userDepartmentExist?.Id > 0)
+            if (userDepartmentExist?.Id != Guid.Empty)
             {
-                throw new BusinessException(code: MasterDataErrorCodes.UserDepartment.UserNameExists)
+                throw new BusinessException(code: MasterDataErrorCodes.UserDepartment.UserNameHasExisted)
                                 .WithData("UserName", input.UserName);
             }
 
@@ -61,12 +61,12 @@ namespace MasterData.UserDepartments
             return ObjectMapper.Map<UserDepartment, UserDepartmentDto>(userDepartment);
         }
 
-        public async Task<UserDepartmentDto> UpdateAsync(long id, UserDepartmentUpdateDto input)
+        public async Task<UserDepartmentDto> UpdateAsync(Guid id, UserDepartmentUpdateDto input)
         {
             var userDepartment = await UserDepartmentRepository.GetByUserNameAsync(input.UserName);
 
             if (userDepartment != null
-                && userDepartment.Id > 0)
+                && userDepartment.Id != Guid.Empty)
             {
                 userDepartment.UserName = input.UserName;
                 userDepartment.DepartmentCode = input.DepartmentCode;
@@ -80,7 +80,7 @@ namespace MasterData.UserDepartments
             return ObjectMapper.Map<UserDepartment, UserDepartmentDto>(userDepartment);
         }
 
-        public Task DeleteAsync(long id)
+        public Task DeleteAsync(Guid id)
         {
             throw new NotImplementedException();
         }

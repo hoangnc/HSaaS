@@ -30,14 +30,14 @@ namespace MasterData.Departments
         }
 
         [HttpDelete]
-        public async Task DeleteAsync(long id)
+        public async Task DeleteAsync(Guid id)
         {
             await DepartmentAppService.DeleteAsync(id);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public Task<DepartmentDto> GetAsync(long id)
+        public Task<DepartmentDto> GetAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -49,7 +49,7 @@ namespace MasterData.Departments
         }
 
         [HttpPut]
-        public Task<DepartmentDto> UpdateAsync(long id, DepartmentUpdateDto input)
+        public Task<DepartmentDto> UpdateAsync(Guid id, DepartmentUpdateDto input)
         {
             throw new NotImplementedException();
         }

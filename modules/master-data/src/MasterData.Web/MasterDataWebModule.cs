@@ -58,7 +58,7 @@ namespace MasterData.Web
             Configure<RazorPagesOptions>(options =>
             {
                 //Configure authorization.
-                options.Conventions.AuthorizePage("/MasterData/Companies/Index", MasterDataPermissions.Companies.Default);
+                /*options.Conventions.AuthorizePage("/MasterData/Companies/Index", MasterDataPermissions.Companies.Default);
                 options.Conventions.AuthorizePage("/MasterData/Companies/CreateModal", MasterDataPermissions.Companies.Create);
                 options.Conventions.AuthorizePage("/MasterData/Companies/EditModal", MasterDataPermissions.Companies.Update);
                 
@@ -68,7 +68,7 @@ namespace MasterData.Web
 
                 options.Conventions.AuthorizePage("/MasterData/DocumentTypes/Index", MasterDataPermissions.DocumentTypes.Default);
                 options.Conventions.AuthorizePage("/MasterData/DocumentTypes/CreateModal", MasterDataPermissions.DocumentTypes.Create);
-                options.Conventions.AuthorizePage("/MasterData/DocumentTypes/EditModal", MasterDataPermissions.DocumentTypes.Update);
+                options.Conventions.AuthorizePage("/MasterData/DocumentTypes/EditModal", MasterDataPermissions.DocumentTypes.Update);*/
             });
 
             Configure<AbpPageToolbarOptions>(options =>
