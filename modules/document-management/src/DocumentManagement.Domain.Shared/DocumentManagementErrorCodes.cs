@@ -6,8 +6,8 @@
 
         public static class Document
         {
-            public const string CodeExists = "D:010001";
-            public const string CodeNotExists = "D:010002";
+            public const string CodeHasExisted = "D:010001";
+            public const string CodeHasNotExisted= "D:010002";
         }
     }
 }

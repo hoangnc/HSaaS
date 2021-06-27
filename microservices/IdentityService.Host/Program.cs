@@ -13,28 +13,27 @@ namespace IdentityService.Host
     {
         public static int Main(string[] args)
         {
-            //TODO: Temporary: it's not good to read appsettings.json here just to configure logging
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables()
-                .Build();
-
             Log.Logger = new LoggerConfiguration()
+#if DEBUG
                 .MinimumLevel.Debug()
+#else
+                .MinimumLevel.Information()
+#endif
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
-                .Enrich.WithProperty("Application", "IdentityService")
-                .Enrich.FromLogContext()
-                .WriteTo.File("Logs/logs.txt")
+               .Enrich.WithProperty("Application", "IdentityService")
+               .Enrich.FromLogContext()
+               .WriteTo.Async(c => c.File("Logs/logs.txt"))
+#if DEBUG || RELEASE // Debug on docker container
+                .WriteTo.Async(c => c.Console())
+#endif
                 .WriteTo.Elasticsearch(
-                    new ElasticsearchSinkOptions(new Uri(configuration["ElasticSearch:Url"]))
-                    {
-                        AutoRegisterTemplate = true,
-                        AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
-                        IndexFormat = "msdemo-log-{0:yyyy.MM}"
-                    })
-                .CreateLogger();
+               new ElasticsearchSinkOptions(new Uri("http://elasticsearch:9200"))
+               {
+                   AutoRegisterTemplate = true,
+                   AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
+                   IndexFormat = "hsaas-identity-service-log-{0:yyyy.MM}"
+               })
+               .CreateLogger();
 
             try
             {

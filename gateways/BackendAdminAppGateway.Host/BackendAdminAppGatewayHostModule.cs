@@ -145,6 +145,9 @@ namespace BackendAdminAppGateway.Host
             {
                 app.UseMultiTenancy();
             }
+
+            app.UseAbpRequestLocalization();
+
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {

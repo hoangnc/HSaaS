@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>HSaaS.Identity</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="4.3.3" />
+    <ProjectReference Include="..\HSaaS.Identity.Application.Contracts\HSaaS.Identity.Application.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

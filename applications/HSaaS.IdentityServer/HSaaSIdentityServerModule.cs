@@ -50,11 +50,15 @@ using System.IO;
 using HSaaS.Account.Web;
 using Volo.Abp.AspNetCore.Mvc.Localization;
 using Volo.Abp.EventBus.RabbitMq;
+using Volo.Abp.UI;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Volo.Abp.Ui.Branding;
 
 namespace HSaaS
 {
     [DependsOn(
         typeof(AbpAutofacModule),
+        typeof(AbpUiModule),
         typeof(AbpEventBusRabbitMqModule),
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
@@ -87,6 +91,8 @@ namespace HSaaS
             var hostingEnvironment = context.Services.GetHostingEnvironment();
             var configuration = context.Services.GetConfiguration();
 
+            context.Services.Replace(ServiceDescriptor.Transient<IBrandingProvider, HSaaSBrandingIdentityServerProvider>());
+
             Configure<AbpDbContextOptions>(options =>
             {
                 options.UseSqlServer();
@@ -106,9 +112,11 @@ namespace HSaaS
                 options.ApplicationName = "AuthServer";
             });
 
+            // TODO: Consider fix issued, can not run in docker (Development environment)
+            // Add AppSelfUrl configure to docker-compose.windows.prod.override.yml
             Configure<AppUrlOptions>(options =>
             {
-                options.Applications["MVC"].RootUrl = configuration["App:SelfUrl"];
+                options.Applications["MVC"].RootUrl = configuration["AppSelfUrl"];
             });
 
             context.Services.AddAuthentication();
@@ -190,6 +198,7 @@ namespace HSaaS
             app.UseCorrelationId();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAbpRequestLocalization();
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
 
@@ -197,8 +206,6 @@ namespace HSaaS
             {
                 app.UseMultiTenancy();
             }
-
-            app.UseAbpRequestLocalization();
             app.UseIdentityServer();
             app.UseAuthorization();
             app.UseAuditing();

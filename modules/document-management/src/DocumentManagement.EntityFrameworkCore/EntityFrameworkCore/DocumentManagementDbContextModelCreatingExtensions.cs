@@ -40,7 +40,8 @@ namespace DocumentManagement.EntityFrameworkCore
                 b.Property(x => x.DocumentNumber).IsRequired();
                 b.Property(x => x.ReviewNumber);
                 b.Property(x => x.Description);
-                b.Property(x => x.ContentChange);
+                b.Property(x => x.ContentChange)
+                 .HasComment("Content change");
 
                 b.Property(x => x.Drafter).IsRequired();
                 b.Property(x => x.Auditor).IsRequired();

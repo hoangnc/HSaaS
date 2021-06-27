@@ -1,0 +1,226 @@
+version: '3.7'
+
+services:
+
+  sqlserver:
+    environment:
+      - SA_PASSWORD=yourStrong(!)Password
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+
+  mongodb:
+    ports:
+      - "27017:27017"
+
+  rabbitmq:
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  elasticsearch:
+    volumes:
+     - ./elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+
+  logstash:
+    volumes:
+      - ./elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./elk/logstash/pipeline:/usr/share/logstash/pipeline:ro
+    environment:
+      - "LS_JAVA_OPTS=-Xmx256m -Xms256m"
+    ports:
+      - "9600"
+      - "5000"
+
+  kibana:
+    volumes:
+      - ./elk/kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - 51510:5601
+
+  auth-server:
+    environment: 
+      - ElasticSearch__Url=http://elasticsearch:9200
+      - AppSelfUrl=http://auth-server:51511
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:51511
+      - ConnectionStrings__Default=Server=sqlserver;Database=HSaaS_Identity;User=sa;Password=yourStrong(!)Password;MultipleActiveResultSets=true
+      - Redis__Configuration=redis
+      - RabbitMQ__Connections__Default__HostName=rabbitmq
+      - IdentityServer__Clients__HSaaS_Backend_Admin_App_Client__ClientId=hsaas-backend-admin-app-client
+      - IdentityServer__Clients__HSaaS_Backend_Admin_App_Client__RootUrl=http://backend-admin-app
+      - IdentityServer__Clients__HSaaS_Public_Website_Client__ClientId=hsaas-public-website-client
+      - IdentityServer__Clients__HSaaS_Public_Website_Client__RootUrl=http://public-website
+    ports:
+      - 51511:51511
+  
+  internal-gateway:
+    environment:
+      - ElasticSearch__Url=http://elasticsearch:9200
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - AuthServer__Authority=http://auth-server:51511
+      - ConnectionStrings__Default=Server=sqlserver;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - Redis__Configuration=redis
+      - Routes__0__DownstreamHostAndPorts__0__Host=identity-service
+      - Routes__0__DownstreamHostAndPorts__0__Port=80
+      - Routes__1__DownstreamHostAndPorts__0__Host=tenant-management-service
+      - Routes__1__DownstreamHostAndPorts__0__Port=80
+      - Routes__2__DownstreamHostAndPorts__0__Host=master-data-service
+      - Routes__2__DownstreamHostAndPorts__0__Port=80
+      - Routes__3__DownstreamHostAndPorts__0__Host=document-management-service
+      - Routes__3__DownstreamHostAndPorts__0__Port=80
+      - Routes__4__DownstreamHostAndPorts__0__Host=blogging-service
+      - Routes__4__DownstreamHostAndPorts__0__Port=80
+      - GlobalConfiguration__BaseUrl=http://localhost
+    ports:
+      - "80"
+
+  backend-admin-app-gateway:
+    environment:
+      - ElasticSearch__Url=http://elasticsearch:9200
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - RemoteServices__Default__BaseUrl=http://backend-admin-app-gateway/
+      - AuthServer__Authority=http://auth-server:51511
+      - AuthServer__ApiName=BackendAdminAppGateway
+      - AuthServer__RequireHttpsMetadata=false
+      - ConnectionStrings__Default=Server=sqlserver;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - Redis__Configuration=redis
+      - Routes__0__DownstreamHostAndPorts__0__Host=identity-service
+      - Routes__0__DownstreamHostAndPorts__0__Port=80
+      - Routes__0__DownstreamScheme=http
+      - Routes__1__DownstreamHostAndPorts__0__Host=tenant-management-service
+      - Routes__1__DownstreamHostAndPorts__0__Port=80
+      - Routes__1__DownstreamScheme=http
+      - Routes__2__DownstreamHostAndPorts__0__Host=master-data-service
+      - Routes__2__DownstreamHostAndPorts__0__Port=80
+      - Routes__2__DownstreamScheme=http
+      - Routes__3__DownstreamHostAndPorts__0__Host=document-management-service
+      - Routes__3__DownstreamHostAndPorts__0__Port=80
+      - Routes__3__DownstreamScheme=http
+      - GlobalConfiguration__BaseUrl=http://backend-admin-app-gateway
+    ports:
+      - 51531:80
+
+  public-website-gateway:
+    environment:
+      - ElasticSearch__Url=http://elasticsearch:9200
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - AuthServer__Authority=http://auth-server:51511
+      - ConnectionStrings__Default=Server=localhost,1433;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - Redis__Configuration=redis
+      - Routes__0__DownstreamHostAndPorts__0__Host=master-data-service
+      - Routes__0__DownstreamHostAndPorts__0__Port=80
+      - Routes__1__DownstreamHostAndPorts__0__Host=document-management-service
+      - Routes__1__DownstreamHostAndPorts__0__Port=80
+      - Routes__2__DownstreamHostAndPorts__0__Host=blogging-service
+      - Routes__2__DownstreamHostAndPorts__0__Port=80
+      - GlobalConfiguration__BaseUrl=http://public-website-gateway
+    ports:
+      - 51532:80
+
+  blogging-service:
+    environment:
+      - ElasticSearch__Url=http://elasticsearch:9200
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - AuthServer__Authority=http://auth-server:51511
+      - ConnectionStrings__Default=Server=localhost,1433;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Blogging=mongodb://mongodb/HSaaS_Blogging
+      - Redis__Configuration=redis
+      - RabbitMQ__Connections__Default__HostName=rabbitmq
+      - RemoteServices__Default__BaseUrl=http://internal-gateway/
+    ports:
+      - 51521:80
+
+  identity-service:
+    environment:
+      - ElasticSearch__Url=http://elasticsearch:9200
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - AuthServer__Authority=http://auth-server:51511
+      - ConnectionStrings__Default=Server=sqlserver;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - Redis__Configuration=redis
+      - RabbitMQ__Connections__Default__HostName=rabbitmq
+    ports:
+      - 51522:80
+
+  master-data-service:
+    environment:
+      - ElasticSearch__Url=http://elasticsearch:9200
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - AuthServer__Authority=http://auth-server:51511
+      - AuthServer__ApiName=MasterDataService
+      - AuthServer__RequireHttpsMetadata=false
+      - ConnectionStrings__Default=Server=sqlserver;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__HSaaS_MasterData=Server=sqlserver;Database=HSaaS_MasterData;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - Redis__Configuration=redis
+      - RabbitMQ__Connections__Default__HostName=rabbitmq
+    ports:
+      - 51523:80
+
+  document-management-service:
+    environment:
+      - ElasticSearch__Url=http://elasticsearch:9200
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - AuthServer__ApiName=DocumentManagementService
+      - AuthServer__Authority=http://auth-server:51511
+      - AuthServer__RequireHttpsMetadata=false
+      - ConnectionStrings__Default=Server=sqlserver;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__HSaaS_DocumentManagement=Server=sqlserver;Database=HSaaS_DocumentManagement;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - Redis__Configuration=redis
+      - RabbitMQ__Connections__Default__HostName=rabbitmq
+    ports:
+      - 51524:80
+
+  tenant-management-service:
+    environment:
+      - ElasticSearch__Url=http://elasticsearch:9200
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - AuthServer__Authority=http://auth-server:51511
+      - ConnectionStrings__Default=Server=localhost,1433;Database=HSaaS_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false      
+      - Redis__Configuration=redis
+      - RabbitMQ__Connections__Default__HostName=rabbitmq
+    ports:
+      - 51525:80
+
+  backend-admin-app:
+    environment:
+      - ElasticSearch__Url=http://elasticsearch:9200
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - AppSelfUrl=http://backend-admin-app:51512
+      - AuthServer__Authority=http://auth-server:51511
+      - AuthServer__ClientId=hsaas-backend-admin-app-client
+      - AuthServer__ClientSecret=1q2w3e*
+      - AuthServer__RequireHttpsMetadata=false
+      - RemoteServices__Default__BaseUrl=http://backend-admin-app-gateway/
+      - RemoteServices__HSaaS_MasterData__BaseUrl=http://backend-admin-app-gateway/
+      - RemoteServices__HSaaS_DocumentManagement__BaseUrl=http://backend-admin-app-gateway/
+      - Redis__Configuration=redis
+    ports:
+      - 51512:80
+
+  public-website:
+    environment:
+      - ElasticSearch__Url=http://elasticsearch:9200
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - AuthServer__Authority=http://auth-server:51511
+      - RemoteServices__Default__BaseUrl=http://public-website-gateway/
+      - Redis__Configuration=redis
+    ports:
+      - 51513:80

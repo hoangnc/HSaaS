@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <StartupObject />
+  <AssemblyName>HSaaS.AspNetCore.Mvc.UI.Widgets</AssemblyName>
+	  <Authors>HoangNC</Authors>
+	  <Description>An ABP widgets module based on AdminLTE</Description>
+	  <PackageTags>abp module theme</PackageTags>
+	  <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+	  <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+	  <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+	  <PreserveCompilationContext>true</PreserveCompilationContext>
+	  <MvcRazorExcludeRefAssembliesFromPublish>false</MvcRazorExcludeRefAssembliesFromPublish>
+	  <PreserveCompilationReferences>true</PreserveCompilationReferences>
+	  <IsPackable>true</IsPackable>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Widgets" Version="4.3.3" />
+  </ItemGroup>
+
+</Project>

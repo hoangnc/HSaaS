@@ -3,9 +3,9 @@ version: '3.7'
 services:
   
   sqlserver:
-    image: mcr.microsoft.com/mssql/server
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
     volumes:
-      - dbdata:/var/opt/mssql
+      - dbdata:/var/opt/mssql/data
 
   mongodb:
     image: mongo

@@ -8,10 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.AutoMapper" Version="4.3.2" />
-    <PackageReference Include="Volo.Abp.Ddd.Application" Version="4.3.2" />
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="4.3.3" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="4.3.3" />
     <ProjectReference Include="..\HSaaS.Application.Contracts\HSaaS.Application.Contracts.csproj" />
-    <ProjectReference Include="..\HSaaS.Domain\HSaaS.Domain.csproj" />
+    <ProjectReference Include="..\HSaaS.Domain\HSaaS.Domain.csproj" /></ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Fody" Version="6.5.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

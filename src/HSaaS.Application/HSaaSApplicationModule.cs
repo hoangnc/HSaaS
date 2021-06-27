@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.Modularity;
 using Volo.Abp.Application;
+using HSaaS.Dashboard;
 
 namespace HSaaS
 {
@@ -11,6 +12,7 @@ namespace HSaaS
         typeof(AbpDddApplicationModule),
         typeof(AbpAutoMapperModule)
         )]
+    [DependsOn(typeof(DashboardApplicationModule))]
     public class HSaaSApplicationModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)

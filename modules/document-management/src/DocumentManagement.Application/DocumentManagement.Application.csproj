@@ -10,11 +10,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="Volo.Abp.AutoMapper" Version="4.3.2" />
-    <PackageReference Include="Volo.Abp.Ddd.Application" Version="4.3.2" />
-    <PackageReference Include="Volo.Abp.Emailing" Version="4.3.2" />
-    <PackageReference Include="Volo.Abp.Identity.Application.Contracts" Version="4.3.2" />
-    <PackageReference Include="Volo.Abp.MailKit" Version="4.3.2" />
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="4.3.3" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="4.3.3" />
+    <PackageReference Include="Volo.Abp.Emailing" Version="4.3.3" />
+    <PackageReference Include="Volo.Abp.Identity.Application.Contracts" Version="4.3.3" />
+    <PackageReference Include="Volo.Abp.MailKit" Version="4.3.3" />
     <ProjectReference Include="..\..\..\master-data\src\MasterData.Application.Contracts\MasterData.Application.Contracts.csproj" />
     <ProjectReference Include="..\DocumentManagement.Application.Contracts\DocumentManagement.Application.Contracts.csproj" />
     <ProjectReference Include="..\DocumentManagement.Domain\DocumentManagement.Domain.csproj" />

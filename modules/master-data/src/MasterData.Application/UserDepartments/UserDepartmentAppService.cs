@@ -50,7 +50,7 @@ namespace MasterData.UserDepartments
 
             var userDepartmentExist = await UserDepartmentRepository.GetByUserNameAsync(input.UserName);
 
-            if (userDepartmentExist?.Id != Guid.Empty)
+            if (userDepartmentExist?.Id != null)
             {
                 throw new BusinessException(code: MasterDataErrorCodes.UserDepartment.UserNameHasExisted)
                                 .WithData("UserName", input.UserName);
@@ -66,7 +66,7 @@ namespace MasterData.UserDepartments
             var userDepartment = await UserDepartmentRepository.GetByUserNameAsync(input.UserName);
 
             if (userDepartment != null
-                && userDepartment.Id != Guid.Empty)
+                && userDepartment.Id != null)
             {
                 userDepartment.UserName = input.UserName;
                 userDepartment.DepartmentCode = input.DepartmentCode;

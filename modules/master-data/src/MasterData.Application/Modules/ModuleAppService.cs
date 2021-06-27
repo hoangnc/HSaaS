@@ -23,7 +23,7 @@ namespace MasterData.Modules
 
             var moduleExisting = await ModuleRepository.GetByCodeAsync(input.Code);
 
-            if (moduleExisting?.Id != Guid.Empty)
+            if (moduleExisting?.Id != null)
             {
                 throw new BusinessException(code: MasterDataErrorCodes.Module.CodeHasExisted)
                                 .WithData("Code", input.Code);

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>HSaaS.Identity</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+    <ProjectReference Include="..\HSaaS.Identity.EntityFrameworkCore.Tests\HSaaS.Identity.EntityFrameworkCore.Tests.csproj" />
+  </ItemGroup>
+
+</Project>

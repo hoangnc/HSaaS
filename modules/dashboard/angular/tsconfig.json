@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.prod.json",
+  "compilerOptions": {
+    "paths": {
+      "@h-saa-s/dashboard": [
+        "projects/dashboard/src/public-api.ts"
+      ],
+      "@h-saa-s/dashboard/config": [
+        "projects/dashboard/config/src/public-api.ts"
+      ],
+      "@proxy": ["projects/dashboard/src/lib/proxy/index.ts"],
+      "@proxy/*": ["projects/dashboard/src/lib/proxy/*"]
+    }
+  }
+}

@@ -8,8 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="4.3.2" />
-    <ProjectReference Include="..\HSaaS.Application.Contracts\HSaaS.Application.Contracts.csproj" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="4.3.3" />
+    <ProjectReference Include="..\HSaaS.Application.Contracts\HSaaS.Application.Contracts.csproj" /></ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Fody" Version="6.5.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

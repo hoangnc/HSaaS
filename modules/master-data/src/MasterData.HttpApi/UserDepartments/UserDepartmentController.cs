@@ -25,9 +25,9 @@ namespace MasterData.UserDepartments
 
         [HttpGet]
         [Route("by-username/{userName}")]
-        public Task<UserDepartmentDto> GetByUserNameAsync(string userName)
+        public async Task<UserDepartmentDto> GetByUserNameAsync(string userName)
         {
-            throw new NotImplementedException();
+            return await UserDepartmentAppService.GetByUserNameAsync(userName);
         }
 
 
@@ -46,9 +46,9 @@ namespace MasterData.UserDepartments
         }
 
         [HttpPost]
-        public Task<UserDepartmentDto> CreateAsync(UserDepartmentCreateDto input)
+        public async Task<UserDepartmentDto> CreateAsync(UserDepartmentCreateDto input)
         {
-            throw new NotImplementedException();
+            return await UserDepartmentAppService.CreateAsync(input); 
         }
 
         [HttpPut]

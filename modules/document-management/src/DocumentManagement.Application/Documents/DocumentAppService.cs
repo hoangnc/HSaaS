@@ -77,9 +77,9 @@ namespace DocumentManagement.Documents
 
             var existingDocument = await DocumentRepository.CheckExistingDocumentForCreateAsync(document);
 
-            if (existingDocument.Id == Guid.Empty)
+            if (existingDocument?.Id == null)
             {
-                throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeExists)
+                throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeHasExisted)
                                 .WithData("Code", input.Code);
             }
 
@@ -89,7 +89,7 @@ namespace DocumentManagement.Documents
 
             document = await DocumentRepository.InsertAsync(document, true);
 
-            if (document.Id != Guid.Empty)
+            if (document.Id != null)
             {
                 if (input != null
                     && input.Appendixes != null
@@ -139,9 +139,9 @@ namespace DocumentManagement.Documents
         {
             var existingDocument = await DocumentRepository.GetAsync(id);
 
-            if (existingDocument?.Id == Guid.Empty)
+            if (existingDocument?.Id == null)
             {
-                throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeNotExists)
+                throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeHasNotExisted)
                                 .WithData("Code", input.Code);
             }
 
@@ -323,7 +323,7 @@ namespace DocumentManagement.Documents
 
             if (document?.Id == Guid.Empty)
             {
-                throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeNotExists)
+                throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeHasNotExisted)
                                 .WithData("Code", "Not Found");
             }
 
@@ -377,9 +377,9 @@ namespace DocumentManagement.Documents
 
             var existingDocument = await DocumentRepository.CheckExistingDocumentForReviewAsync(document);
 
-            if (existingDocument?.Id != Guid.Empty)
+            if (existingDocument?.Id != null)
             {
-                throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeExists)
+                throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeHasExisted)
                                 .WithData("Code", input.Code);
             }
 

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
@@ -16,29 +16,30 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
         <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
+        <PackageReference Include="Serilog.Sinks.Async" Version="1.4.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
         <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.7" />
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="5.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="5.0.6" />
-        <PackageReference Include="Volo.Abp.AspNetCore.Authentication.OpenIdConnect" Version="4.3.2" />
-        <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="4.3.2" />
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="5.0.7" />
+        <PackageReference Include="Volo.Abp.AspNetCore.Authentication.OpenIdConnect" Version="4.3.3" />
+        <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="4.3.3" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Volo.Abp.Autofac" Version="4.3.2" />
-        <PackageReference Include="Volo.Abp.AspNetCore.Mvc.Client" Version="4.3.2" />
-        <PackageReference Include="Volo.Abp.AspNetCore.Authentication.OAuth" Version="4.3.2" />
-        <PackageReference Include="Volo.Abp.Http.Client.IdentityModel.Web" Version="4.3.2" />
-        <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" Version="4.3.2" />
-        <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi.Client" Version="4.3.2" />
-        <PackageReference Include="Volo.Abp.Identity.HttpApi.Client" Version="4.3.2" />
-        <PackageReference Include="Volo.Abp.Identity.Web" Version="4.3.2" />
-        <PackageReference Include="Volo.Abp.TenantManagement.HttpApi.Client" Version="4.3.2" />
-        <PackageReference Include="Volo.Abp.TenantManagement.Web" Version="4.3.2" />
-        <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi.Client" Version="4.3.2" />
-        <PackageReference Include="Volo.Blogging.Application.Contracts" Version="4.3.2" />
+        <PackageReference Include="Volo.Abp.Autofac" Version="4.3.3" />
+        <PackageReference Include="Volo.Abp.AspNetCore.Mvc.Client" Version="4.3.3" />
+        <PackageReference Include="Volo.Abp.AspNetCore.Authentication.OAuth" Version="4.3.3" />
+        <PackageReference Include="Volo.Abp.Http.Client.IdentityModel.Web" Version="4.3.3" />
+        <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" Version="4.3.3" />
+        <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi.Client" Version="4.3.3" />
+        <PackageReference Include="Volo.Abp.Identity.HttpApi.Client" Version="4.3.3" />
+        <PackageReference Include="Volo.Abp.Identity.Web" Version="4.3.3" />
+        <PackageReference Include="Volo.Abp.TenantManagement.HttpApi.Client" Version="4.3.3" />
+        <PackageReference Include="Volo.Abp.TenantManagement.Web" Version="4.3.3" />
+        <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi.Client" Version="4.3.3" />
+        <PackageReference Include="Volo.Blogging.Application.Contracts" Version="4.3.3" />
     </ItemGroup>
 
     <ItemGroup>
@@ -61,8 +62,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\infrastructures\HSaaS.AspNetCore.Mvc.UI.Widgets\HSaaS.AspNetCore.Mvc.UI.Widgets.csproj" />
       <ProjectReference Include="..\..\modules\document-management\src\DocumentManagement.HttpApi.Client\DocumentManagement.HttpApi.Client.csproj" />
       <ProjectReference Include="..\..\modules\document-management\src\DocumentManagement.Web\DocumentManagement.Web.csproj" />
+      <ProjectReference Include="..\..\modules\identity\src\HSaaS.Identity.Web\HSaaS.Identity.Web.csproj" />
       <ProjectReference Include="..\..\modules\master-data\src\MasterData.HttpApi.Client\MasterData.HttpApi.Client.csproj" />
       <ProjectReference Include="..\..\modules\master-data\src\MasterData.Web\MasterData.Web.csproj" />
       <ProjectReference Include="..\..\shared\BackendAdminApp.Shared\BackendAdminApp.Shared.csproj" />

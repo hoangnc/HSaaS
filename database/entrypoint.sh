@@ -1,12 +1,11 @@
 #!/bin/bash
 
-until /opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P $SA_PASSWORD -Q 'SELECT name FROM master.sys.databases'; do
+cd /src/MasterData.HttpApi.Host
+
+until dotnet ef database update -v --no-build; do
 >&2 echo "SQL Server is starting up"
 sleep 1
 done
 
-/opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P $SA_PASSWORD -Q "CREATE DATABASE [$IdentityServer_DB]"
-/opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P $SA_PASSWORD -Q "CREATE DATABASE [$HSaaS_DB]"
-
-/opt/mssql-tools/bin/sqlcmd -d $IdentityServer_DB -S sqlserver -U sa -P $SA_PASSWORD -i migrations-IdentityServerHost.sql
-/opt/mssql-tools/bin/sqlcmd -d $HSaaS_DB -S sqlserver -U sa -P $SA_PASSWORD -i migrations-HSaaS.sql
+cd /src/DocumentManagement.HttpApi.Host && dotnet ef database update -v --no-build
+cd /src/AuthServer.Host && dotnet ef database update -v --no-build

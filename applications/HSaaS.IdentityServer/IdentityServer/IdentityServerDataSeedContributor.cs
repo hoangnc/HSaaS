@@ -25,6 +25,18 @@ namespace HSaaS.IdentityServer
 {
     public class IdentityServerDataSeedContributor : IDataSeedContributor, ITransientDependency
     {
+        private const string CommonSecret = "E5Xd4yMqjP5kjWFKrYgySBju6JVfCzMyFp7n2QmMrME=";
+
+        private readonly string[] CommonScopes = new[]
+        {
+                "email",
+                "openid",
+                "profile",
+                "role",
+                "phone",
+                "address",
+                "HSaaS"
+        };
         private readonly IApiResourceRepository _apiResourceRepository;
         private readonly IApiScopeRepository _apiScopeRepository;
         private readonly IClientRepository _clientRepository;
@@ -146,21 +158,49 @@ namespace HSaaS.IdentityServer
             return apiScope;
         }
 
+        private async Task CreateBackendAdminAppClient(IConfigurationSection configurationSection)
+        {
+            var clientId = configurationSection["HSaaS_Backend_Admin_App_Client:ClientId"];
+            if (!clientId.IsNullOrWhiteSpace())
+            {
+                var clientRootUrl = configurationSection["HSaaS_Backend_Admin_App_Client:RootUrl"].EnsureEndsWith('/');
+                await CreateClientAsync(
+                   clientId,
+                   CommonScopes.Union(new[] { "BackendAdminAppGateway", "IdentityService", "InternalGateway", "MasterDataService", "DocumentManagementService", "TenantManagementService" }),
+                   new[] { "hybrid" },
+                   CommonSecret,
+                   permissions: new[] { IdentityPermissions.Users.Default, "DocumentManagement.Documents" },
+                   redirectUri: $"{clientRootUrl}/signin-oidc",
+                   postLogoutRedirectUri: $"{clientRootUrl}/signout-callback-oidc",
+                   frontChannelLogoutUri: $"{clientRootUrl}Account/FrontChannelLogout"
+                );
+            }
+        }
+        private async Task CreatePublishWebsiteClient(IConfigurationSection configurationSection)
+        {
+            var clientId = configurationSection["HSaaS_Public_Website_Client:ClientId"];
+            if (!clientId.IsNullOrWhiteSpace())
+            {
+                var clientRootUrl = configurationSection["HSaaS_Public_Website_Client:RootUrl"].EnsureEndsWith('/');
+                await CreateClientAsync(
+                    clientId,
+                    CommonScopes.Union(new[] { "PublicWebSiteGateway", "InternalGateWay", "MasterDataService", "DocumentManagementService" }),
+                    new[] { "hybrid" },
+                    CommonSecret,
+                    permissions: new[] { "DocumentManagement.Documents",
+                        MasterDataPermissions.Companies.Default,
+                        MasterDataPermissions.Departments.Default,
+                        MasterDataPermissions.DocumentTypes.Default,
+                        MasterDataPermissions.Modules.Default },
+                   redirectUri: $"{clientRootUrl}/signin-oidc",
+                   postLogoutRedirectUri: $"{clientRootUrl}/signout-callback-oidc",
+                   frontChannelLogoutUri: $"{clientRootUrl}Account/FrontChannelLogout"
+                );
+            }
+        }
+
         private async Task CreateClientsAsync()
         {
-            const string commonSecret = "E5Xd4yMqjP5kjWFKrYgySBju6JVfCzMyFp7n2QmMrME=";
-
-            var commonScopes = new[]
-            {
-                "email",
-                "openid",
-                "profile",
-                "role",
-                "phone",
-                "address",
-                "HSaaS"
-            };
-
             var configurationSection = _configuration.GetSection("IdentityServer:Clients");
 
             //Web Client
@@ -174,7 +214,7 @@ namespace HSaaS.IdentityServer
 
                 await CreateClientAsync(
                     name: webClientId,
-                    scopes: commonScopes,
+                    scopes: CommonScopes,
                     grantTypes: new[] { "hybrid" },
                     secret: (configurationSection["HSaaS_Web:ClientSecret"] ?? "1q2w3e*").Sha256(),
                     redirectUri: $"{webClientRootUrl}signin-oidc",
@@ -184,11 +224,14 @@ namespace HSaaS.IdentityServer
                 );
             }
 
-            await CreateClientAsync(
+            await CreateBackendAdminAppClient(configurationSection);
+            await CreatePublishWebsiteClient(configurationSection);
+
+            /*await CreateClientAsync(
                "hsaas-backend-admin-app-client",
-               commonScopes.Union(new[] { "BackendAdminAppGateway", "IdentityService", "InternalGateway", "MasterDataService", "DocumentManagementService", "TenantManagementService" }),
+               CommonScopes.Union(new[] { "BackendAdminAppGateway", "IdentityService", "InternalGateway", "MasterDataService", "DocumentManagementService", "TenantManagementService" }),
                new[] { "hybrid" },
-               commonSecret,
+               CommonSecret,
                permissions: new[] { IdentityPermissions.Users.Default, "DocumentManagement.Documents" },
                redirectUri: "https://localhost:44354/signin-oidc",
                postLogoutRedirectUri: "https://localhost:44354/signout-callback-oidc"
@@ -196,23 +239,23 @@ namespace HSaaS.IdentityServer
 
             await CreateClientAsync(
                 "hsaas-public-website-client",
-                commonScopes.Union(new[] { "PublicWebSiteGateway", "InternalGateWay", "MasterDataService", "DocumentManagementService" }),
+                CommonScopes.Union(new[] { "PublicWebSiteGateway", "InternalGateWay", "MasterDataService", "DocumentManagementService" }),
                 new[] { "hybrid" },
-                commonSecret,
-                permissions: new[] { "DocumentManagement.Documents", 
+                CommonSecret,
+                permissions: new[] { "DocumentManagement.Documents",
                     MasterDataPermissions.Companies.Default,
                     MasterDataPermissions.Departments.Default,
                     MasterDataPermissions.DocumentTypes.Default,
                     MasterDataPermissions.Modules.Default },
                 redirectUri: "https://localhost:44335/signin-oidc",
                 postLogoutRedirectUri: "https://localhost:44335/signout-callback-oidc"
-            );
+            );*/
 
             await CreateClientAsync(
                 "blogging-service-client",
                 new[] { "InternalGateway", "IdentityService" },
                 new[] { "client_credentials" },
-                commonSecret,
+                CommonSecret,
                 permissions: new[] { IdentityPermissions.UserLookup.Default }
             );
 
@@ -220,15 +263,15 @@ namespace HSaaS.IdentityServer
                 "master-data-service-client",
                 new[] { "InternalGateway", "IdentityService" },
                 new[] { "client_credentials" },
-                commonSecret
+                CommonSecret
             );
 
             await CreateClientAsync(
                 "document-management-service-client",
                 new[] { "InternalGateway", "IdentityService" },
                 new[] { "client_credentials" },
-                commonSecret,
-                permissions: new[] { 
+                CommonSecret,
+                permissions: new[] {
                     MasterDataPermissions.Companies.Default,
                     MasterDataPermissions.Departments.Default,
                     MasterDataPermissions.DocumentTypes.Default,
@@ -245,7 +288,7 @@ namespace HSaaS.IdentityServer
 
                 await CreateClientAsync(
                     name: webClientId,
-                    scopes: commonScopes,
+                    scopes: CommonScopes,
                     grantTypes: new[] { "hybrid" },
                     secret: (configurationSection["HSaaS_Web:ClientSecret"] ?? "1q2w3e*").Sha256(),
                     redirectUri: $"{webClientRootUrl}signin-oidc",
@@ -263,7 +306,7 @@ namespace HSaaS.IdentityServer
 
                 await CreateClientAsync(
                     name: consoleAndAngularClientId,
-                    scopes: commonScopes,
+                    scopes: CommonScopes,
                     grantTypes: new[] { "password", "client_credentials", "authorization_code" },
                     secret: (configurationSection["HSaaS_App:ClientSecret"] ?? "1q2w3e*").Sha256(),
                     requireClientSecret: false,
@@ -281,7 +324,7 @@ namespace HSaaS.IdentityServer
 
                 await CreateClientAsync(
                     name: blazorClientId,
-                    scopes: commonScopes,
+                    scopes: CommonScopes,
                     grantTypes: new[] { "authorization_code" },
                     secret: configurationSection["HSaaS_Blazor:ClientSecret"]?.Sha256(),
                     requireClientSecret: false,
@@ -299,7 +342,7 @@ namespace HSaaS.IdentityServer
 
                 await CreateClientAsync(
                     name: swaggerClientId,
-                    scopes: commonScopes,
+                    scopes: CommonScopes,
                     grantTypes: new[] { "authorization_code" },
                     secret: configurationSection["HSaaS_Swagger:ClientSecret"]?.Sha256(),
                     requireClientSecret: false,

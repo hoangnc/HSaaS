@@ -18,7 +18,7 @@ namespace DocumentManagement.Migrations
             modelBuilder
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.SqlServer)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("DocumentManagement.Appendixes.Appendix", b =>
@@ -223,7 +223,8 @@ namespace DocumentManagement.Migrations
                         .HasColumnName("ConcurrencyStamp");
 
                     b.Property<string>("ContentChange")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("Content change");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2")

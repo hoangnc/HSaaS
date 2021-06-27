@@ -1,0 +1,14 @@
+﻿@model SmallBoxInfoViewModel
+
+<div class="@Model.GetCssClass()">
+    <div class="inner">
+        <h5>@Model.Header.DisplayValue</h5>
+        <p>@Model.Header.Description</p>
+    </div>
+    <div class="icon">
+        <i class="@Model.Icon"></i>
+    </div>
+    <a href="@Model.Footer.Url" class="small-box-footer">
+        @Model.Footer.DisplayName <i class="fas fa-arrow-circle-right"></i>
+    </a>
+</div>

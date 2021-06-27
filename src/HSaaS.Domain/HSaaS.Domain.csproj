@@ -8,8 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="4.3.2" />
-    <ProjectReference Include="..\HSaaS.Domain.Shared\HSaaS.Domain.Shared.csproj" />
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="4.3.3" />
+    <ProjectReference Include="..\HSaaS.Domain.Shared\HSaaS.Domain.Shared.csproj" /></ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Fody" Version="6.5.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

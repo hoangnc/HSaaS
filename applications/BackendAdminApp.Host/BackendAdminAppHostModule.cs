@@ -43,6 +43,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using BackendAdminApp.Host.Localization;
 using BackendAdminApp.Shared;
+using HSaaS.AspNetCore.Mvc.UI.Widgets;
+using HSaaS.Identity.Web;
 
 namespace BackendAdminApp.Host
 {
@@ -64,20 +66,14 @@ namespace BackendAdminApp.Host
         typeof(BackendAdminAppSharedModule),
         typeof(DocumentManagementHttpApiClientModule),
         typeof(DocumentManagementWebModule),
+        typeof(HSaaSAspNetCoreMvcUiWidgetModule),
+        typeof(HSaaSIdentityWebModule),
         typeof(AbpFeatureManagementHttpApiClientModule)
         )]
     public class BackendAdminAppHostModule : AbpModule
     {
         public override void PreConfigureServices(ServiceConfigurationContext context)
         {
-            /*PreConfigure<AbpMvcDataAnnotationsLocalizationOptions>(options =>
-            {
-                options.AddAssemblyResource(
-                    typeof(BackendAdminAppResource),
-                    typeof(BackendAdminAppHostModule).Assembly
-                );
-            });*/
-
             PreConfigure<IMvcBuilder>(mvcBuilder =>
             {
                 mvcBuilder.AddApplicationPartIfNotExists(typeof(BackendAdminAppHostModule).Assembly);
@@ -119,7 +115,7 @@ namespace BackendAdminApp.Host
         {
             Configure<AppUrlOptions>(options =>
             {
-                options.Applications["MVC"].RootUrl = configuration["App:SelfUrl"];
+                options.Applications["MVC"].RootUrl = configuration["AppSelfUrl"];
             });
         }
 
@@ -257,7 +253,6 @@ namespace BackendAdminApp.Host
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseCookiePolicy();
             app.UseAuthentication();
 
             if (MultiTenancyConsts.IsEnabled)
@@ -272,15 +267,6 @@ namespace BackendAdminApp.Host
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend Admin Application API");
             });
 
-            /*app.MapWhen(
-                ctx => 
-                       ctx.Request.Path.ToString().StartsWith("/Abp/ApplicationConfigurationScript"),
-                app2 =>
-                {
-                    app2.UseRouting();
-                    app2.UseConfiguredEndpoints();
-                }
-            );*/
             app.UseConfiguredEndpoints();
         }
     }

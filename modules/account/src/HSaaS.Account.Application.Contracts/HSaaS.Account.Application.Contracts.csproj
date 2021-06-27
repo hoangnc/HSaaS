@@ -8,9 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="4.3.2" />
-    <PackageReference Include="Volo.Abp.Authorization" Version="4.3.2" />
+    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="4.3.3" />
+    <PackageReference Include="Volo.Abp.Authorization" Version="4.3.3" />
     <ProjectReference Include="..\HSaaS.Account.Domain.Shared\HSaaS.Account.Domain.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Fody" Version="6.5.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

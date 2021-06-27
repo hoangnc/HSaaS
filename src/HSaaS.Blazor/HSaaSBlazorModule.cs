@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using HSaaS.Blazor.Menus;
 using Volo.Abp.AspNetCore.Components.Web.Theming;
 using Volo.Abp.AspNetCore.Components.Web.Theming.Routing;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation;
+using HSaaS.Dashboard.Blazor;
 
 namespace HSaaS.Blazor
 {
@@ -13,6 +14,7 @@ namespace HSaaS.Blazor
         typeof(AbpAspNetCoreComponentsWebThemingModule),
         typeof(AbpAutoMapperModule)
         )]
+    [DependsOn(typeof(DashboardBlazorServerModule))]
     public class HSaaSBlazorModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)

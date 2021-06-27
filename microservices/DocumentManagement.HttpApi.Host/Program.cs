@@ -20,7 +20,7 @@ namespace DocumentManagement
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .WriteTo.Async(c => c.File("Logs/logs.txt"))
-#if DEBUG
+#if DEBUG || RELEASE
                 .WriteTo.Async(c => c.Console())
 #endif
                 .CreateLogger();
