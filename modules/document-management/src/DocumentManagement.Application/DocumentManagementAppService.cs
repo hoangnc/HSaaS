@@ -20,7 +20,7 @@ namespace DocumentManagement
         protected new ISettingProvider SettingProvider { get { return LazyServiceProvider.LazyGetService<ISettingProvider>(); } }
         protected DocumentManagementAppService()
         {
-         
+
             LocalizationResource = typeof(DocumentManagementResource);
             ObjectMapperContext = typeof(DocumentManagementApplicationModule);
         }
@@ -34,6 +34,15 @@ namespace DocumentManagement
                     await httpFile.CopyToAsync(memoryStream);
                     memoryStream.WriteTo(file);
                 }
+            }
+        }
+
+        protected async Task<byte[]> GetDocumentFileContentAsync(IFormFile file)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                return memoryStream.ToArray();
             }
         }
 
@@ -68,17 +77,15 @@ namespace DocumentManagement
             List<string> files = new List<string>();
             string folderPath = await GetFolderPathAsync(document.Code);
             string uploadFolderPath = await SettingProvider.GetOrNullAsync(DocumentManagementSettings.UploadFilePath);
-            
-            if (document.Files != null && document.Files.Any())
+
+            if (document.File != null)
             {
-                foreach (IFormFile file in document.Files)
-                {
-                    string filePath = $"{folderPath}/{file.FileName}";
-                    document.FolderName = folderPath.Replace(uploadFolderPath, string.Empty);
-                    document.LinkFile = $"/downloadfile/viewfile?sourcedoc={folderPath.Replace(folderPath, string.Empty)}/{file.FileName}";
-                    files.Add(file.FileName);
-                    await SaveAsAsync(filePath, file);
-                }
+                var file = document.File;
+                string filePath = $"{folderPath}/{file.FileName}";
+                document.FolderName = folderPath.Replace(uploadFolderPath, string.Empty);
+                document.LinkFile = $"/downloadfile/viewfile?sourcedoc={folderPath.Replace(folderPath, string.Empty)}/{file.FileName}";
+                files.Add(file.FileName);
+                await SaveAsAsync(filePath, file);
             }
 
             if (document.AppendixFiles != null && document.AppendixFiles.Any())

@@ -45,6 +45,8 @@ using BackendAdminApp.Host.Localization;
 using BackendAdminApp.Shared;
 using HSaaS.AspNetCore.Mvc.UI.Widgets;
 using HSaaS.Identity.Web;
+using Volo.Abp.SettingManagement;
+using Volo.Abp.SettingManagement.Web;
 
 namespace BackendAdminApp.Host
 {
@@ -67,6 +69,8 @@ namespace BackendAdminApp.Host
         typeof(DocumentManagementHttpApiClientModule),
         typeof(DocumentManagementWebModule),
         typeof(HSaaSAspNetCoreMvcUiWidgetModule),
+        typeof(AbpSettingManagementHttpApiClientModule),
+        typeof(AbpSettingManagementWebModule),
         typeof(HSaaSIdentityWebModule),
         typeof(AbpFeatureManagementHttpApiClientModule)
         )]

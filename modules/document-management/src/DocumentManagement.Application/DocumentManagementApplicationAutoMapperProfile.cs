@@ -11,12 +11,10 @@ namespace DocumentManagement
             /* You can configure your AutoMapper mapping configuration here.
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
-
             CreateMap<Appendix, AppendixDto>();
             CreateMap<AppendixDto, Appendix>();
 
             CreateMap<Document, DocumentDto>()
-                // .ForMember(d => d.Appendixes, options => options.Ignore())
                 .ForMember(d => d.AppendixFiles, options => options.Ignore())
                 .ForMember(d => d.Files, options => options.Ignore())
                 .ForMember(d => d.ReplaceForName, options => options.Ignore())

@@ -51,7 +51,7 @@
                 @if (await Authorization.IsGrantedAsync(DocumentManagementPermissions.Documents.Review))
                 {
                     <a href="/DocumentManagement/Documents/Review" class="btn btn-primary btn-sm">
-                        <i class="fa fa-plus" aria-hidden="true"></i> @L["ReviewDocument"].Value
+                        <i class="fa fa-check-square-o" aria-hidden="true"></i> @L["ReviewDocument"].Value
                     </a>
                 }
             </abp-column>

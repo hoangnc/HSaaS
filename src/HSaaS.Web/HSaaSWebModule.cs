@@ -8,8 +8,6 @@ using Volo.Abp.AutoMapper;
 using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
-using HSaaS.Permissions;
-using HSaaS.Dashboard.Web;
 
 namespace HSaaS.Web
 {
@@ -18,7 +16,6 @@ namespace HSaaS.Web
         typeof(AbpAspNetCoreMvcUiThemeSharedModule),
         typeof(AbpAutoMapperModule)
         )]
-    [DependsOn(typeof(DashboardWebModule))]
     public class HSaaSWebModule : AbpModule
     {
         public override void PreConfigureServices(ServiceConfigurationContext context)

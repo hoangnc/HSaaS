@@ -1,6 +1,5 @@
 using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
-using HSaaS.Dashboard;
 
 namespace HSaaS
 {
@@ -8,7 +7,6 @@ namespace HSaaS
         typeof(AbpDddDomainModule),
         typeof(HSaaSDomainSharedModule)
     )]
-    [DependsOn(typeof(DashboardDomainModule))]
     public class HSaaSDomainModule : AbpModule
     {
 

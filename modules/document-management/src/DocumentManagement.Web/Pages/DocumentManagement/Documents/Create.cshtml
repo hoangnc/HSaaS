@@ -20,13 +20,14 @@
 }
 @section scripts {
     <abp-script-bundle>
+        <abp-script src="/libs/jquery-form-validator/jquery.form-validator.culture.vi-VN.js"></abp-script>
         <abp-script src="/libs/jquery-form-validator/jquery.form-validator.min.js"></abp-script>
         <abp-script src="/Pages/DocumentManagement/Documents/DocumentLookup.js" />
         <abp-script src="/Pages/DocumentManagement/Documents/Create.js" />
     </abp-script-bundle>
 }
-<form role="form" action="/" id="formDocument">
-    @Html.AntiForgeryToken()
+<form role="form" action="/" id="formDocument" enctype="multipart/form-data">
+    @*Html.AntiForgeryToken()*@
     <abp-card id="DocumentsWrapper">
         <abp-card-header>
             <abp-row>
@@ -53,6 +54,7 @@
         </abp-card-header>
         <abp-card-body>
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <input id="id" name="id" type="hidden" value="@Guid.Empty"/>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -503,7 +505,7 @@
                             <i class="glyphicon glyphicon-plus"></i>
                             <span>@L[DocumentResourceNames.SelectFiles].Value</span>
                             <!-- The file input field used as target for the file upload widget -->
-                            <input id="fileupload" type="file" name="files[]">
+                            <input id="File" type="file" name="File">
                         </span>
                         <table role="presentation" class="table table-striped">
                             <tbody class="files"></tbody>

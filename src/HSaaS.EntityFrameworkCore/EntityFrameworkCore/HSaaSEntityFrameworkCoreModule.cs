@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
-using HSaaS.Dashboard.EntityFrameworkCore;
 
 namespace HSaaS.EntityFrameworkCore
 {
@@ -9,7 +8,6 @@ namespace HSaaS.EntityFrameworkCore
         typeof(HSaaSDomainModule),
         typeof(AbpEntityFrameworkCoreModule)
     )]
-    [DependsOn(typeof(DashboardEntityFrameworkCoreModule))]
     public class HSaaSEntityFrameworkCoreModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)

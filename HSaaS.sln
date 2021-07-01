@@ -185,6 +185,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSaaS.Dashboard.MongoDB", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HSaaS.Dashboard.Web", "modules\dashboard\src\HSaaS.Dashboard.Web\HSaaS.Dashboard.Web.csproj", "{A31810A0-E7A6-472B-8FE5-C9E017C0393B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "setting-management", "setting-management", "{EE6CC7B9-7BC1-42D2-8322-958B7C7BF7E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettingManagementService.Host", "microservices\SettingManagementService.Host\SettingManagementService.Host.csproj", "{7BF55ADC-09AD-4378-B207-5576182DA0A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -479,6 +483,10 @@ Global
 		{A31810A0-E7A6-472B-8FE5-C9E017C0393B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A31810A0-E7A6-472B-8FE5-C9E017C0393B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A31810A0-E7A6-472B-8FE5-C9E017C0393B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BF55ADC-09AD-4378-B207-5576182DA0A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BF55ADC-09AD-4378-B207-5576182DA0A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BF55ADC-09AD-4378-B207-5576182DA0A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BF55ADC-09AD-4378-B207-5576182DA0A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -566,6 +574,8 @@ Global
 		{C75F3F53-6864-45C7-B983-6F44F76C6EEA} = {B6F11814-AF38-48A8-941D-A23D097DBF0D}
 		{1CC4289A-337F-40E1-B53C-5B951F3C78E2} = {B6F11814-AF38-48A8-941D-A23D097DBF0D}
 		{A31810A0-E7A6-472B-8FE5-C9E017C0393B} = {B6F11814-AF38-48A8-941D-A23D097DBF0D}
+		{EE6CC7B9-7BC1-42D2-8322-958B7C7BF7E5} = {E400416D-2895-4512-9D17-90681EEC7E0A}
+		{7BF55ADC-09AD-4378-B207-5576182DA0A9} = {EE6CC7B9-7BC1-42D2-8322-958B7C7BF7E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4324B3B4-B60B-4E3C-91D8-59576B4E26DD}

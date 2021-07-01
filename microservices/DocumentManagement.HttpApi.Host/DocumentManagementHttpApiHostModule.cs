@@ -36,11 +36,13 @@ using Volo.Abp.MailKit;
 using MailKit.Security;
 using Volo.Abp.Identity;
 using MasterData;
+using Volo.Abp.AspNetCore.Mvc;
 
 namespace DocumentManagement
 {
     [DependsOn(
         typeof(AbpMailKitModule),
+        typeof(AbpAspNetCoreMvcModule),
         typeof(AbpAspNetCoreMvcUiMultiTenancyModule),
         typeof(AbpAutofacModule),
         typeof(AbpCachingStackExchangeRedisModule),
@@ -101,6 +103,7 @@ namespace DocumentManagement
 
             Configure<AbpLocalizationOptions>(options =>
             {
+                options.Languages.Add(new LanguageInfo("vi", "vi", "Tiếng Việt"));
                 options.Languages.Add(new LanguageInfo("cs", "cs", "Čeština"));
                 options.Languages.Add(new LanguageInfo("en", "en", "English"));
                 options.Languages.Add(new LanguageInfo("en-GB", "en-GB", "English (UK)"));

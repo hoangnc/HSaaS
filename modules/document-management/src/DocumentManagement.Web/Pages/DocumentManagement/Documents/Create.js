@@ -1,4 +1,17 @@
-﻿(function () {
+﻿const formatFileSize = (bytes) => {
+    if (typeof bytes !== 'number') {
+        return '';
+    }
+    if (bytes >= 1000000000) {
+        return (bytes / 1000000000).toFixed(2) + ' GB';
+    }
+    if (bytes >= 1000000) {
+        return (bytes / 1000000).toFixed(2) + ' MB';
+    }
+    return (bytes / 1000).toFixed(2) + ' KB';
+}
+
+(function () {
     const datePattern = abp.localization.currentCulture.dateTimeFormat.shortDatePattern;
     toastr.options.positionClass = 'toast-top-right';
 
@@ -120,19 +133,6 @@
         }
 
         appendFormData(obj, rootName);
-    }
-
-    const formatFileSize = (bytes) => {
-        if (typeof bytes !== 'number') {
-            return '';
-        }
-        if (bytes >= 1000000000) {
-            return (bytes / 1000000000).toFixed(2) + ' GB';
-        }
-        if (bytes >= 1000000) {
-            return (bytes / 1000000).toFixed(2) + ' MB';
-        }
-        return (bytes / 1000).toFixed(2) + ' KB';
     }
 
     const l = abp.localization.getResource('DocumentManagement');
@@ -354,8 +354,9 @@
     }
 
     const getUsers = () => {     
-            _identityUserAppService.getList({ filter: '', skipCount: 0, maxResultCount: 1000 })
+          return  _identityUserAppService.getList({ filter: '', skipCount: 0, maxResultCount: 1000 })
                 .then((data => {
+                    console.log(data);
                     users = data
                         .items
                         .filter((user) => user.userName !== 'admin')
@@ -665,18 +666,13 @@
             // You can directly make object via using form id but it require all ajax operation inside $("form").submit(<!-- Ajax Here   -->)
             formData = new FormData(formData[0]);
 
-            // Document files
-            for (let i = 0, len = storedFiles.length; i < len; i++) {
-                formData.append('files', storedFiles[i]);
-            }
-
             // Appendixs files
             for (let i = 0; i < appendixFiles.length; i++) {
-                formData.append('appendixFiles', appendixFiles[i].file);
+                formData.append('AppendixFiles[]', appendixFiles[i].file);
             }
 
             const appendixes = getAppendixes();
-            objectToFormData(appendixes, formData, 'appendixes', []);
+            objectToFormData(appendixes, formData, 'Appendixes', []);
 
             if ($Approver.val())
                 formData.set('Approver', $Approver.val().join(';'));
@@ -810,6 +806,7 @@
             getUsers(),
             getUserDepartments()
         ]).then(() => {
+
             users = users.map(user => {
                 let userDepartment = userDepartments.find(ud => ud.userName === user.id);
                 
@@ -916,11 +913,19 @@
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png|xls|pdf|xslx)$/i
         });
 
-        $.validate({
-            language: abp.localization.currentCulture.cultureName,
-            form: '#formDocument',
-            addValidClassOnAll: true
-        });
+        if (abp.localization.currentCulture.cultureName === 'vi') {
+            $.validate({
+                language: formValidator.language.vi,
+                form: '#formDocument',
+                addValidClassOnAll: true
+            });
+        } else {
+            $.validate({
+                language: abp.localization.currentCulture.cultureName,
+                form: '#formDocument',
+                addValidClassOnAll: true
+            });
+        }       
 
         $("#formDocument").submit((e) => {
             e.preventDefault();

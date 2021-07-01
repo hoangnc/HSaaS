@@ -52,9 +52,9 @@ namespace MasterData.UserDepartments
         }
 
         [HttpPut]
-        public Task<UserDepartmentDto> UpdateAsync(Guid id, UserDepartmentUpdateDto input)
+        public async Task<UserDepartmentDto> UpdateAsync(Guid id, UserDepartmentUpdateDto input)
         {
-            throw new NotImplementedException();
+            return await UserDepartmentAppService.UpdateAsync(id, input);
         }
 
         [HttpDelete]

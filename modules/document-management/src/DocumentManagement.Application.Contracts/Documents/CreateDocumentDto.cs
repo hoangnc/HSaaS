@@ -44,7 +44,7 @@ namespace DocumentManagement.Documents
         public string ExtraProperties { get; set; }
         public string ConcurrencyStamp { get; set; }
         public List<AppendixDto> Appendixes { get; set; }
-        public List<IFormFile> Files { get; set; }
+        public IFormFile File { get; set; }
         public List<IFormFile> AppendixFiles { get; set; }
     }
 }

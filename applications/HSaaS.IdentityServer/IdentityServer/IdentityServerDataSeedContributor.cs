@@ -83,6 +83,7 @@ namespace HSaaS.IdentityServer
             await CreateApiScopeAsync("HSaaS");
             await CreateApiScopeAsync("IdentityService");
             await CreateApiScopeAsync("TenantManagementService");
+            await CreateApiScopeAsync("SettingManagementService");
             await CreateApiScopeAsync("BloggingService");
             await CreateApiScopeAsync("MasterDataService");
             await CreateApiScopeAsync("DocumentManagementService");

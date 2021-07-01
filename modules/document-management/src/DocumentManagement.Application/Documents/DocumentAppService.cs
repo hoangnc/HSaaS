@@ -14,6 +14,7 @@ using Volo.Abp;
 using System.Linq;
 using System.IO;
 using DocumentManagement.Settings;
+using Microsoft.AspNetCore.Http;
 
 namespace DocumentManagement.Documents
 {
@@ -22,13 +23,16 @@ namespace DocumentManagement.Documents
     {
         protected IDocumentRepository DocumentRepository { get; }
         protected IAppendixRepository AppendixRepository { get; }
+        protected IDocumentFileAppService DocumentFileAppService {get;}
 
         public DocumentAppService(
             IDocumentRepository documentRepository,
-            IAppendixRepository appendixRepository)
+            IAppendixRepository appendixRepository,
+            IDocumentFileAppService documentFileAppService)
         {
             DocumentRepository = documentRepository;
             AppendixRepository = appendixRepository;
+            DocumentFileAppService = documentFileAppService;
         }
 
         public virtual async Task<DocumentDto> FindByNameAsync(string name)
@@ -77,15 +81,11 @@ namespace DocumentManagement.Documents
 
             var existingDocument = await DocumentRepository.CheckExistingDocumentForCreateAsync(document);
 
-            if (existingDocument?.Id == null)
+            if (existingDocument?.Id != null)
             {
                 throw new BusinessException(code: DocumentManagementErrorCodes.Document.CodeHasExisted)
                                 .WithData("Code", input.Code);
             }
-
-
-            document.FileName = await UploadDocumentsAsync(input);
-            document.FolderName = input.FolderName;
 
             document = await DocumentRepository.InsertAsync(document, true);
 
@@ -128,6 +128,24 @@ namespace DocumentManagement.Documents
                     });
 
                     await AppendixRepository.InsertManyAsync(appendixes, true);
+                }
+            }
+
+            if (input.File != null)
+            {
+                var documentFileContent = await GetDocumentFileContentAsync(input.File);
+                await DocumentFileAppService.SaveDocumentFileAsync(new SaveDocumentFileDto
+                {
+                    Name = $"{document.Id}_{input.FileName}",
+                    Content = documentFileContent
+                });
+            }
+
+            if (input.AppendixFiles != null && input.AppendixFiles.Any())
+            {
+                foreach (IFormFile file in input.AppendixFiles)
+                {
+                    
                 }
             }
 

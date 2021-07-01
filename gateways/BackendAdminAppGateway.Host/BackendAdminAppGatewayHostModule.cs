@@ -104,7 +104,8 @@ namespace BackendAdminAppGateway.Host
                 options.CustomSchemaIds(type => type.FullName);
             });
 
-            context.Services.AddOcelot(context.Services.GetConfiguration());
+            context.Services.AddOcelot(context.Services.GetConfiguration())
+                            .AddDelegatingHandler<MissingBodyDelegatingHandler>(true);
 
             Configure<AbpDbContextOptions>(options =>
             {

@@ -14,5 +14,13 @@ namespace DocumentManagement
             LocalizationResource = typeof(DocumentManagementResource);
         }
 
+        protected async Task<byte[]> GetDocumentFileContentAsync(IFormFile file)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
     }
 }

@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using DocumentManagement.Documents;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -14,20 +13,16 @@ using Volo.Abp.AspNetCore.Mvc;
 
 namespace DocumentManagement.Document
 {
-    [Controller]
     [RemoteService(Name = DocumentManagementRemoteServiceConsts.RemoteServiceName)]
     [Area("documentManagement")]
     [Route("api/document-management/documents")]
     public class DocumentController : DocumentManagementController, IDocumentAppService
     {
         private readonly IDocumentAppService _documentAppService;
-        private readonly IDocumentEmailSenderService _documentEmailSenderService;
 
-        public DocumentController(IDocumentAppService documentAppService,
-            IDocumentEmailSenderService documentEmailSenderService = null)
+        public DocumentController(IDocumentAppService documentAppService)
         {
             _documentAppService = documentAppService;
-            _documentEmailSenderService = documentEmailSenderService;
         }
 
         [HttpGet]
@@ -77,7 +72,6 @@ namespace DocumentManagement.Document
         public async Task<DocumentDto> CreateAndReleaseAsync([FromForm] CreateDocumentDto input)
         {
             var result = await _documentAppService.CreateAsync(input);
-            await _documentEmailSenderService.SendMailReleaseDocumentAsync(result);
             return result;
         }
 
@@ -93,7 +87,6 @@ namespace DocumentManagement.Document
         public async Task<DocumentDto> ReviewAndReleaseAsync([FromForm] ReviewDocumentDto input)
         {
             var result = await _documentAppService.ReviewAsync(input);
-            await _documentEmailSenderService.SendMailReviewAndReleaseAsync(result);
             return result;
         }
 
@@ -110,7 +103,6 @@ namespace DocumentManagement.Document
         public async Task<DocumentDto> UpdateAndReleaseAsync(Guid id, [FromForm] UpdateDocumentDto input)
         {
             var result = await _documentAppService.UpdateAsync(id, input);
-            await _documentEmailSenderService.SendMailReleaseDocumentAsync(result);
             return result;
         }
 

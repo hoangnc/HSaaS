@@ -33,6 +33,7 @@ function getFileExtension(filename) {
 
     const l = abp.localization.getResource('DocumentManagement');
     const _documentAppService = documentManagement.document.document;
+    console.log(_documentAppService);
     const _companyAppService = masterData.companies.company;
     const _departmentAppService = masterData.departments.department;
     const _documentTypeAppService = masterData.documentTypes.documentType;
@@ -206,8 +207,6 @@ function getFileExtension(filename) {
                 resizableRows: true,       //allow row order to be changed
                 tooltips: true,
                 ajaxSorting: false,
-                //pagination: "remote", 
-                ajaxProgressiveLoadScrollMargin: 600,
                 ajaxLoader: true,
                 ajaxURL: '/api/document-management/documents/filtered-paged-list',
                 ajaxProgressiveLoad: "scroll",
@@ -220,7 +219,7 @@ function getFileExtension(filename) {
                 ajaxResponse: function (url, params, response) {
                     return transformDocuments(response);
                 },
-                paginationSize: 500,
+                paginationSize: 50,
                 placeholder: "Không có dữ liệu",
                 history: true,
                 columns: [
@@ -235,6 +234,7 @@ function getFileExtension(filename) {
                         title: "Status",
                         field: "Color",
                         formatter: "color",
+                        hozAlign: "center",
                         frozen: getFrozen(),
                         width: 50
                     },
@@ -411,7 +411,7 @@ function getFileExtension(filename) {
                                         for (let index = 0; index < replaceForDocuments.length; index++) {
                                             if (replaceForDocuments[index]) {
                                                 const replaceForDocument = documents.find(d1 => d1.code === replaceForDocuments[index]);
-                                                console.log(replaceForDocument);
+
                                                 if (replaceForDocument) {
                                                     html = html + `<a target="_blank" href="/documentmanagement/documents/detail?code=${documentCodes[index]}"> <i class="fa fa-file-o"></i> ${replaceForDocument.name}</a><br>`;
                                                 } else {

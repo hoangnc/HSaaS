@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="4.3.3" />
     <ProjectReference Include="..\HSaaS.Domain.Shared\HSaaS.Domain.Shared.csproj" /></ItemGroup>
 
